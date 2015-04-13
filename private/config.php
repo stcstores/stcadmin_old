@@ -14,6 +14,6 @@ $CONFIG = array(
     'colours' => dirname($_SERVER['DOCUMENT_ROOT']) . '/public/css/colours.php',
     'include' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/include.php',
     'archive' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/new_product_files/archive/',
-    'check_login' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/check_login.php/',
     'check_login' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/check_login.php',
+    'navbar' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/navbar.php'
 );

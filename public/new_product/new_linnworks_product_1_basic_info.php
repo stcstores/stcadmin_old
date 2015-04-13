@@ -2,6 +2,7 @@
     header('Content-Type: text/html; charset=utf-8');
     require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
     require_once($CONFIG['include']);
+    require_once($CONFIG['check_login']);
 
 if ( !empty($_POST) ) {
     $product = add_basic_info();
@@ -36,7 +37,7 @@ writeFormPage('basic', $product);
 
 $_SESSION['new_product'] = $product;
 
-echo "<script src=scripts/forms.js ></script>";
+echo "<script src=/scripts/forms.js ></script>";
 
 include($CONFIG['footer']);
 

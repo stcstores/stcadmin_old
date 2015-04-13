@@ -29,9 +29,10 @@ if (isset($_POST['login_username']) && isset($_POST['login_password'])) {
 require_once($CONFIG['header']);
 ?>
 
-
+<h2>Welcome to STCAdmin</h2>
 
 <form id=login_form method=post>
+    <h3>Please Log In</h3>
     <table>
         <tr>
             <td>Username: </td>

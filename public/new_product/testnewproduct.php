@@ -2,6 +2,7 @@
 
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
+require_once($CONFIG['check_login']);
 require_once($CONFIG['header']);
 
 

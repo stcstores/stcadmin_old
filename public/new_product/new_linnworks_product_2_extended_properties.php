@@ -2,6 +2,7 @@
 
     require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
     require_once($CONFIG['include']);
+    require_once($CONFIG['check_login']);
 
 $product = $_SESSION['new_product'];
 
@@ -25,7 +26,7 @@ writeFormPage('extended_properties', $product);
 
 $_SESSION['new_product'] = $product;
 
-echo "<script src=scripts/forms.js ></script>";
+echo "<script src=/scripts/forms.js ></script>";
 
 include($CONFIG['footer']);
 
