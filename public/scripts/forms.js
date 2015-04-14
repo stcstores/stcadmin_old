@@ -35,7 +35,7 @@ function setFormStyle(){
 
 }
 
-illegalChars = ['"', "'", '~', ';', '<', '>', '\\', '/'];
+illegalChars = ['"', "'", '~', ';', '<', '>', '\\', '/', '!', '?'];
 
 priceRegEx = /^([0-9]*((.)[0-9]{0,2}))$/;
 barcodeRegEx = /^\d{12,13}$/;
