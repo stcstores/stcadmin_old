@@ -35,7 +35,7 @@ function setFormStyle(){
 
 }
 
-illegalChars = ['"', "'", '~', ';', '<', '>'];
+illegalChars = ['"', "'", '~', ';', '<', '>', '\\', '/'];
 
 setFormStyle();
 
@@ -62,7 +62,9 @@ function validate(input) {
         }
     }
     
-    
+    if (inputId === 'short_description') {
+        shortDescriptionValidate(input);
+    }
 }
 
 function priceValidate(input) {
@@ -77,15 +79,13 @@ function priceValidate(input) {
 }
 
 function itemTitleValidate(input) {
-    console.log();
     input.blur(function() {
-        value = input.val();
-        
+        var value = input.val();
         for (key in illegalChars) {
             value = value.replace(illegalChars[key], '');
         }
-        //value = value.replace('"', '');
         input.val(value);
+        
         if (input.val().length == 0) { // if empty
             writeError(input, 'Product title is required');
         } else if (input.val().length < 6) { // if title less than 5 chars
@@ -94,6 +94,25 @@ function itemTitleValidate(input) {
             writeError(input, 'Title must not exceed 50 Characters');
         }
         
+    });
+    
+    clearError(input);
+}
+
+function shortDescriptionValidate(input) {
+    
+    input.blur(function() {
+        var value = input.val();
+        for (key in illegalChars) {
+            value = value.replace(illegalChars[key], '');
+        }
+        input.val(value);
+        
+        if (input.val().length == 0) { // if empty
+            writeError(input, 'Product description is required');
+        } else if (input.val().length < 26) { // if title less than 5 chars
+            writeError(input, 'Description must be at least 25 Characters');
+        }
     });
     
     clearError(input);

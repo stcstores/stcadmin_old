@@ -60,7 +60,7 @@ function echoInput($field, $product, $number='') {
         echo "/>";
     
     } elseif($field['field_type'] == 'textarea') {
-        echo "<textarea rows=4 cols=45 name={$field['field_name']}{$number} ";
+        echo "<textarea rows=4 cols=45 id={$field['field_name']} name={$field['field_name']}{$number} ";
         if ($field['required'] == true) {
             echo "required ";
         }
