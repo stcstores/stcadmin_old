@@ -23,7 +23,7 @@ if (isset($_POST['login_username']) && isset($_POST['login_password'])) {
             }
         }
     }
-    
+    $loginFailed = true;
 }
 
 require_once($CONFIG['header']);
@@ -35,13 +35,19 @@ require_once($CONFIG['header']);
     <h3>Please Log In</h3>
     <table>
         <tr>
-            <td>Username: </td>
-            <td><input type=text size=25 name=login_username id=login_username class=login /></td>
+            <td><label for="login_username">Username: </label></td>
+            <td><input type=text size=25 name=login_username id=login_username class=login required <?php
+            if (isset($_POST['login_username'])) {
+                $username = htmlspecialchars($_POST['login_username']);
+                echo 'value="' . $username . '" ';
+            }
+            ?>/></td>
         </tr>
         <tr>
-            <td>Password: </td>
-            <td><input type=password size=25 name=login_password id=login_password class=login /></td>
+            <td><label for="login_password" >Password: </label></td>
+            <td><input type="password" size="25" name="login_password" id="login_password" class=login required /></td>
         </tr>
+        <?php if ((isset($loginFailed)) && ($loginFailed == true)) {echo '<tr><td colspan="2" class="error" >Authentication Failed</td></tr>';}?>
         <tr>
             <td><input id=login_button type=submit value='Login' /></td>
         </tr>
