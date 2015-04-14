@@ -35,6 +35,8 @@ function setFormStyle(){
 
 }
 
+illegalChars = ['"', "'", '~', ';', '<', '>'];
+
 setFormStyle();
 
 $('#content').find($('form')).find($('input, textarea, checkbox, select')).each(function (){
@@ -48,32 +50,57 @@ $('#content').find($('form')).find($('input, textarea, checkbox, select')).each(
 
 function validate(input) {
     var inputId = input.attr('id');
-    var priceFields = [/^retail_price\d*$/i, /^purchase_price\d*$/i, /^ebay_price\d*$/i, /^amazon_price\d*$/i];
     
+    if (inputId === 'item_title') {
+        itemTitleValidate(input);
+    }
+    
+    var priceFields = [/^retail_price\d*$/i, /^purchase_price\d*$/i, /^ebay_price\d*$/i, /^am_price\d*$/i];    
     for (key in priceFields) {
         if (priceFields[key].test(inputId)) {
             priceValidate(input);
         }
     }
+    
+    
 }
 
 function priceValidate(input) {
+    var value = input.val();
     input.blur(function() {
-        if (input.val() === '') {
-            input.after(writeError(input, 'Please add price'));
-            input.addClass('error');
+        if (value === '') {
+            writeError(input, 'Please add price');
         }
     });
     
-    input.focus(function() {
-        input.parent().find('p').each(function() {
-            $(this).remove();
-        });
-        input.removeClass('error');
+    clearError(input);
+}
+
+function itemTitleValidate(input) {
+    console.log();
+    input.blur(function() {
+        value = input.val();
+        
+        for (key in illegalChars) {
+            value = value.replace(illegalChars[key], '');
+        }
+        //value = value.replace('"', '');
+        input.val(value);
+        if (input.val().length == 0) { // if empty
+            writeError(input, 'Product title is required');
+        } else if (input.val().length < 6) { // if title less than 5 chars
+            writeError(input, 'Title must be at least 5 Characters');
+        } else if (input.val().length > 50) { // if title more than 50 chars
+            writeError(input, 'Title must not exceed 50 Characters');
+        }
+        
     });
+    
+    clearError(input);
 }
 
 function writeError(input, text) {
+    input.addClass('error');
     var written = false;
     input.parent().find('p').each(function() {
         if ($(this).text() == text) {
@@ -84,5 +111,14 @@ function writeError(input, text) {
     if (written === true) {
         return '';
     }
-    return '<p class=error>' + text + '</p>';
+    input.after('<p class=error>' + text + '</p>');
+}
+
+function clearError(input) {
+    input.focus(function() {
+        input.parent().find('p').each(function() {
+            $(this).remove();
+        });
+        input.removeClass('error');
+    });
 }
