@@ -257,7 +257,18 @@ input[type="text"], input[type="password"], textarea, select, checkbox {
 
 #logout {
     display: inline-block;
+    float: right;
+    font-size: 0.75em;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 input.error {
     border-color: red;
+}
+
+#topper {
+    display: inline-block;
+    width: 100%;
+}

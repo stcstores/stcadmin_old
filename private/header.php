@@ -16,19 +16,25 @@ require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 	<body>
 		<div id=wrapper>
 			<div id=header>
-				<div>
-					<a class=no_decoration href='/' ><h1>STC Admin</h1></a>
+				<div id=topper>
+					<?php if (isLoggedIn()) {?>
+					
+					<div id=logout class="pagebox">
+						<p>Logged in as: <?php echo getCurrentUsername() ?></p>
+						<p><a href='/logout.php'>Log out</a></p>
+					</div>
+				
+					<?php } ?>
+					<div>
+						<a class=no_decoration href='/' ><h1>STC Admin</h1></a>
+					</div>
 				</div>
 				
-				<?php if (isLoggedIn()) {?>
 				
-				<div id=logout>
-					<p>Logged in as: <?php echo getCurrentUsername() ?></p>
-					<p><a href='/logout.php'>Log out</a></p>
-				</div>
 				
 				
 				<?php
+				if (isLoggedIn()) {
 					require_once($CONFIG['navbar']);
 				}				
 				?>
