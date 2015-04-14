@@ -121,6 +121,8 @@ h4 {
 
 .error {
     color: red;
+    margin: 0.1em;
+    padding: 0;
     /*font-weight: bold;*/
 }
 
@@ -256,3 +258,6 @@ input[type="text"], input[type="password"], textarea, select, checkbox {
 #logout {
     display: inline-block;
 }
+
+input.error {
+    border-color: red;
