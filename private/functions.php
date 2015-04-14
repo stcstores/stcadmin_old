@@ -203,6 +203,11 @@ function isLoggedIn() {
     return false;
 }
 
-
+function getSpecialCharacters() {
+    $selectQuery = "SELECT sc, name FROM special_characters;";
+    $database = new DatabaseConnection();
+    $results = $database->selectQuery($selectQuery);
+    return $results;
+}
 
 ?>
