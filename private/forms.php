@@ -47,6 +47,9 @@ function echoInput($field, $product, $number='') {
         echo "<input id={$field['field_name']} ";
         echo "name={$field['field_name']}{$number} type=text ";
         echo "value='" . htmlspecialchars($value, ENT_QUOTES) . "' size={$field['size']} ";
+        if ($field['required'] == true) {
+            echo "required ";
+        }
         echo " />";
     
     } elseif ($field['field_type'] == 'checkbox') {
@@ -57,7 +60,11 @@ function echoInput($field, $product, $number='') {
         echo "/>";
     
     } elseif($field['field_type'] == 'textarea') {
-        echo "<textarea rows=4 cols=45 name={$field['field_name']}{$number}>";
+        echo "<textarea rows=4 cols=45 name={$field['field_name']}{$number} ";
+        if ($field['required'] == true) {
+            echo "required ";
+        }
+        echo ">";
         echo $value;
         echo "</textarea>";
     } else {
