@@ -9,7 +9,7 @@ function writeFormPage($page, $product){
     
     foreach ($fields as $field) {
         echo "<tr>";
-        echo "<td class=form_table_field_name >{$field['field_title']}</td>";
+        echo '<td class=form_table_field_name ><label for="' . $field['field_name'] . '">' . $field['field_title'] . '</label></td>';
         echo "<td class=form_table_input>";
         
         echoInput($field, $product);
@@ -78,9 +78,9 @@ function write_var_setup_page($product, $newRows=0) {
     echo "<form method='post' enctype='multipart/form-data'>";
     $fields = getVarSetupFields();
     $values = getVarSetupValues();    
-    echo "<script>var fields = " . json_encode($fields) . "</script>";    
-    echo "<script>var values = " . json_encode($values) . "</script>";    
-    echo "<table id=var_setup class=form_section >";    
+    echo "<script>var fields = " . json_encode($fields) . "</script>";
+    echo "<script>var values = " . json_encode($values) . "</script>";
+    echo "<table id=var_setup class=form_section >";
     echo "</table>";
     echo "<table id=var_setup_buttons class=form_nav>";
     echo "</table>";
