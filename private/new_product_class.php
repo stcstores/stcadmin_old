@@ -43,10 +43,10 @@ class NewProduct{
         $this->details['am_bullet_5'] = new ProductDetail('am_bullet_5', $this);
         $this->details['am_description'] = new ProductDetail('am_description', $this);
         
-        //chn_ekm
-        $this->details['ekm_title'] = new ProductDetail('ekm_title', $this);
-        $this->details['ekm_price'] = new ProductDetail('ekm_price', $this);
-        $this->details['ekm_description'] = new ProductDetail('ekm_description', $this);
+        //chn_shopify
+        $this->details['shopify_title'] = new ProductDetail('ekm_title', $this);
+        $this->details['shopify_price'] = new ProductDetail('ekm_price', $this);
+        $this->details['shopify_description'] = new ProductDetail('ekm_description', $this);
         
     }
     

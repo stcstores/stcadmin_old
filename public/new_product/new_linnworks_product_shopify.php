@@ -24,7 +24,7 @@
     
 require_once($CONFIG['header']);
     
-    writeFormPage('chn_ekm', $product);
+    writeFormPage('chn_shopify', $product);
     
     $_SESSION['new_product'] = $product;
     
