@@ -89,7 +89,7 @@ function validate(input) {
         weightValidate(input);
     }
     
-    if (inputId == 'barcode') {
+    if (/^barcode\d*$/.test(inputId)) {
         barcodeValidate(input);
     }
 }
@@ -143,10 +143,10 @@ function priceValidate(input) {
         var value = input.val();
         console.log(value);
         if (value === '') {
-            writeError(input, 'Field is required');
+            writeError(input, 'Price is required');
         }
         if (!(priceRegEx.test(value))) {
-            writeError(input, 'Must be a valid number or decimal');
+            writeError(input, 'Must be a valid price');
         }
     });
     
