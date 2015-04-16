@@ -133,3 +133,10 @@ function createLoginSession($userId, $username) {
 function getCurrentUsername() {
     return $_SESSION['username'];
 }
+
+function userExists($username) {
+    if (in_array($username, getUsernames())) {
+        return true;
+    }
+    return false;
+}
