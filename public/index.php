@@ -6,7 +6,7 @@ require_once($CONFIG['header']);
 
 ?>
 
-<div id=login_form>
+<div class=pagebox>
     <h2>Welcome to STC Admin</h2>
     
     <p>From here you Can:</p>
