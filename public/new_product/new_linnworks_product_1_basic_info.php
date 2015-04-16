@@ -2,7 +2,7 @@
     header('Content-Type: text/html; charset=utf-8');
     require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
     require_once($CONFIG['include']);
-    require_once($CONFIG['check_login']);
+    checkLogin();
 
 if ( !empty($_POST) ) {
     $product = add_basic_info();

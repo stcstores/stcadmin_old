@@ -176,33 +176,6 @@ function getExtendedProperties() {
     return $extendedProps;
 }
 
-function getUsers() {
-    $database = new DatabaseConnection();
-    $selectQuery = "SELECT * FROM users";
-    $results = $database->selectQuery($selectQuery);
-    return $results;
-}
-
-function getCurrentUsername() {
-    $database = new DatabaseConnection();
-    $selectQuery = "SELECT id, username FROM users";
-    $results = $database->selectQuery($selectQuery);
-    
-    foreach ($results as $result) {
-        if($result['id'] == $_SESSION['userid']) {
-            return $result['username'];
-        }
-    }
-    return false;
-}
-
-function isLoggedIn() {
-    if (isset($_SESSION['userid'])) {
-        return true;
-    }
-    return false;
-}
-
 function getSpecialCharacters() {
     $selectQuery = "SELECT sc, name FROM special_characters;";
     $database = new DatabaseConnection();

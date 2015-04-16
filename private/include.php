@@ -5,6 +5,7 @@
     require_once($CONFIG['csv']);
     require_once($CONFIG['new_product_class']);
     session_start();
+    require_once($CONFIG['login_functions']);
     require_once($CONFIG['colours']);
     require_once($CONFIG['functions']);
     require_once($CONFIG['catch']);
