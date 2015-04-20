@@ -38,22 +38,47 @@ function writeImages(data) {
             }
             imageDiv.append("<img src='image.php?id=" + imageId + "' width=100 />");
             if (primary == false) {
-                imageDiv.append("<input type=button value='Set Primary' onclick='setPrimary(" + imageId + ", " + sku + ")' />");
+                var setPrimeButton = $("<input type=button value='Set Primary' />");
+                setPrimeButton.attr('sku', sku);
+                setPrimeButton.attr('imageId', imageId);
+                setPrimeButton.click(function() {
+                    var imageId = $(this).attr('imageId');
+                    var sku = $(this).attr('sku');
+                    setPrimary(imageId, sku);
+                });
+                imageDiv.append(setPrimeButton);
+                //imageDiv.append("<input type=button value='Set Primary' onclick='setPrimary(" + imageId + ", " + sku + ")' />");
             }
-            imageDiv.append("<input type=button value=Remove onclick='removeImage(" + imageId + ", " + sku + ")' />");
+            var removeButton = $("<input type=button value=Remove />");
+            removeButton.attr('sku', sku);
+            removeButton.attr('imageId', imageId);
+            removeButton.click(function(){
+                var imageId = $(this).attr('imageId');
+                var sku = $(this).attr('sku');
+                removeImage(imageId, sku);
+            });
+            imageDiv.append(removeButton);
+            //imageDiv.append("<input type=button value=Remove onclick='removeImage(" + imageId + ", " + sku + ")' />");
         }
     }
 }
 
 function removeImage(imageId, sku){
+    console.log(sku);
     disableInputs();
+    var data = new FormData();
+    data.append('remove', 1);
+    data.append('imageId', imageId);
+    data.append('sku', String(sku));
     $.ajax({
-        url: 'edit_images.php',
+        url: '/new_product/edit_images.php',
+        type: "POST",
         async: false,
-        data: "remove=true&sku=" + sku + "&imageId=" + imageId ,
-        dataType: 'GET',
-        success: function(data){
-            
+        data: data ,
+        contentType: false,
+        cache: false,
+        processData:false,
+        complete: function(data) {
         }
     });
     reload();
@@ -61,14 +86,21 @@ function removeImage(imageId, sku){
 }
 
 function setPrimary(imageId, sku){
+    console.log(sku);
     disableInputs();
+    var data = new FormData();
+    data.append('setprime', 1);
+    data.append('imageId', imageId);
+    data.append('sku', String(sku));
     $.ajax({
-        url: 'edit_images.php',
+        url: '/new_product/edit_images.php',
+        type: "POST",
         async: false,
-        data: "setprime=true&sku=" + sku + "&imageId=" + imageId ,
-        dataType: 'GET',
-        success: function(data){
-            
+        data: data ,
+        contentType: false,
+        cache: false,
+        processData:false,
+        complete: function(data) {
         }
     });
     reload();
