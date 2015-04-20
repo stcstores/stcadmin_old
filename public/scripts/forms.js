@@ -58,7 +58,7 @@ function validate(input) {
         itemTitleValidate(input);
     }
     
-    var priceFields = [/^retail_price\d*$/i, /^purchase_price\d*$/i, /^ebay_price\d*$/i, /^am_price\d*$/i];
+    var priceFields = [/^retail_price\d*$/i, /^purchase_price\d*$/i, /^shipping_price\d*$/i, /^ebay_price\d*$/i, /^am_price\d*$/i];
     for (key in priceFields) {
         if (priceFields[key].test(inputId)) {
             priceValidate(input);
