@@ -26,7 +26,7 @@ function add_basic_info() {
     }
     
     if (isset($_POST['shipping_method'])) {
-        $product->details['shipping_methods']->set($_POST['shipping_methods']);
+        $product->details['shipping_method']->set($_POST['shipping_method']);
     }
     
     if (isset($_POST['short_description'])) {
