@@ -19,7 +19,7 @@ class NewProduct{
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
         $this->details['barcode'] = new ProductDetail('barcode', $this);
-        $this->details['shipping_methods'] = new ProductDetail('shipping_method', $this);
+        $this->details['shipping_method'] = new ProductDetail('shipping_method', $this);
         $this->details['size'] = new ProductDetail('size', $this);
         $this->details['colour'] = new ProductDetail('colour', $this);
         $this->details['height'] = new ProductDetail('height', $this);
@@ -44,9 +44,9 @@ class NewProduct{
         $this->details['am_description'] = new ProductDetail('am_description', $this);
         
         //chn_shopify
-        $this->details['shopify_title'] = new ProductDetail('ekm_title', $this);
-        $this->details['shopify_price'] = new ProductDetail('ekm_price', $this);
-        $this->details['shopify_description'] = new ProductDetail('ekm_description', $this);
+        $this->details['shopify_title'] = new ProductDetail('shopify_title', $this);
+        $this->details['shopify_price'] = new ProductDetail('shopify_price', $this);
+        $this->details['shopify_description'] = new ProductDetail('shopify_description', $this);
         
     }
     

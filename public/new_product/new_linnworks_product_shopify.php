@@ -11,7 +11,7 @@
             header('Location: new_linnworks_product_amazon.php');
             exit();
         }
-        add_chn_ekm($product);
+        add_chn_shopify($product);
         
         if (true) { // error check
             $_SESSION['new_product'] = $product;

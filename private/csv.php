@@ -383,9 +383,9 @@ class StcStoresFile extends CsvFile {
     function getRowArray($product) {
         $newRow = array();
         $newRow[] = $product->details['sku']->text;
-        $newRow[] = $product->details['ekm_title']->text;
-        $newRow[] = $product->details['ekm_description']->text;
-        $newRow[] = $product->details['ekm_price']->text;
+        $newRow[] = $product->details['shopify_title']->text;
+        $newRow[] = $product->details['shopify_description']->text;
+        $newRow[] = $product->details['shopify_price']->text;
         return $newRow;
     }
     

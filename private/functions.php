@@ -161,7 +161,6 @@ function getImageIdsForSKU($sku) {
     foreach ($imageResults as $imageResult) {
         $idArray[] = array('id' =>$imageResult['id'], 'is_primary' =>$imageResult['is_primary']);
     }
-    print_r($idArray);
     return $idArray;
 }
 

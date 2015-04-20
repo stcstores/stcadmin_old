@@ -25,7 +25,7 @@ function add_basic_info() {
         $product->details['manufacturer']->set($_POST['manufacturer']);
     }
     
-    if (isset($_POST['shipping_methods'])) {
+    if (isset($_POST['shipping_method'])) {
         $product->details['shipping_methods']->set($_POST['shipping_methods']);
     }
     
@@ -130,17 +130,17 @@ function add_chn_amazon($product) {
     }
 }
 
-function add_chn_ekm($product) {
-    if (isset($_POST['ekm_title'])) {
-        $product->details['ekm_title']->set($_POST['ekm_title']);
+function add_chn_shopify($product) {
+    if (isset($_POST['shopify_title'])) {
+        $product->details['shopify_title']->set($_POST['shopify_title']);
     }
     
-    if (isset($_POST['ekm_price'])) {
-        $product->details['ekm_price']->set($_POST['ekm_price']);
+    if (isset($_POST['shopify_price'])) {
+        $product->details['shopify_price']->set($_POST['shopify_price']);
     }
     
-    if (isset($_POST['ekm_description'])) {
-        $product->details['ekm_description']->set($_POST['ekm_description']);
+    if (isset($_POST['shopify_description'])) {
+        $product->details['shopify_description']->set($_POST['shopify_description']);
     }
 }
 
