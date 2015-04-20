@@ -22,7 +22,7 @@
                 <tr>
                     <td>
                         <input value='<< Previous' type=button name=previous onclick="window.location.href='new_linnworks_product_shopify.php'" />
-                        <input value='Next >>' type=button name=next onclick="window.location.href='testnewproduct.php'" />
+                        <input value='Next >>' type=button name=next onclick="window.location.href='finish_product.php'" />
                     </td>
                 </tr>
             </table>

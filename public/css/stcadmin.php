@@ -272,3 +272,16 @@ input.error {
     display: inline-block;
     width: 100%;
 }
+
+.image_row {
+    overflow: hidden;
+    white-space: nowrap
+}
+
+.image_row img {
+    padding-left: 5px;
+}
+
+#testproduct :disabled {
+    color: black;
+}
