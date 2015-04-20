@@ -144,13 +144,13 @@ function addRowsButton() {
 }
 
 function setAllButton(field_name) {
+    table.updateValues();
     var value = $('#' + field_name + '0').val();
     for (row in table.rows) {
         for (field in table.rows[row].row) {
             if (table.rows[row].row[field].name == field_name) {
                 table.rows[row].row[field].value = value;
-            }
-            
+            } 
         }
     }
     table.write();
