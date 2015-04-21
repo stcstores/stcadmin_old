@@ -25,7 +25,8 @@ require_once($CONFIG['header']);
 
 $product = $_SESSION['new_product'];
 
-echo "<script src=/scripts/forms.js ></script>";
+echo "<script src=/scripts/formstyle.js ></script>";
+echo "<script src=/scripts/validation.js ></script>";
 
 write_var_setup_page($product);
 

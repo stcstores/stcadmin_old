@@ -65,6 +65,6 @@ if ((isset($_POST['username'])) && (isset($_POST['password'])) && (isset($_POST[
 <?php
 
 
-    echo "<script src=/scripts/forms.js ></script>";
+    echo "<script src=/scripts/formstyle.js ></script>";
     require_once($CONFIG['footer']);
 ?>

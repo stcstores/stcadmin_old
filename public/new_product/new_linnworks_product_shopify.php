@@ -28,7 +28,8 @@ require_once($CONFIG['header']);
     
     $_SESSION['new_product'] = $product;
     
-    echo "<script src=/scripts/forms.js ></script>";
+    echo "<script src=/scripts/formstyle.js ></script>";
+    echo "<script src=/scripts/validation.js ></script>";
 
 include($CONFIG['footer']);
 

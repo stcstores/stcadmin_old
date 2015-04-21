@@ -1,38 +1,11 @@
-function setFormStyle(){
-
-    $('input').focus(function() {
-        $(this).css('border-color', '#729292');
-    });
-    
-    $('input').blur(function() {
-        $(this).removeAttr('style');
-    });
-    
-    $('select').focus(function() {
-        $(this).css('border-color', '#729292');
-    });
-    
-    $('select').blur(function() {
-        $(this).removeAttr('style');
-    });
-    
-    $('textarea').focus(function() {
-        $(this).css('border-color', '#729292');
-    });
-    
-    $('textarea').blur(function() {
-        $(this).removeAttr('style');
-    });
-    
+function validateForm() {
     $('#content').find($('form')).find($('input, textarea, checkbox, select')).each(function (){
-    if (($(this).attr('type') == 'button')){
-    } else if ($(this).attr('type') == 'submit') {
-    } else {
-        validate($(this));
-    }
-    
-});
-
+        if (($(this).attr('type') == 'button')){
+        } else if ($(this).attr('type') == 'submit') {
+        } else {
+            validate($(this));
+        }
+    });
 }
 
 illegalChars = ['"', "'", '~', ';', '<', '>', '\\', '/', '!', '?'];
@@ -40,16 +13,8 @@ illegalChars = ['"', "'", '~', ';', '<', '>', '\\', '/', '!', '?'];
 priceRegEx = /^([0-9]*((.)[0-9]{0,2}))$/;
 barcodeRegEx = /^\d{12,13}$/;
 
-setFormStyle();
 
-$('#content').find($('form')).find($('input, textarea, checkbox, select')).each(function (){
-    if (($(this).attr('type') == 'button')){
-    } else if ($(this).attr('type') == 'submit') {
-    } else {
-        validate($(this));
-    }
-    
-});
+validateForm();
 
 function validate(input) {
     var inputId = input.attr('id');
