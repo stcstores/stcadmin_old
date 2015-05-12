@@ -115,8 +115,8 @@ class BasicInfoFile extends CsvFile {
                         'BarcodeNumber' => $variation->details['barcode']->text,
                         'Category' => $product->details['department']->text,
                         'ShortDescription' => $product->details['short_description']->text,
-                        'PackagingGroup' => '', //ADD PACKAGING GROUP
-                        'PostalService' => $product->details['shipping_methods']->text,
+                        'PackagingGroup' => 'Packet 2nd RM',
+                        'PostalService' => $product->details['shipping_method']->text,
                         'DimHeight' => $variation->details['height']->text,
                         'DimWidth' => $variation->details['width']->text,
                         'DimDepth' => $variation->details['depth']->text,
@@ -133,8 +133,8 @@ class BasicInfoFile extends CsvFile {
                     'BarcodeNumber' => $product->details['barcode']->text,
                     'Category' => $product->details['department']->text,
                     'ShortDescription' => $product->details['short_description']->text,
-                    'PackagingGroup' => '', //ADD PACKAGING GROUP
-                    'PostalService' => $product->details['shipping_methods']->text,
+                    'PackagingGroup' => 'Packet 2nd RM',
+                    'PostalService' => $product->details['shipping_method']->text,
                     'DimHeight' => $product->details['height']->text,
                     'DimWidth' => $product->details['width']->text,
                     'DimDepth' => $product->details['depth']->text,
