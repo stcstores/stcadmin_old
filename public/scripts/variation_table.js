@@ -39,6 +39,8 @@ function getVarName(var_number) {
         }
     }
     
+    value = value + $('#var_append' + var_number).val();
+    
     return value;
 }
 
@@ -107,9 +109,11 @@ Table.prototype.write = function() {
         
         newRow = $('#var_setup_row_' + this.fields[i]['field_name']);
         
+        
+        
         if (i > 0) {
             newRow.append('<td class=small_button ><input type=button value="Set All" onclick="setAllButton(\'' + this.fields[i]['field_name'] + '\')" /></td>');
-            if ($.inArray(this.fields[i]['field_name'], ['retail_price', 'purchase_price', 'shipping_price', 'barcode']) == -1){
+            if ($.inArray(this.fields[i]['field_name'], ['retail_price', 'purchase_price', 'shipping_price', 'barcode', 'var_append']) == -1){
                 var checkbox = '<td class=small_button ><input type=checkbox class=set_key id=set_key_' + this.fields[i]['field_name'] + ' name="set_key_' +  this.fields[i]['field_name'] + '"' ;
                 console.log(keyFields[this.fields[i]['field_name']]);
                 if (keyFields[this.fields[i]['field_name']] == true) {
