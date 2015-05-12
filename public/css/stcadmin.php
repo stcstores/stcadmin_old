@@ -148,7 +148,7 @@ table.form_section td {
     border-collapse: collapse;
 }
 
-input[type=checkbox] {
+.largeCheckBox {
   /* All browsers except webkit*/
   transform: scale(1.5);
 

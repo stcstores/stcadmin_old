@@ -6,6 +6,8 @@ checkLogin();
 require_once($CONFIG['header']);
 
 
+
+
 echo "<div id=testproduct>";
 if (!isset($_SESSION['new_product'])) {
     echo "No Object";
@@ -16,6 +18,9 @@ if (!isset($_SESSION['new_product'])) {
     echo "<th>Detail</th><th>Text</th><th>Value</th>";
     echo "</tr>";
     $product = $_SESSION['new_product'];
+    echo "<br />";
+    var_dump($product->keyFields);
+    echo "<br />";
     foreach ($product->details as $detail ) {
         
         echo "<tr><td>" . $detail->name . "</td><td>" . htmlspecialchars($detail->text) . "</td><td>";
@@ -51,6 +56,32 @@ if (!isset($_SESSION['new_product'])) {
     }
     echo "</div>";
     ?>
+    
+
+    
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>is Key</th>
+        </tr>
+        <?php foreach($product->keyFields as $field=>$value){?>
+            <tr>
+                <td><?php echo $field; ?></td>
+                <td><?php
+                    if ($value == true) {
+                        echo 'Yes';
+                    } elseif ($value == false) {
+                        echo 'No';
+                    } else {
+                        echo '???';
+                    }
+                
+                ?></td>
+            </tr>
+        <?php } ?>
+    </table>
+    
+ 
     
     <script>
         $('#write_product').click(function() {

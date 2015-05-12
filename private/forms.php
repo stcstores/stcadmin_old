@@ -68,18 +68,20 @@ function echoInput($field, $product, $number='') {
         echo $value;
         echo "</textarea>";
     } else {
-        echo "<input name={$field['field_name']} type={$field['field_type']} size={$field['size']} />";
+        echo "<input name={$field['field_name']} type={$field['field_type']} size={$field['size']} />\n";
     }
 }
 
 function write_var_setup_page($product, $newRows=0) {
     $fields = getVarSetupFields();
     
-    echo "<form method='post' enctype='multipart/form-data'>";
+    echo "\n<form method='post' id='var_form' enctype='multipart/form-data'>\n";
     $fields = getVarSetupFields();
-    $values = getVarSetupValues();    
-    echo "<script>var fields = " . json_encode($fields) . "</script>";
-    echo "<script>var values = " . json_encode($values) . "</script>";
+    $values = getVarSetupValues();
+    echo "<script>productName = '" . $product->details['item_title']->text . "';</script>\n";
+    echo "<script>var fields = " . json_encode($fields) . "</script>\n";
+    echo "<script>var values = " . json_encode($values) . "</script>\n";
+    echo "<script>keyFields = " . json_encode($product->keyFields) . "</script>";
     echo "<table id=var_setup class=form_section >";
     echo "</table>";
     echo "<table id=var_setup_buttons class=form_nav>";

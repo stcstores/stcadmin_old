@@ -49,6 +49,11 @@ class NewProduct{
         $this->details['shopify_price'] = new ProductDetail('shopify_price', $this);
         $this->details['shopify_description'] = new ProductDetail('shopify_description', $this);
         
+        $this->keyFields = array();
+        foreach ($this->details as $detail => $value) {
+            $this->keyFields[$detail] = false;
+        }
+        
     }
     
     function setTitle($title) {

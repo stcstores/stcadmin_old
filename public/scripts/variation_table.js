@@ -5,12 +5,41 @@ function TableField(number, field, value='') {
     this.id = this.name + this.number;
     this.type = field['field_type'];
     this.size = field['size'];
-    this.value = value;    
+    this.value = value;
 }
 
 TableField.prototype.getInput = function() {
     this.id = this.name + this.number;
-    return '<td><input name=' + this.id + ' id=' + this.id + ' type=' + this.type + ' size=25 value="' + this.value + '" /></td>';
+    var row = '<td><input name=' + this.id + ' id=' + this.id + ' type=' + this.type + ' size=35 class="' + this.name + '"value="'
+    if (this.name == 'var_name') {
+        row = row + '" disabled';
+    } else {
+        row = row + this.value + '"';
+    }
+    row = row + ' /></td>';
+    return row;
+}
+
+function setVarName() {
+    $(':input').each(function(){
+        if ($(this).attr('class') == 'var_name') {
+            var varNumber = $(this).attr('id').substring(8);
+            $(this).val(getVarName(varNumber));
+        }
+    });
+}
+
+function getVarName(var_number) {
+    value = productName;
+    for (field in keyFields) {
+        if (keyFields[field] == true) {
+            fieldName = field;
+            var keyValue = $('#' + fieldName + var_number).val();
+            value = value + ' { ' + keyValue + ' } ';
+        }
+    }
+    
+    return value;
 }
 
 TableField.prototype.updateValue = function() {
@@ -40,7 +69,7 @@ TableRow.prototype.updateValues = function() {
 }
 
 function Table(fields, values) {
-    $('#var_setup_buttons').append('<td><input value="<< Previous" type=submit name=previous /></td><td><input type=button value="Add" onclick="addRowsButton()" />&nbsp<input type=text size=2 name=more_var id=more_var_box />&nbspMore Variations<td><input value="Next >>" type=submit name=next /></td>');
+    $('#var_setup_buttons').append('<td><input id="previous_page" value="<< Previous" type=submit name=previous /></td><td><input type=button value="Add" onclick="addRowsButton()" />&nbsp<input type=text size=2 name=more_var id=more_var_box />&nbspMore Variations<td><input id="next_page" value="Next >>" type=submit name=next /></td>');
     this.table = $('#var_setup');
     this.fields = fields;
     this.values = values;
@@ -70,6 +99,7 @@ Table.prototype.write = function() {
     this.table.empty();
     this.writeHeader();
     this.resetRowNumbers();
+    setVarName();
     
     for (i in this.fields) {
         
@@ -79,8 +109,24 @@ Table.prototype.write = function() {
         
         if (i > 0) {
             newRow.append('<td class=small_button ><input type=button value="Set All" onclick="setAllButton(\'' + this.fields[i]['field_name'] + '\')" /></td>');
+            if ($.inArray(this.fields[i]['field_name'], ['retail_price', 'purchase_price', 'shipping_price', 'barcode']) == -1){
+                var checkbox = '<td class=small_button ><input type=checkbox class=set_key id=set_key_' + this.fields[i]['field_name'] + ' name="set_key_' +  this.fields[i]['field_name'] + '"' ;
+                console.log(keyFields[this.fields[i]['field_name']]);
+                if (keyFields[this.fields[i]['field_name']] == true) {
+                    checkbox = checkbox + ' checked ';
+                }
+                checkbox = checkbox + '/></td>'
+                
+                checkbox = $(checkbox);
+                
+                newRow.append(checkbox);
+            } else {
+                newRow.append('<td class=small_button >');
+            }
+            
         } else {
-            newRow.append('<td class=small_button >')
+            newRow.append('<td class=small_button >');
+            newRow.append('<td>Key</td>');
         }
         newRow.append("<td>" + this.fields[i]['field_title'] + "</td>");
         for ( variation in this.rows) {
@@ -90,9 +136,28 @@ Table.prototype.write = function() {
                 }
             }
         }
-
     }
     setFormStyle();
+    
+    setVarName();
+    
+    $('.set_key').click(function() {
+        var fieldName = $(this).attr('name').substring(8);
+        if (keyFields[fieldName] == false) {
+            keyFields[fieldName] = true;
+        } else if (keyFields[fieldName] == true ){
+            keyFields[fieldName] = false;
+        }
+        setVarName();
+        //table.updateValues();
+        //table.write();
+    });
+    
+    $(':input').blur(function(){
+        setVarName();
+        //table.updateValues();
+        //table.write();
+    });
 }
 
 Table.prototype.resetRowNumbers = function() {
@@ -112,7 +177,7 @@ Table.prototype.updateValues = function() {
 
 Table.prototype.writeHeader = function() {
     this.table.append('<tr id=var_setup_header >');
-    $('#var_setup_header').append('<th colspan=2 ><input type=button value="Add Another Variation" onclick="addRowButton()" /></th>');
+    $('#var_setup_header').append('<th colspan=3 ><input type=button value="Add Another Variation" onclick="addRowButton()" /></th>');
     for (i in this.rows) {
         $('#var_setup_header').append('<th><input type=button value="Remove Variation" onclick="table.deleteRow(' + i + ')" /></th>');
     }
@@ -162,5 +227,9 @@ Table.prototype.addRows = function(number) {
     }
     this.write();
 }
+
+$('#var_form').submit(function(){
+    $(':input').removeAttr('disabled');
+});
 
 table = new Table(fields, values);
