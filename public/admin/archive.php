@@ -39,7 +39,7 @@ require_once($CONFIG['include']);
 
 
 foreach (scandir($OLDCSVFILEPATH) as $filename) {
-    if (!in_array($filename, array("..", ".", ""))){
+    if (!in_array($filename, array("..", ".", "", ".gitignore"))){
         $folders[] = $filename;
     }
 }
