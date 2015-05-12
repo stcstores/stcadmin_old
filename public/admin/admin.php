@@ -12,7 +12,8 @@ require_once($CONFIG['header']);
     <p>From here you Can:</p>
     <ul>
         <li><a href='/admin/new_user.php' >Add a new user to STC Admin</a></li>
-        <li><a href=/admin/archive.php >Download archived new product import files</a></li>
+        <li><a href='/admin/get_csv.php' >Download current product import files</a> (A copy will be archived)</li>
+        <li><a href=/admin/archive.php >Download archived product import files</a></li>
     </ul>
 </div>
 
