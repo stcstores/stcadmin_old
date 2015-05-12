@@ -199,6 +199,7 @@ Table.prototype.addRow = function() {
 }
 
 function addRowButton() {
+    table.updateValues();
     table.addRow();
     table.write();
 }

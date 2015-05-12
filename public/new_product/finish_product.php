@@ -51,18 +51,25 @@ if (!isset($_SESSION['new_product'])) {
                 echo "<table id=testvar>";
                 echo "<tr>";
                 $fields = getVarSetupFields();
+                
+                $ignoreFields = ['var_append'];
+                
                 foreach ($fields as $field) {
-                    echo "<th>";
-                    echo $field['field_title'];
-                    echo "</th>";
+                    if (!(in_array($field['field_name'], $ignoreFields))) {
+                        echo "<th>";
+                        echo $field['field_title'];
+                        echo "</th>";
+                    }
                 }
                 echo "<th>Images</th>";
                 foreach ($product->variations as $variation) {
                     echo "<tr>";
                     foreach ($fields as $field) {
-                        echo "<td>";
-                        echo '<input value="' . $variation->details[$field['field_name']]->text . '" disabled size=10/>';
-                        echo "</td>";
+                        if (!(in_array($field['field_name'], $ignoreFields))) {
+                            echo "<td>";
+                            echo '<input value="' . $variation->details[$field['field_name']]->text . '" disabled size=10/>';
+                            echo "</td>";
+                        }
                     }
                     echo "<td class=image_row>";
                     foreach (getImageIdsForSKU($variation->details['sku']->text) as $image) {
