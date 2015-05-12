@@ -182,7 +182,6 @@ function add_variation($product) {
     $product->variations = array();
     $product->variations = $variations;
     
-    //$product->keyFields = array();
     
     foreach ($product->keyFields as $field=>$value) {
         if (array_key_exists('set_key_' . $field, $_POST)){
@@ -195,17 +194,7 @@ function add_variation($product) {
             }
         }
     }
-    //exit();
-    
-    //foreach ($_POST as $field=>$value) {
-    //    if (substr($field, 0, 7) == 'set_key') {
-    //        if ($value = 'true') {
-    //            $product->keyFields[substr($field, 8)] = true;
-    //        } else {
-    //            $product->keyFields[substr($field, 8)] = false;
-    //        }
-    //    }
-    //}
+
     
     $_SESSION['new_product'] = $product;
 }
