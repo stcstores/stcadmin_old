@@ -89,6 +89,7 @@ class NewVariation  extends NewProduct {
         $this->details['weight'] = new ProductDetail('weight', $this);
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
+        $this->details['shipping_price'] = new ProductDetail('shipping_price', $this);
         $this->details['barcode'] = new ProductDetail('barcode', $this);
         $this->details['size'] = new ProductDetail('size', $this);
         $this->details['colour'] = new ProductDetail('colour', $this);
