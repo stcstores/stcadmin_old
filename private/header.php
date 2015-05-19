@@ -11,6 +11,7 @@ require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<title>STC Admin</title>
 		<link rel="stylesheet" type="text/css" href="/css/stcadmin.php">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
 		<script src="/scripts/jquery-1.11.2.min.js"></script>
 	</head>
 	<body>
