@@ -22,8 +22,16 @@ function writeImages(data) {
         
         skuBox.append("<form enctype='multipart/form-data' method='post' id=addImage" + sku + " class=addImage >");
         var form = $('#addImage' + sku);
-        form.append("<input type=file value='Get Data' id=browseButton" + sku + " name=" + sku + "[] multiple />");
-        form.append("<input type=button value='Upload' onClick=uploadImages('" + sku + "') />");
+        var browseButton = $("<input type=file value='Get Data' id=browseButton" + sku + " name=" + sku + "[] multiple />");
+        form.append(browseButton);
+        browseButton.sku = sku;
+        browseButton.change(function() {
+            var buttonsku = this.id.replace('browseButton', '');
+            //alert(buttonsku);
+            uploadImages(buttonsku);
+        });
+        
+        //form.append("<input type=button value='Upload' onClick=uploadImages('" + sku + "') />");
         
         for (image in data[sku]['images']) {
             var imageNumber = image;

@@ -10,7 +10,7 @@
 
         <div id=main>            
             <form id=uploadImageForm >
-                <input type=button onclick=reload() value='Reload' />
+                <!--<input type=button onclick=reload() value='Reload' />-->
             </form>
             <div id=currentImages>
                 <!--Images go here-->
