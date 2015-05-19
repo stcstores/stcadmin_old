@@ -11,6 +11,7 @@ function add_basic_info() {
         $product->details['var_type']->set(true);
     } else {
         $product->details['var_type']->set(false);
+        $product->variations = [];
     }
     
     if (isset($_POST['department'])) {
@@ -47,6 +48,10 @@ function add_extended_properties($product) {
     
     if (isset($_POST['purchase_price'])) {
         $product->details['purchase_price']->set($_POST['purchase_price']);
+    }
+    
+    if (isset($_POST['shipping_price'])) {
+        $product->details['shipping_price']->set($_POST['shipping_price']);
     }
     
     if (isset($_POST['barcode'])) {
@@ -87,10 +92,6 @@ function add_chn_ebay($product) {
         $product->details['ebay_title']->set($_POST['ebay_title']);
     }
     
-    if (isset($_POST['ebay_price'])) {
-        $product->details['ebay_price']->set($_POST['ebay_price']);
-    }
-    
     if (isset($_POST['ebay_description'])) {
         $product->details['ebay_description']->set($_POST['ebay_description']);
     }
@@ -99,10 +100,6 @@ function add_chn_ebay($product) {
 function add_chn_amazon($product) {
     if (isset($_POST['am_title'])) {
         $product->details['am_title']->set($_POST['am_title']);
-    }
-    
-    if (isset($_POST['am_price'])) {
-        $product->details['am_price']->set($_POST['am_price']);
     }
     
     if (isset($_POST['am_bullet_1'])) {
@@ -133,10 +130,6 @@ function add_chn_amazon($product) {
 function add_chn_shopify($product) {
     if (isset($_POST['shopify_title'])) {
         $product->details['shopify_title']->set($_POST['shopify_title']);
-    }
-    
-    if (isset($_POST['shopify_price'])) {
-        $product->details['shopify_price']->set($_POST['shopify_price']);
     }
     
     if (isset($_POST['shopify_description'])) {

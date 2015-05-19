@@ -31,12 +31,10 @@ class NewProduct{
         
         //chn_ebay
         $this->details['ebay_title'] = new ProductDetail('ebay_title', $this);
-        $this->details['ebay_price'] = new ProductDetail('ebay_price', $this);
         $this->details['ebay_description'] = new ProductDetail('ebay_description', $this);
         
         //ech_amazon
         $this->details['am_title'] = new ProductDetail('am_title', $this);
-        $this->details['am_price'] = new ProductDetail('am_price', $this);
         $this->details['am_bullet_1'] = new ProductDetail('am_bullet_1', $this);
         $this->details['am_bullet_2'] = new ProductDetail('am_bullet_2', $this);
         $this->details['am_bullet_3'] = new ProductDetail('am_bullet_3', $this);
@@ -46,7 +44,6 @@ class NewProduct{
         
         //chn_shopify
         $this->details['shopify_title'] = new ProductDetail('shopify_title', $this);
-        $this->details['shopify_price'] = new ProductDetail('shopify_price', $this);
         $this->details['shopify_description'] = new ProductDetail('shopify_description', $this);
         
         $this->keyFields = array();

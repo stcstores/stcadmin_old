@@ -288,7 +288,7 @@ class EbayFile extends CsvFile {
         $this->path = $CSVFILEPATH;
         $this->filename = '06_channel_ebay.csv';
         $this->filepath = $this->path . '/' . $this->filename;
-        $this->header = array('SKU', 'Title', 'Description', 'Price');
+        $this->header = array('SKU', 'Title', 'Description');
     }
     
     function getRowArray($product) {
@@ -296,7 +296,6 @@ class EbayFile extends CsvFile {
         $newRow[] = $product->details['sku']->text;
         $newRow[] = $product->details['ebay_title']->text;
         $newRow[] = $product->details['ebay_description']->text;
-        $newRow[] = $product->details['ebay_price']->text;
         return $newRow;
     }
     
@@ -330,7 +329,7 @@ class AmazonFile extends CsvFile {
         $this->path = $CSVFILEPATH;
         $this->filename = '07_channel_amazon.csv';
         $this->filepath = $this->path . '/' . $this->filename;
-        $this->header = array('SKU', 'Title', 'Description', 'Price', 'AmazonBullet1', 'AmazonBullet2', 'AmazonBullet3', 'AmazonBullet4', 'AmazonBullet5');
+        $this->header = array('SKU', 'Title', 'Description', 'AmazonBullet1', 'AmazonBullet2', 'AmazonBullet3', 'AmazonBullet4', 'AmazonBullet5');
     }
     
     function getRowArray($product) {
@@ -338,7 +337,6 @@ class AmazonFile extends CsvFile {
         $newRow[] = $product->details['sku']->text;
         $newRow[] = $product->details['am_title']->text;
         $newRow[] = $product->details['am_description']->text;
-        $newRow[] = $product->details['am_price']->text;
         $newRow[] = $product->details['am_bullet_1']->text;
         $newRow[] = $product->details['am_bullet_2']->text;
         $newRow[] = $product->details['am_bullet_3']->text;
@@ -377,7 +375,7 @@ class StcStoresFile extends CsvFile {
         $this->path = $CSVFILEPATH;
         $this->filename = '08_channel_stcstores.csv';
         $this->filepath = $this->path . '/' . $this->filename;
-        $this->header = array('SKU', 'Title', 'Description', 'Price');
+        $this->header = array('SKU', 'Title', 'Description');
     }
     
     function getRowArray($product) {
@@ -385,7 +383,6 @@ class StcStoresFile extends CsvFile {
         $newRow[] = $product->details['sku']->text;
         $newRow[] = $product->details['shopify_title']->text;
         $newRow[] = $product->details['shopify_description']->text;
-        $newRow[] = $product->details['shopify_price']->text;
         return $newRow;
     }
     

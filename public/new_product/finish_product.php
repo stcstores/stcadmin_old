@@ -109,11 +109,7 @@ if (!isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>eBay Title</td>
-            <td><input value="<?php echo $product->details['ebay_price']->text; ?>" disabled /></td>
-        </tr>
-        <tr>
-            <td>eBay Price</td>
-            <td><input value="<?php echo $product->details['ebay_price']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['ebay_title']->text; ?>" disabled /></td>
         </tr>
         <tr>
             <td>eBay Description</td>
@@ -125,11 +121,7 @@ if (!isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>Amazon Title</td>
-            <td><input value="<?php echo $product->details['am_price']->text; ?>" disabled /></td>
-        </tr>
-        <tr>
-            <td>Amazon Price</td>
-            <td><input value="<?php echo $product->details['am_price']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['am_title']->text; ?>" disabled /></td>
         </tr>
         <?php
         for ($i=1; $i<6; $i++) {
@@ -150,10 +142,6 @@ if (!isset($_SESSION['new_product'])) {
         <tr>
             <td>stcstores.co.uk Title</td>
             <td><input value="<?php echo $product->details['shopify_title']->text; ?>" disabled /></td>
-        </tr>
-        <tr>
-            <td>stcstores.co.uk Price</td>
-            <td><input value="<?php echo $product->details['shopify_price']->text; ?>" disabled /></td>
         </tr>
         <tr>
             <td>stcstores.co.uk Description</td>

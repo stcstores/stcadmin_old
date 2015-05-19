@@ -180,17 +180,17 @@ input[type="text"], input[type="password"], textarea, select, checkbox {
 }
 
 .small_button {
-    font-size: 0.5em;
+    font-size: 0.75em;
     padding: 0;
     margin: 0;
     text-align: center;
 }
 
-.small_button input {
+/*.small_button input {
     font-size: 1.5em;
     padding: 0;
     margin: 0;
-}
+}*/
 
 #get_sku #new_sku_text, #new_sku_button {
     font-size: 1.5em;

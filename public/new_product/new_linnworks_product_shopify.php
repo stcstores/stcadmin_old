@@ -28,8 +28,16 @@ require_once($CONFIG['header']);
     
     $_SESSION['new_product'] = $product;
     
-    echo "<script src=/scripts/formstyle.js ></script>";
-    echo "<script src=/scripts/validation.js ></script>";
+?>
+
+<script src=/scripts/formstyle.js ></script>
+<script src=/scripts/validation.js ></script>
+<script>product_title = '<?php echo $product->details['item_title']->text;?>'</script>
+<script>product_price = '<?php echo $product->details['retail_price']->text;?>'</script>
+<script>product_description = <?php echo json_encode($product->details['short_description']->text);?></script>
+<script src=/scripts/channel_forms.js ></script>
+
+<?php
 
 include($CONFIG['footer']);
 
