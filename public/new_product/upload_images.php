@@ -23,7 +23,7 @@ if (isset($_POST['sku'])){
                         }
                         imageToDatabase($file, $sku, $primary, $extension);
                     } else {
-                        $errors[] = 'Is not a vailid image type. Must be .jpg, .jpeg, .png or .gif';
+                        $errors[] = 'Is not a valid image type. Must be .jpg, .jpeg, .png or .gif';
                     }
                 } else {
                     $errors[] = "not uploaded file";
