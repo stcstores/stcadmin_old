@@ -54,7 +54,7 @@ function echoInput($field, $product, $number='') {
     
     } elseif ($field['field_type'] == 'checkbox') {
         echo "<input name={$field['field_name']}{$number} type={$field['field_type']} ";
-        if ($value == true) {
+        if (($value == true) && (!($value == 'FALSE'))){
             echo "checked ";
         }
         echo "/>";

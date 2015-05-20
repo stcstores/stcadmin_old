@@ -42,6 +42,12 @@ function add_extended_properties($product) {
         $product->details['weight']->set($_POST['weight']);
     }
     
+    if (isset($_POST['int_shipping'])) {
+        $product->details['int_shipping']->set('TRUE');
+    } else {
+        $product->details['int_shipping']->set('FALSE');
+    }
+    
     if (isset($_POST['retail_price'])) {
         $product->details['retail_price']->set($_POST['retail_price']);
     }

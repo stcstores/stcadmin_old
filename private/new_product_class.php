@@ -16,6 +16,7 @@ class NewProduct{
         
         //extended properties
         $this->details['weight'] = new ProductDetail('weight', $this);
+        $this->details['int_shipping'] = new ProductDetail('int_shipping', $this);
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
         $this->details['shipping_price'] = new ProductDetail('shipping_price', $this);
@@ -84,6 +85,7 @@ class NewVariation  extends NewProduct {
         
         //extended properties
         $this->details['weight'] = new ProductDetail('weight', $this);
+        $this->details['int_shipping'] = new internationalShipping('int_shipping', $this);
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
         $this->details['shipping_price'] = new ProductDetail('shipping_price', $this);
@@ -116,6 +118,19 @@ class SKU extends ProductDetail {
     function __construct($name, $product) {
         parent::__construct($name, $product);
         $this->set(generateSku());
+    }
+}
+
+class internationalShipping extends ProductDetail {
+    function set($value) {
+        if ($value == 'TRUE') {
+            $this->text = 'TRUE';
+            $this->value = true;
+        }
+        else if ($value == 'FALSE') {
+            $this->text = 'FALSE';
+            $this->value = false;
+        }
     }
 }
 
