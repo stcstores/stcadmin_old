@@ -164,8 +164,13 @@ function add_variation($product) {
                 $variation->details[$detail]->set($_POST[$detail . $i]);
                 if ($_POST[$detail . $i] != ''){
                     $filled = true;
-                }
-                
+                }                
+            }
+            
+            if (isset($_POST['int_shipping' . $i])) {
+                $variation->details['int_shipping']->set('TRUE');
+            } else {
+                $variation->details['int_shipping']->set('FALSE');
             }
             
         }
