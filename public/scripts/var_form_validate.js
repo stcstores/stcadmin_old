@@ -59,13 +59,13 @@ function variations_form_validate() {
         add_error('All key fields must be filled.');
         form_valid = false;
     }
-    console.log(keyFieldsUnique);
+    
     if (!(keyFieldsUnique)) {
         add_error('All key fields must be unique.');
         form_valid = false;
     }
     
-    return false;
+    console.log(form_valid);
     return form_valid;
 }
 
@@ -98,8 +98,6 @@ function none_empty(field) {
     }).get();
     
     var emptyFields = false;
-    
-    console.log(values);
     
     for (index in values) {
         if (values[index] === '') {
@@ -172,8 +170,6 @@ function all_empty(field){
         var value = $(this).val()
         return value;
     }).get();
-    
-    console.log(values);
     
     for (index in values) {
         if (!(values[index] === '')) {

@@ -243,7 +243,7 @@ $('#var_form').submit(function(){
         return false;
     }
     $(':input').removeAttr('disabled');
-    return false; //CHANGE
+    return true;
 });
 
 
