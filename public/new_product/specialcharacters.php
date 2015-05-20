@@ -26,3 +26,6 @@ require_once($CONFIG['header']);
     ?>
 
 </div>
+
+<?php
+require_once($CONFIG['footer']);
