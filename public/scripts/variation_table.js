@@ -123,15 +123,15 @@ Table.prototype.write = function() {
         
         if (i > 0) {
             if (this.fields[i]['field_type'] == 'checkbox') {
-                newRow.append('<td><input type=button id=toggle_' + this.fields[i]['field_name'] + ' value="Toggle" />');
+                newRow.append('<td><input type=button id=toggle_' + this.fields[i]['field_name'] + ' value="Toggle All" title="Toggles international shipping on or off for all variations."/>');
                 $('#toggle_' + this.fields[i]['field_name']).click(function() {
                     toggleInternationalShipping();
             });
             } else {
-                newRow.append('<td class=small_button ><input type=button value="Set All" onclick="setAllButton(\'' + this.fields[i]['field_name'] + '\')" /></td>');
+                newRow.append('<td class=small_button ><input type=button title="Sets ' + this.fields[i]['field_title'] + ' for every variation to match the left most." value="Set All" onclick="setAllButton(\'' + this.fields[i]['field_name'] + '\')" /></td>');
             }
             if ($.inArray(this.fields[i]['field_name'], ['retail_price', 'purchase_price', 'shipping_price', 'barcode', 'var_append', 'int_shipping']) == -1){
-                var checkbox = '<td class=small_button ><input type=checkbox class=set_key id=set_key_' + this.fields[i]['field_name'] + ' name="set_key_' +  this.fields[i]['field_name'] + '"' ;
+                var checkbox = '<td class=small_button ><input type=checkbox title="Sets ' +   this.fields[i]['field_title']  + ' as a key field." class=set_key id=set_key_' + this.fields[i]['field_name'] + ' name="set_key_' +  this.fields[i]['field_name'] + '"' ;
                 //console.log(keyFields[this.fields[i]['field_name']]);
                 if (keyFields[this.fields[i]['field_name']] == true) {
                     checkbox = checkbox + ' checked ';
@@ -149,7 +149,7 @@ Table.prototype.write = function() {
             newRow.append('<td class=small_button >');
             newRow.append('<td>Key</td>');
         }
-        newRow.append("<td>" + this.fields[i]['field_title'] + "</td>");
+        newRow.append('<td title="' + this.fields[i]['field_description'] + '" >' + this.fields[i]['field_title'] + '</td>');
         for ( variation in this.rows) {
             for ( field in this.rows[variation].row) {
                 if (this.rows[variation].row[field].name == this.fields[i]['field_name']) {
