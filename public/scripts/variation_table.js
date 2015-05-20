@@ -10,11 +10,17 @@ function TableField(number, field, value='') {
 
 TableField.prototype.getInput = function() {
     this.id = this.name + this.number;
+    
     var row = '<td><input name=' + this.id + ' id=' + this.id + ' type=' + this.type + ' size=35 class="' + this.name + '"value="'
     if (this.name == 'var_name') {
         row = row + '" disabled';
     } else {
         row = row + this.value + '"';
+    }
+    if (this.type == 'checkbox') {
+        if (this.value == 'TRUE') {
+            row = row + ' checked ';
+        }
     }
     row = row + ' /></td>';
     return row;
@@ -116,10 +122,17 @@ Table.prototype.write = function() {
         
         
         if (i > 0) {
-            newRow.append('<td class=small_button ><input type=button value="Set All" onclick="setAllButton(\'' + this.fields[i]['field_name'] + '\')" /></td>');
-            if ($.inArray(this.fields[i]['field_name'], ['retail_price', 'purchase_price', 'shipping_price', 'barcode', 'var_append']) == -1){
+            if (this.fields[i]['field_type'] == 'checkbox') {
+                newRow.append('<td><input type=button id=toggle_' + this.fields[i]['field_name'] + ' value="Toggle" />');
+                $('#toggle_' + this.fields[i]['field_name']).click(function() {
+                    toggleInternationalShipping();
+            });
+            } else {
+                newRow.append('<td class=small_button ><input type=button value="Set All" onclick="setAllButton(\'' + this.fields[i]['field_name'] + '\')" /></td>');
+            }
+            if ($.inArray(this.fields[i]['field_name'], ['retail_price', 'purchase_price', 'shipping_price', 'barcode', 'var_append', 'int_shipping']) == -1){
                 var checkbox = '<td class=small_button ><input type=checkbox class=set_key id=set_key_' + this.fields[i]['field_name'] + ' name="set_key_' +  this.fields[i]['field_name'] + '"' ;
-                console.log(keyFields[this.fields[i]['field_name']]);
+                //console.log(keyFields[this.fields[i]['field_name']]);
                 if (keyFields[this.fields[i]['field_name']] == true) {
                     checkbox = checkbox + ' checked ';
                 }
@@ -166,6 +179,25 @@ Table.prototype.write = function() {
         //table.updateValues();
         //table.write();
     });
+}
+
+function toggleInternationalShipping() {
+    table.updateValues();
+    var setTo = ($('#int_shipping0').prop("checked"));
+    if (setTo === true) {
+        setTo = 'FALSE';
+    } else {
+        setTo = 'TRUE';
+    }                
+
+    for (row in table.rows) {
+        for (field in table.rows[row].row) {
+            if (table.rows[row].row[field].name == 'int_shipping') {
+                table.rows[row].row[field].value = setTo;      
+            } 
+        }
+    }
+    table.write();
 }
 
 Table.prototype.resetRowNumbers = function() {
