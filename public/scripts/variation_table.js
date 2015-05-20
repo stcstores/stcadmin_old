@@ -147,7 +147,7 @@ Table.prototype.write = function() {
             
         } else {
             newRow.append('<td class=small_button >');
-            newRow.append('<td>Key</td>');
+            newRow.append('<td title="For more information on key fields click the question mark.">Key <a class="questionmark_link" href="/new_product/keyfields.php" >?</a></td>');
         }
         newRow.append("<td>" + this.fields[i]['field_title'] + "</td>");
         for ( variation in this.rows) {

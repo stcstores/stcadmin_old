@@ -285,3 +285,8 @@ input.error {
 #testproduct :disabled {
     color: black;
 }
+
+a.questionmark_link {
+    font-size: 0.75em;
+    vertical-align: text-top;
+}
