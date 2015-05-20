@@ -73,8 +73,8 @@ function echoInput($field, $product, $number='') {
 }
 
 function write_var_setup_page($product, $newRows=0) {
+    echo "<div id=var_error class=hidden ></div>";
     $fields = getVarSetupFields();
-    
     echo "\n<form method='post' id='var_form' enctype='multipart/form-data'>\n";
     $fields = getVarSetupFields();
     $values = getVarSetupValues();
@@ -87,7 +87,7 @@ function write_var_setup_page($product, $newRows=0) {
     echo "<table id=var_setup_buttons class=form_nav>";
     echo "</table>";
     echo "</form>";
-    
+    echo "<script src=/scripts/var_form_validate.js></script>";
     echo "<script src=/scripts/variation_table.js></script>";
     
 }

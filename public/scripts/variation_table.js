@@ -97,6 +97,10 @@ function Table(fields, values) {
     this.write();
 }
 
+Table.prototype.varCount = function (){
+    return this.rows.length;
+}
+
 Table.prototype.write = function() {
     this.table.empty();
     this.writeHeader();
@@ -234,7 +238,15 @@ Table.prototype.addRows = function(number) {
 }
 
 $('#var_form').submit(function(){
+    if (variations_form_validate() == false) {
+        window.scrollTo(0, 0);
+        return false;
+    }
     $(':input').removeAttr('disabled');
+    return false; //CHANGE
 });
 
+
+
 table = new Table(fields, values);
+

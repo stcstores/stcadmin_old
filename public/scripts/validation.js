@@ -13,9 +13,6 @@ illegalChars = ['"', "'", '~', ';', '<', '>', '\\', '/', '!', '?'];
 priceRegEx = /^([0-9]*((.)[0-9]{0,2}))$/;
 barcodeRegEx = /^\d{12,13}$/;
 
-
-validateForm();
-
 function validate(input) {
     var inputId = input.attr('id');
     
