@@ -190,7 +190,11 @@ class ExtendedPropertiesFile extends CsvFile {
             if ($product->details[$extendedProp['field_name']]->text != '') {
                 $newRow = array();
                 $newRow[] = $sku;
-                $newRow[] = 'Attribute';
+                if ($extendedProp['field_name'] == 'int_shipping'){
+                    $newRow[] = 'Specification';
+                } else {
+                    $newRow[] = 'Attribute';
+                }
                 $newRow[] = $extendedProp['field_title'];
                 $newRow[] = $product->details[$extendedProp['field_name']]->text;
                 $rowsArray[] = $newRow;
