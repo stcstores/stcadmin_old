@@ -7,10 +7,12 @@ require_once($CONFIG['header']);
 
 
 echo "<div id=testproduct class=pagebox>";
-if (!isset($_SESSION['new_product'])) {
-    echo "No Object";
-} else {
+if (isset($_SESSION['new_product'])) {
     $product = $_SESSION['new_product'];
+} else {
+    header('Location: new_product_start.php');
+    exit();
+}
     echo "<input type=button value='Write Product' id=write_product />";
     ?>
     <h3>Basic Product Info</h3>
@@ -174,6 +176,6 @@ if (!isset($_SESSION['new_product'])) {
     </script>
     
     <?php
-}
+
 
 require_once($CONFIG['footer']);

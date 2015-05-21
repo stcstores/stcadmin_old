@@ -4,7 +4,12 @@
     checkLogin();
     require_once($CONFIG['header']);
     
-    if (isset($_SESSION['new_product'])) {
+if (isset($_SESSION['new_product'])) {
+    $product = $_SESSION['new_product'];
+} else {
+    header('Location: new_product_start.php');
+    exit();
+}
 
  ?>
 
@@ -28,9 +33,7 @@
             </table>
         </div>
         <script src=/scripts/image_upload.js ></script>
-        <?php require_once($CONFIG['footer']); ?>
 
 <?php
-} else {
-    echo "No Product";
-}
+
+require_once($CONFIG['footer']);

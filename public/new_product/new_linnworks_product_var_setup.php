@@ -4,7 +4,12 @@
     checkLogin();
     
     
-$product = $_SESSION['new_product'];
+if (isset($_SESSION['new_product'])) {
+    $product = $_SESSION['new_product'];
+} else {
+    header('Location: new_product_start.php');
+    exit();
+}
 
 if ( !empty( $_POST ) ) {
     add_variation($product);
