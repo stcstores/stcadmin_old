@@ -39,8 +39,10 @@ class ColourScheme {
             echo "<div id=colour_{$colNum} style='margin:10px;border:solid 3px black;background:white;padding:5px;'>";
             echo "{$colNum} <br />";
             foreach ($col->shades as $shadeNum => $shade){
+                echo "<div style='display:inline-block; overflow:hidden;'>";
+                echo "{$shadeNum}: {$shade}<br />";
                 echo "<div id=colour_{$colNum}_shade{$shadeNum} style='width:{$width}px;height:{$height}px;background:{$shade};display:inline-block;margin-right:5px;'>";
-                echo "{$shade}<br />{$shadeNum}";
+                echo "</div>";
                 echo "</div>";
             }
             echo "</div>";
