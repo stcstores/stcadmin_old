@@ -15,7 +15,7 @@ if (isset($_SESSION['new_product'])) {
 }
     echo "<input type=button value='Write Product' id=write_product />";
     ?>
-    <h3>Basic Product Info</h3>
+    <h3>Basic Product Info <a class="editlink" href="new_linnworks_product_1_basic_info.php" >Edit</a></h3>
     <table>
         <tr>
             <td>Product SKU</td>
@@ -49,7 +49,7 @@ if (isset($_SESSION['new_product'])) {
     
     <?php
             if (count($product->variations) > 0) {
-                echo "<h3>Variations</h3>";
+                echo '<h3>Variations<a class="editlink" href="new_linnworks_product_var_setup.php" >Edit</a></h3>';
                 echo "<table id=testvar>";
                 echo "<tr>";
                 $fields = getVarSetupFields();
@@ -82,7 +82,7 @@ if (isset($_SESSION['new_product'])) {
                 }
                 echo "</table>";
             } else {
-                echo "<h3>Extended Properties</h3>";
+                echo '<h3>Extended Properties<a class="editlink" href="new_linnworks_product_2_extended_properties.php" >Edit</a></h3>';
                 echo "<table>";
                 $fields = getFormFieldsByPage('extended_properties');
                 foreach ($fields as $field) {
@@ -107,7 +107,7 @@ if (isset($_SESSION['new_product'])) {
             }
         ?>
     
-    <h3>eBay Details</h3>
+    <h3>eBay Details<a class="editlink" href="new_linnworks_product_ebay.php" >Edit</a></h3>
     <table>
         <tr>
             <td>eBay Title</td>
@@ -119,7 +119,7 @@ if (isset($_SESSION['new_product'])) {
         </tr>
     </table>
     
-    <h3>Amazon Details</h3>
+    <h3>Amazon Details<a class="editlink" href="new_linnworks_product_amazon.php" >Edit</a></h3>
     <table>
         <tr>
             <td>Amazon Title</td>
@@ -139,7 +139,7 @@ if (isset($_SESSION['new_product'])) {
         </tr>
     </table>
     
-    <h3>stcstores.co.uk Details</h3>
+    <h3>stcstores.co.uk Details<a class="editlink" href="new_linnworks_product_shopify.php" >Edit</a></h3>
     <table>
         <tr>
             <td>stcstores.co.uk Title</td>
