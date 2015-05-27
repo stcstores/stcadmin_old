@@ -52,6 +52,21 @@ class CsvFile {
         fputcsv($file, $newline);
         fclose($file);
     }
+    
+    function read() {
+        $file = $this->openRead();
+        $table = array();
+        foreach ($this->header as $head) {
+            $table[$head] = array();
+        }
+        while (($line = fgetcsv($file)) !== false ) {
+            foreach($line as $row=>$cell) {
+                $table[$this->header[$row]][] = $cell;
+            }
+        }
+        
+        return $table;
+    }
 }
 
 
