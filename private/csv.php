@@ -264,9 +264,14 @@ class ImageUrlFile extends CsvFile {
         } else {
             $sku = $product->details['sku']->text;
             $imageIds = getImageIdsForSKU($sku);
-            foreach ($imageIds as $imageId) {
-                $imageUrl = $IMAGEURLPATH . $imageId;
-                $newRow = array($sku, $imageUrl);
+            foreach ($imageIds as $image) {
+                $imageUrl = $IMAGEURLPATH . $image['id'];
+                if ($image['is_primary'] == true) {
+                        $isPrimary = 'TRUE';
+                    } else {
+                        $isPrimary = 'FALSE';
+                    }
+                $newRow = array($sku, $isPrimary, $imageUrl);
                 $rowsArray[] = $newRow;
             }
         }
