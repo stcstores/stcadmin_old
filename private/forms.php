@@ -105,4 +105,52 @@ function echoVarSetupRow($fields, $i, $variation) {
     echo "</tr>";
 }
 
+function writeVarSetup() {
+    ?>
+    <div class=pagebox>
+        <label for=size>Add Sizes: </label>
+        <input size=100 name=size id=size />
+        <input type=button value=Add id=add_size_button />
+        <div id=sizes>
+            
+        </div>
+    </div>
+    
+    <table class=form_nav>
+        <tr>
+            <td>
+                <input value='<< Previous' type=submit name=previous />
+                <input value='Next >>' type=submit name=next />
+            </td>
+        </tr>
+    </table>
+    
+    <script>
+        sizes = array();
+        $('#size').val('one, two, three'); // REMOVE LATER
+        
+        $('#add_size_button').click(function(){
+            var addString = $('#size').val();
+            $('#size').val('');
+            
+            var newSizes = addString.split(', ');
+            
+            console.log(sizes);
+            
+            for (var size in newSizes) {
+                sizes.push(size);
+            }
+        function update() {                
+                var newSize = $('<div style="display:inline-block; margin:0.5em; background:red;">');
+                newSize.append('<label>' + sizes[size] + '</label>&nbsp;');
+                var remove_button = $('<a>X</a>');
+                
+                $('#sizes').append(newSize);
+            }
+            
+        });
+    </script>
+    <?php
+}
+
 ?>
