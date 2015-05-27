@@ -74,6 +74,7 @@ class NewVariation  extends NewProduct {
         $this->product = $product;
         $this->errors = $this->createFieldsArray();
         $this->details['sku'] = new SKU('sku', $this);
+        $this->details['var_append'] = new ProductDetail('var_append', $this);
         
         //basic info
         $this->details['var_name'] = new ProductDetail('item_title', $this);
