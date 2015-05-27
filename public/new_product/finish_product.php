@@ -160,6 +160,8 @@ if (isset($_SESSION['new_product'])) {
                 success: function(data){
                 }
             });
+            
+            $(this).attr('disabled','disabled');
         });
         
         $(':input').each(function() {
