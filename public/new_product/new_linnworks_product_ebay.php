@@ -15,7 +15,7 @@ if ( !empty($_POST) ) {
     if (isset($_POST['previous'])) {
         
         if ($product->details['var_type']->value == true) {
-            header('Location: new_linnworks_product_var_setup.php');
+            header('Location: new_linnworks_product_variations.php');
             exit();
             
         } elseif ($product->details['var_type']->value == false) {
