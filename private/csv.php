@@ -239,6 +239,25 @@ class ImageUrlFile extends CsvFile {
         $this->filename = '05_imageUrls.csv';
         $this->filepath = $this->path . '/' . $this->filename;
         $this->header = array('SKU', 'Is Primary', 'Filepath');
+        $this->imageUrl = $IMAGEURLPATH;
+    }
+    
+    function getRowArray($product) {
+        $sku = $product->details['sku']->text;
+        $imageInfo = getImageIdsForSKU($sku);
+        $newRows = array();
+        foreach ($imageInfo as $image) {
+            if ($image['is_primary'] == true) {
+                $isPrimary = 'TRUE';
+            } else {
+                $isPrimary = 'FALSE';
+            }
+            $imageUrl = $this->imageUrl . $image['id'];
+            $newRow = array($sku, $isPrimary, $imageUrl);
+            $newRows[] = $newRow;
+        }
+        
+        return $newRows;
     }
     
     function getRowsArray() {
@@ -248,34 +267,16 @@ class ImageUrlFile extends CsvFile {
         $rowsArray = array();
         if ($product->details['var_type']->value == true) {
             foreach ($product->variations as $variation) {
-                $sku = $variation->details['sku']->text;
-                $imageInfo = getImageIdsForSKU($sku);
-                foreach ($imageInfo as $image) {
-                    if ($image['is_primary'] == true) {
-                        $isPrimary = 'TRUE';
-                    } else {
-                        $isPrimary = 'FALSE';
-                    }
-                    $imageUrl = $IMAGEURLPATH . $image['id'];
-                    $newRow = array($sku, $isPrimary, $imageUrl);
+                foreach ($this->getRowArray($variation) as $newRow) {
                     $rowsArray[] = $newRow;
                 }
             }
         } else {
-            $sku = $product->details['sku']->text;
-            $imageIds = getImageIdsForSKU($sku);
-            foreach ($imageIds as $image) {
-                $imageUrl = $IMAGEURLPATH . $image['id'];
-                if ($image['is_primary'] == true) {
-                        $isPrimary = 'TRUE';
-                    } else {
-                        $isPrimary = 'FALSE';
-                    }
-                $newRow = array($sku, $isPrimary, $imageUrl);
+            foreach ($this->getRowArray($product) as $newRow) {
                 $rowsArray[] = $newRow;
             }
         }
-        //print_r($rowsArray);
+        
         return $rowsArray;
     }
     
