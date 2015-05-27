@@ -189,13 +189,9 @@ function add_variation($product) {
     
     foreach ($product->keyFields as $field=>$value) {
         if (array_key_exists('set_key_' . $field, $_POST)){
-            echo 'set_key_' . $field . ' ' . $_POST['set_key_' . $field] . '<br />';
-            if ($_POST['set_key_' . $field] == 'on') {
-                echo $_POST['set_key_' . $field];
-                $product->keyFields[$field] = true;
-            } else {
-                $product->keyFields[$field] = false;
-            }
+            $product->keyFields[$field] = true;
+        } else {
+            $product->keyFields[$field] = false;
         }
     }
 
