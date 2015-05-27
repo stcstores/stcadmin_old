@@ -45,9 +45,25 @@ function getVarName(var_number) {
         }
     }
     
-    value = value + $('#var_append' + var_number).val();
+    var appendix = $('#var_append' + var_number).val();
+    if (appendix.length > 0) {
+        if (no_key_fields()) {
+            value = value + ' ';
+        }
+        value = value + appendix;
+    }
     
     return value;
+}
+
+function no_key_fields(){
+    var no_key_fields = true;
+    for (field in keyFields) {
+        if (keyFields[field] === true) {
+            no_key_fields = false;
+        }
+    }
+    return no_key_fields
 }
 
 TableField.prototype.updateValue = function() {
