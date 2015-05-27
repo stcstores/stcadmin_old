@@ -10,7 +10,7 @@ $day = $_GET['day'];
 $time = $_GET['time'];
 
 
-$file = $archiveFolder . $year . '-' . $month . '-' . $day . '-' . $time . '\New_Linnworks_Products-' . $time . '.zip';
+$file = $archiveFolder . $year . '-' . $month . '-' . $day . '-' . $time . '/New_Linnworks_Products-' . $time . '.zip';
 echo $file . '<br />';
 
 if (file_exists($file)) {
