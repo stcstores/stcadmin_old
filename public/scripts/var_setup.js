@@ -10,10 +10,11 @@ function write(){
     $('#add_variations tr').remove();
     $('#add_variation_types tr').remove();
     $('#list_of_variables tr').remove();
-    $('#list_of_variations tr').remove();
+    $('#list_of_variations').html('');
     
     addAddVariationTypes();
     addAddVariations();
+    addVariationList()
     
 }
 
@@ -94,6 +95,40 @@ function addAddVariations(){
     add_instructions('add_variations', '<p>List all variations for each variation type, separated by commas. More can be added later if required.</p><p>For example: Green, Red, Blue.</p><p>Click "Add" to add the variations or click "Remove" to remove the variation type.</p>');
 }
 
+function addVariationList(){
+    var i = 1;
+    var varlist = [];
+    for (field in variationTypes){
+        if (variationTypes[field].used === true){
+            if (variationTypes[field].variations.length > 0) {
+                if (varlist.length == 0) {
+                    varlist = variationTypes[field].variations;
+                } else {
+                    var oldVarList = varlist;
+                    var newVarList = [];
+                    for (vari in oldVarList){
+                        for (othervari in variationTypes[field].variations){
+                            newVarList.push(oldVarList[vari] + variationTypes[field].variations[othervari]);
+                        }
+                    }
+                    varlist = newVarList;
+                }
+            }
+        }
+    }
+    
+    console.log(varlist);
+    
+    for (variation in varlist){
+        variations.push(new Variation(varlist[variation]));
+    }
+    
+    $('#list_of_variations').html('');
+    for (varient in varlist) {
+        $('#list_of_variations').append('<p>' + varlist[varient] + '</p>');
+    }
+}
+
 function removeVariationButton(button){
     var variationNumber = button.id.substring(20, 21);
     console.log(variationNumber);
@@ -139,10 +174,16 @@ function capitalizeFirstLetter(string) {
 }
 
 variationTypes = {};
+variations = [];
 
 function VariationType(name, title){
     this.used = false;
     this.name = name;
     this.title = title;
-    this.variations = ['Green', 'Red', 'Blue'];
+    this.variations = [];
+}
+
+function Variation(name) {
+    this.name = name;
+    this.enabled = true;
 }
