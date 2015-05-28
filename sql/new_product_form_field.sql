@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: mysql.stcadmin.stcstores.co.uk
--- Generation Time: May 28, 2015 at 02:54 AM
+-- Generation Time: May 28, 2015 at 02:58 AM
 -- Server version: 5.1.56
 -- PHP Version: 5.6.4
 
@@ -77,7 +77,7 @@ INSERT INTO `new_product_form_field` (`id`, `field_title`, `field_type`, `field_
 (33, 'Shopify Title', 'text', 'shopify_title', 'ekm', 'Title for listing on stcstores.co.uk', 1, 'chn_shopify', 50, NULL, 0, 0),
 (35, 'Shopify Description', 'textarea', 'shopify_description', 'ekm', 'Description on stcstores.co.uk.', 3, 'chn_shopify', NULL, NULL, 0, 0),
 (36, 'Images', 'file multiple', 'images[]', 'images', 'Select as many images as necessary. Multiple images can be selected with Ctrl-click.\r\nImages will be stored in alphabetical order with the first as the main image.', 14, 'Upload Images', NULL, NULL, 0, 0),
-(37, 'Short Description', 'textarea', 'short_description', 'basic', 'A brief description of the product.\r\nPrimarily used for identification within Linnworks', 7, 'basic', NULL, NULL, 1, 0),
+(37, 'Short Description', 'textarea', 'short_description', 'basic', 'A brief description of the product.\r\nPrimarily used for identification within Linnworks', 7, 'basic', NULL, NULL, 0, 1),
 (40, 'Title Append', 'text', 'var_append', 'None', 'Text in this field will be appended to the variation title', 2, 'var_setup', 50, NULL, 0, 0),
-(41, 'Shipping Price', 'text', 'shipping_price', 'extended', 'Basic price for second class shipping', 4, 'extended_properties', 4, NULL, 1, 0),
+(41, 'Shipping Price', 'text', 'shipping_price', 'extended', 'Basic price for second class shipping', 4, 'extended_properties', 4, NULL, 0, 0),
 (42, 'International Shipping', 'checkbox', 'int_shipping', 'extended', 'Can the product be shipped internationaly', 5, 'extended_properties', NULL, NULL, 0, 0);
