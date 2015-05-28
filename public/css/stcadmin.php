@@ -296,3 +296,16 @@ a.questionmark_link {
     font-weight: normal;
     margin-left: 1em;
 }
+
+.remove_x {
+    color: black;
+    cursor: pointer;
+    
+}
+
+.variation_box {
+    padding: 0.5em;
+    background: <?php $colours->echoColour(3, 1); ?>;
+    color: <?php $colours->echoColour(2, 2); ?>;
+    border-radius: 5px;
+}

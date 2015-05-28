@@ -31,7 +31,10 @@ writeVarSetup();
 
 $_SESSION['new_product'] = $product;
 ?>
-
+<script>
+    keyFields = <?php echo json_encode(getKeyFields()); ?>
+</script>
+<script src=/scripts/var_setup.js ></script>
 <script src=/scripts/formstyle.js ></script>
 <script src=/scripts/validation.js ></script>
 <script>product_title = '<?php echo $product->details['item_title']->text;?>'</script>
