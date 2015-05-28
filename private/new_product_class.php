@@ -48,8 +48,8 @@ class NewProduct{
         $this->details['shopify_description'] = new ProductDetail('shopify_description', $this);
         
         $this->keyFields = array();
-        foreach ($this->details as $detail => $value) {
-            $this->keyFields[$detail] = false;
+        foreach (getKeyFields() as $keyField) {
+            $this->keyFields[$keyField['field_name']] = false;
         }
         
     }
