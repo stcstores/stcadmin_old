@@ -119,7 +119,10 @@ function writeVarSetup() {
             
         </table>
         </div>
-        <div id=list_of_variations class=form_section>
+        <div>
+            <table id=list_of_variations class=form_section>
+                
+            </table>
         </div>
     </div>
     

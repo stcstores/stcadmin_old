@@ -10,11 +10,11 @@ function write(){
     $('#add_variations tr').remove();
     $('#add_variation_types tr').remove();
     $('#list_of_variables tr').remove();
-    $('#list_of_variations').html('');
+    $('#list_of_variations tr').remove();
     
     addAddVariationTypes();
     addAddVariations();
-    addVariationList()
+    addVariationList();
     
 }
 
@@ -108,7 +108,7 @@ function addVariationList(){
                     var newVarList = [];
                     for (vari in oldVarList){
                         for (othervari in variationTypes[field].variations){
-                            newVarList.push(oldVarList[vari] + variationTypes[field].variations[othervari]);
+                            newVarList.push(oldVarList[vari] + ' ' + variationTypes[field].variations[othervari]);
                         }
                     }
                     varlist = newVarList;
@@ -125,8 +125,28 @@ function addVariationList(){
     
     $('#list_of_variations').html('');
     for (varient in varlist) {
-        $('#list_of_variations').append('<p>' + varlist[varient] + '</p>');
+        $('#list_of_variations').append('<tr>');
+        var newRow = $('#list_of_variations tr:last');
+        newRow.append('<td>' + varlist[varient] + '</td>');
+        var button = '<td><input id=toggle_variation_' + varlist[varient] + ' class=toggle_variation_button type=button ';
+        var variation = get_variation(varlist[varient]);
+        if (variation.enabled === true) {
+            button = button + 'value=Remove '
+        } else {
+            button = button + 'value=Re-Add '
+        }
+        button = button + ' />';
+        newRow.append($(button));
     }
+}
+
+function get_variation(variation){
+    for (varient in variations){
+        if (variations[varient].name === variation) {
+            return variations[varient];
+        }
+    }
+    return false;
 }
 
 function removeVariationButton(button){
