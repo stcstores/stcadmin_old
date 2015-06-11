@@ -309,3 +309,8 @@ a.questionmark_link {
     color: <?php $colours->echoColour(2, 2); ?>;
     border-radius: 5px;
 }
+
+.varient_disabled {
+    color: black;
+    background: gray;
+}

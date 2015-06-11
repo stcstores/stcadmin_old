@@ -125,11 +125,15 @@ function addVariationList(){
     
     $('#list_of_variations').html('');
     for (varient in varlist) {
+        var variation = get_variation(varlist[varient]);
         $('#list_of_variations').append('<tr>');
         var newRow = $('#list_of_variations tr:last');
+        if (!(variation.enabled)) {
+            newRow.attr('class', 'varient_disabled');
+        }
         newRow.append('<td>' + varlist[varient] + '</td>');
         var button = '<td><input id=toggle_variation_' + varlist[varient] + ' class=toggle_variation_button type=button ';
-        var variation = get_variation(varlist[varient]);
+        
         if (variation.enabled === true) {
             button = button + 'value=Remove '
         } else {
