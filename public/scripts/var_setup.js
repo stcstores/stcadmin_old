@@ -18,18 +18,17 @@ function write(){
     
 }
 
-function addVariationButton(button){
-    var field = button.id;
-    field = field.replace('add_variations_to_', '');
-    field = field.replace('_button', '');
-    var inputField = $('#add_to_' + field);
-    var rawInput = inputField.val();
-    rawInput = rawInput.replace(', ', ',');
-    var variations = rawInput.split(',');
-    for (i in variations) {
-        addVariation(field, variations[i]);
-    }
-    write();
+function addVariationGenerator(field) {
+    return function(event) {
+        var inputField = $('#add_to_' + field);
+        var rawInput = inputField.val();
+        rawInput = rawInput.replace(', ', ',');
+        var variations = rawInput.split(',');
+        for (i in variations) {
+            addVariation(field, variations[i]);
+        }
+        write();
+    };
 }
 
 function addVariation(field, variation) {
@@ -82,9 +81,9 @@ function addAddVariations(){
             
             
             
-            $('#add_variations_to_' + field + '_button').click(function(){
-                addVariationButton(this);
-            });
+            $('#add_variations_to_' + field + '_button').click(addVariationGenerator(field));
+            
+            $('#add_to_' + field).blur(addVariationGenerator(field));
             
             $('#remove_variation_type_' + field).click(function(){
                 removeVariationTypeButton(this);
