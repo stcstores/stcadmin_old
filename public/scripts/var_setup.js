@@ -3,6 +3,23 @@ function Variation(attributes) {
     this.active = true;
 }
 
+function VariationType(name, title){
+    this.used = false;
+    this.name = name;
+    this.title = title;
+    this.variations = [];
+}
+
+function Variations() {
+    this.variationTypes = {};
+    for (field in keyFields){
+        var fieldName = keyFields[field]['field_name'];
+        this.variationTypes[fieldName] = new VariationType(keyFields[field]['field_name'], keyFields[field]['field_title']);
+    }
+    
+    this.variations = [];
+}
+
 Variations.prototype.variation_exists = function(variation_dictionary) {
     var var_exists = true;
     for (varType in variation_dictionary) {
@@ -68,6 +85,7 @@ Variations.prototype.update_variations = function() {
 
 function variation_var_dict_compare(variation, var_dict) {
     var match = true;
+    
     for (attr in variation.attributes) {
         if (!(var_dict[attr])) {
             match = false;
@@ -77,6 +95,7 @@ function variation_var_dict_compare(variation, var_dict) {
             }
         }
     }
+    
     for (attr in var_dict) {
         if (!(variation.attributes[attr])) {
             match = false;
@@ -90,7 +109,6 @@ function variation_var_dict_compare(variation, var_dict) {
 }
 
 function get_valid_combinations(arg) {
-    
     function helper(arr, i) {
         for (var j = 0, l = arg[i].length; j < l; j++) {
             var a = arr.slice(0); // clone arr
@@ -110,23 +128,6 @@ function get_valid_combinations(arg) {
     } else {
         return [];
     }
-}
-
-function VariationType(name, title){
-    this.used = false;
-    this.name = name;
-    this.title = title;
-    this.variations = [];
-}
-
-function Variations() {
-    this.variationTypes = {};
-    for (field in keyFields){
-        var fieldName = keyFields[field]['field_name'];
-        this.variationTypes[fieldName] = new VariationType(keyFields[field]['field_name'], keyFields[field]['field_title']);
-    }
-    
-    this.variations = [];
 }
 
 function addAddVariationTypes(){
@@ -171,8 +172,6 @@ function addAddVariations(){
                 variant += 1;
             }
             
-            
-            
             $('#add_variations_to_' + field + '_button').click(addVariationGenerator(field));
             
             $('#add_to_' + field).blur(addVariationGenerator(field));
@@ -182,6 +181,52 @@ function addAddVariations(){
     }
     
     add_instructions('add_variations', '<p>List all variations for each variation type, separated by commas. More can be added later if required.</p><p>For example: Green, Red, Blue.</p><p>Click "Add" to add the variations or click "Remove" to remove the variation type.</p>');
+}
+
+function addVariationList() {
+    variations.update_variations();
+    var header = '<tr>'
+    for (varType in variations.variationTypes) {
+        if (variations.variationTypes[varType].used) {
+            var type = variations.variationTypes[varType].title;
+            header = header + '<th>' + type + '</th>';
+        }
+    }
+    header = header + '<th></th>';
+    $('#list_of_variations').append($(header));
+    
+    var new_row;
+    
+    for (variation in variations.variations) {
+        if (variations.variations[variation].active) {
+            new_row = '<tr>';
+        } else {
+            new_row = '<tr class="varient_disabled">'
+        }
+        for (varType in variations.variationTypes) {
+            if (variations.variationTypes[varType].used) {
+                var variationType = variations.variationTypes[varType].title;
+                var attributes = variations.variations[variation].attributes;
+                new_row = new_row + '<td>' + attributes[variationType] + '</td>'
+            }
+        }
+        
+        new_row = new_row + '<td>';
+        
+        $('#list_of_variations').append($(new_row));
+        
+        var button = $('<input type=button>');
+        
+        if (variations.variations[variation].active) {
+            button.val('Remove');
+        } else {
+            button.val('Re-Add');
+        }
+        
+        button.click(remove_varient_generator(variations.variations[variation]));
+        
+        $('#list_of_variations tr:last td:last').append(button);
+    }
 }
 
 function addVariation(field, variation) {
@@ -229,52 +274,6 @@ function remove_varient_generator(variation) {
 
 function add_instructions(table, text){
     $('#' + table + ' tr:first').append('<td rowspan=' + $('#' + table + ' tr').length + ' >' + text);
-}
-
-function addVariationList() {
-    variations.update_variations();
-    var header = '<tr>'
-    for (varType in variations.variationTypes) {
-        if (variations.variationTypes[varType].used) {
-            var type = variations.variationTypes[varType].title;
-            header = header + '<th>' + type + '</th>';
-        }
-    }
-    header = header + '<th></th>';
-    $('#list_of_variations').append($(header));
-    
-    var new_row;
-    
-    for (variation in variations.variations) {
-        if (variations.variations[variation].active) {
-            new_row = '<tr>';
-        } else {
-            new_row = '<tr class="varient_disabled">'
-        }
-        for (varType in variations.variationTypes) {
-            if (variations.variationTypes[varType].used) {
-                var variationType = variations.variationTypes[varType].title;
-                var attributes = variations.variations[variation].attributes;
-                new_row = new_row + '<td>' + attributes[variationType] + '</td>'
-            }
-        }
-        
-        new_row = new_row + '<td>';
-        
-        $('#list_of_variations').append($(new_row));
-        
-        var button = $('<input type=button>');
-        
-        if (variations.variations[variation].active) {
-            button.val('Remove');
-        } else {
-            button.val('Re-Add');
-        }
-        
-        button.click(remove_varient_generator(variations.variations[variation]));
-        
-        $('#list_of_variations tr:last td:last').append(button);
-    }
 }
 
 function write() {
