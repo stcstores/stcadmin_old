@@ -367,8 +367,6 @@ function write() {
     } else {
         table = undefined;
     }
-    
-    
 }
 
 $(document).ready(function() {

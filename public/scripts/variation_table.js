@@ -94,18 +94,13 @@ Table.prototype.write = function() {
                     toggleInternationalShipping();
                 });
             } else {
-                //newRow.append('<td class=small_button ></td>');
                 var setAllButton = $('<input type=button title="Sets ' + this.fields[i]['field_title'] + ' for every variation to match the left most." value="Set All" />')
                 setAllButton.click(setAllButtonGenerator(this.fields[i]['field_name']));
                 var buttonField = $('<td class="small_buton">').append(setAllButton);
                 newRow.append(buttonField);
-                
-                
-                
             }
         } else {
             newRow.append('<td class=small_button >');
-        //    newRow.append('<td title="For more information on key fields click the question mark.">Key <a class="questionmark_link" href="/new_product/keyfields.php" >?</a></td>');
         }
         newRow.append('<td title="' + this.fields[i]['field_description'] + '" >' + this.fields[i]['field_title'] + '</td>');
         for ( avariation in variations.variations) {
@@ -188,4 +183,3 @@ $('#var_form').submit(function(){
     $(':input').removeAttr('disabled');
     return true;
 });
-
