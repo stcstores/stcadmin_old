@@ -18,9 +18,9 @@ if ( !empty($_POST) ) {
     }
     add_chn_ebay($product);
     
-    if (true) { // error check
+    if ( true ) { // error check
         $_SESSION['new_product'] = $product;
-        header('Location: new_linnworks_product_variations.php');
+        header('Location: new_linnworks_product_ebay.php');
         exit();
     }
 }

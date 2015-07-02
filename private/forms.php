@@ -89,7 +89,6 @@ function write_var_setup_page($product, $newRows=0) {
     echo "</form>";
     echo "<script src=/scripts/var_form_validate.js></script>";
     echo "<script src=/scripts/variation_table.js></script>";
-    
 }
 
 function echoVarSetupRow($fields, $i, $variation) {
@@ -114,16 +113,17 @@ function writeVarSetup($product, $newRows=0) {
     echo "<script>keyFields = " . json_encode($product->keyFields) . "</script>\n";
     ?>
     <div class="pagebox">
+        <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
         <div>
-        <table id="add_variation_types" class="form_section">
-            
-        </table>
+            <table id="add_variation_types" class="form_section">
+                
+            </table>
         </div>
         <br />
         <div>
-        <table id="add_variations" class="form_section">
-            
-        </table>
+            <table id="add_variations" class="form_section">
+                
+            </table>
         </div>
         <div>
             <table id="list_of_variations" class="form_section">
@@ -133,22 +133,22 @@ function writeVarSetup($product, $newRows=0) {
     </div>
     <br />
     <div id="var_error" class="hidden" ></div>
-        <form method="post" id="var_form" enctype="multipart/form-data">
-            <table id="var_setup" class="form_section" >
+    <form method="post" id="var_form" enctype="multipart/form-data">
+        <table id="var_setup" class="form_section" >
+            
+        </table>
+        <table class="form_nav">
+            <tr>
+                <td>
+                    <input value="<< Previous" type="submit" name="previous" />
+                    <input value="Next >>" type="submit" name="next" />
+                </td>
+            </tr>
+        </table>
+    </form>
     
-            </table>
-        </form>
     <script src="/scripts/var_form_validate.js"></script>
     <script src="/scripts/variation_table.js"></script>
-    <table class="form_nav">
-        <tr>
-            <td>
-                <input value="<< Previous" type="submit" name="previous" />
-                <input value="Next >>" type="submit" name="next" />
-            </td>
-        </tr>
-    </table>
-    
     
     <?php
 }
