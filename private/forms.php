@@ -105,7 +105,7 @@ function echoVarSetupRow($fields, $i, $variation) {
     echo "</tr>";
 }
 
-function writeVarSetup() {
+function writeVarSetup($product, $newRows=0) {
     ?>
     <div class=pagebox>
         <div>
@@ -126,7 +126,23 @@ function writeVarSetup() {
             </table>
         </div>
     </div>
+    <?php
+    echo "<div id=var_error class=hidden ></div>";
+    $fields = getVarSetupFields();
+    echo "\n<form method='post' id='var_form' enctype='multipart/form-data'>\n";
+    $fields = getVarSetupFields();
+    $values = getVarSetupValues();
+    echo "<script>productName = '" . $product->details['item_title']->text . "';</script>\n";
+    echo "<script>var fields = " . json_encode($fields) . "</script>\n";
+    echo "<script>var values = " . json_encode($values) . "</script>\n";
+    echo "<script>keyFields = " . json_encode($product->keyFields) . "</script>";
+    echo "<table id=var_setup class=form_section >";
+    echo "</table>";
+    echo "</form>";
+    echo "<script src=/scripts/var_form_validate.js></script>";
+    echo "<script src=/scripts/variation_table.js></script>";
     
+    ?>
     <table class=form_nav>
         <tr>
             <td>

@@ -294,7 +294,3 @@ $('#var_form').submit(function(){
     return true;
 });
 
-
-
-table = new Table(fields, values);
-

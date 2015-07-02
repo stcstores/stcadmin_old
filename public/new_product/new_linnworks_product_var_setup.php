@@ -27,7 +27,7 @@ if ( !empty($_POST) ) {
 
 require_once($CONFIG['header']);
 
-writeVarSetup();
+writeVarSetup($product);
 
 $_SESSION['new_product'] = $product;
 ?>

@@ -286,6 +286,10 @@ function write() {
     addAddVariations();
     addVariationList();
     
+    if (variations.variations.length > 1) {
+        table = new Table(fields, values);
+    }
+    
     
 }
 
