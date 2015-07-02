@@ -12,11 +12,14 @@ if (isset($_SESSION['new_product'])) {
 }
 
 if ( !empty($_POST) ) {
+    
+    add_variation($product);
+    
     if (isset($_POST['previous'])) {        
         header('Location: new_linnworks_product_1_basic_info.php');
         exit();
     }
-    add_chn_ebay($product);
+    
     
     if ( true ) { // error check
         $_SESSION['new_product'] = $product;
@@ -43,6 +46,7 @@ $_SESSION['new_product'] = $product;
 <script src=/scripts/channel_forms.js ></script>
 
 <?php
+
 include($CONFIG['footer']);
 
 ?>

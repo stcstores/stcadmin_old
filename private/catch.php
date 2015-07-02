@@ -149,10 +149,8 @@ function add_variation($product) {
     foreach (range(0, getNumberOfVariationsInPost()) as $x) {
         if (array_key_exists($i, $product->variations)) {
             $variation = $product->variations[$i];
-
         } else {
             $variation = new NewVariation($product);
-
         }
         
         $filled = false;
@@ -160,7 +158,6 @@ function add_variation($product) {
         foreach ($variation->details as $detail=>$value) {
             
             if (isset($_POST[$detail . $i])) {
-                //echo $detail . $i;
                 $variation->details[$detail]->set($_POST[$detail . $i]);
                 if ($_POST[$detail . $i] != ''){
                     $filled = true;
