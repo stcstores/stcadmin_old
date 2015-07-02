@@ -26,53 +26,6 @@ TableField.prototype.getInput = function() {
     return row;
 }
 
-function setVarName() {
-    $(':input').each(function(){
-        if ($(this).attr('class') == 'var_name') {
-            var varNumber = $(this).attr('id').substring(8);
-            $(this).val(getVarName(varNumber));
-        }
-    });
-}
-
-function getVarName(var_number) {
-    value = productName;
-    for (field in keyFields) {
-        if (keyFields[field] == true) {
-            fieldName = field;
-            var keyValue = $('#' + fieldName + var_number).val();
-            value = value + ' { ' + keyValue + ' } ';
-        }
-    }
-    
-    var appendix = $('#var_append' + var_number).val();
-    if (appendix.length > 0) {
-        if (no_key_fields()) {
-            value = value + ' ';
-        }
-        value = value + appendix;
-    }
-    
-    return value;
-}
-
-function no_key_fields(){
-    var no_key_fields = true;
-    for (field in keyFields) {
-        if (keyFields[field] === true) {
-            no_key_fields = false;
-        }
-    }
-    return no_key_fields
-}
-
-TableField.prototype.updateValue = function() {
-    var input = $('#' + this.id);
-    if (input.val() != null) {
-        this.value = input.val();
-    }
-}
-
 function TableRow(number, fields, values=null) {
     this.number = number;
     this.fields = fields;
@@ -86,9 +39,10 @@ function TableRow(number, fields, values=null) {
     }
 }
 
-TableRow.prototype.updateValues = function() {
-    for (row in this.row) {
-        this.row[row].updateValue();
+Table.prototype.updateValues = function() {
+    for (variation in variations.variations) {
+        for (detail in variations.variations[variation].details)
+        variations.variations[variation].details[detail].updateValue();
     }
 }
 
@@ -125,9 +79,7 @@ Table.prototype.varCount = function (){
 
 Table.prototype.write = function() {
     this.table.empty();
-    this.writeHeader();
     this.resetRowNumbers();
-    setVarName();
     
     for (i in this.fields) {
         
@@ -135,66 +87,41 @@ Table.prototype.write = function() {
         
         newRow = $('#var_setup_row_' + this.fields[i]['field_name']);
         
-        
-        
         if (i > 0) {
             if (this.fields[i]['field_type'] == 'checkbox') {
                 newRow.append('<td><input type=button id=toggle_' + this.fields[i]['field_name'] + ' value="Toggle All" title="Toggles international shipping on or off for all variations."/>');
                 $('#toggle_' + this.fields[i]['field_name']).click(function() {
                     toggleInternationalShipping();
-            });
+                });
             } else {
-                newRow.append('<td class=small_button ><input type=button title="Sets ' + this.fields[i]['field_title'] + ' for every variation to match the left most." value="Set All" onclick="setAllButton(\'' + this.fields[i]['field_name'] + '\')" /></td>');
-            }
-            if ($.inArray(this.fields[i]['field_name'], ['retail_price', 'purchase_price', 'shipping_price', 'barcode', 'var_append', 'int_shipping']) == -1){
-                var checkbox = '<td class=small_button ><input type=checkbox title="Sets ' +   this.fields[i]['field_title']  + ' as a key field." class=set_key id=set_key_' + this.fields[i]['field_name'] + ' name="set_key_' +  this.fields[i]['field_name'] + '"' ;
-                //console.log(keyFields[this.fields[i]['field_name']]);
-                if (keyFields[this.fields[i]['field_name']] == true) {
-                    checkbox = checkbox + ' checked ';
-                }
-                checkbox = checkbox + '/></td>'
+                //newRow.append('<td class=small_button ></td>');
+                var setAllButton = $('<input type=button title="Sets ' + this.fields[i]['field_title'] + ' for every variation to match the left most." value="Set All" />')
+                setAllButton.click(setAllButtonGenerator(this.fields[i]['field_name']));
+                var buttonField = $('<td class="small_buton">').append(setAllButton);
+                newRow.append(buttonField);
                 
-                checkbox = $(checkbox);
                 
-                newRow.append(checkbox);
-            } else {
-                newRow.append('<td class=small_button >');
+                
             }
-            
         } else {
             newRow.append('<td class=small_button >');
-            newRow.append('<td title="For more information on key fields click the question mark.">Key <a class="questionmark_link" href="/new_product/keyfields.php" >?</a></td>');
+        //    newRow.append('<td title="For more information on key fields click the question mark.">Key <a class="questionmark_link" href="/new_product/keyfields.php" >?</a></td>');
         }
         newRow.append('<td title="' + this.fields[i]['field_description'] + '" >' + this.fields[i]['field_title'] + '</td>');
-        for ( variation in this.rows) {
-            for ( field in this.rows[variation].row) {
-                if (this.rows[variation].row[field].name == this.fields[i]['field_name']) {
-                    newRow.append(this.rows[variation].row[field].getInput());
+        for ( avariation in variations.variations) {
+            var variation = variations.variations[avariation];
+            if (variation.active) {
+                for ( afield in variation.details) {
+                    var field = variation.details[afield];
+                    if (field.name == this.fields[i]['field_name']) {
+                        newRow.append(field.getInput());
+                    }
                 }
             }
         }
     }
+    
     setFormStyle();
-    
-    setVarName();
-    
-    $('.set_key').click(function() {
-        var fieldName = $(this).attr('name').substring(8);
-        if (keyFields[fieldName] == false) {
-            keyFields[fieldName] = true;
-        } else if (keyFields[fieldName] == true ){
-            keyFields[fieldName] = false;
-        }
-        setVarName();
-        //table.updateValues();
-        //table.write();
-    });
-    
-    $(':input').blur(function(){
-        setVarName();
-        //table.updateValues();
-        //table.write();
-    });
 }
 
 function toggleInternationalShipping() {
@@ -225,20 +152,6 @@ Table.prototype.resetRowNumbers = function() {
     }
 }
 
-Table.prototype.updateValues = function() {
-    for (row in this.rows) {
-        this.rows[row].updateValues();
-    }
-}
-
-Table.prototype.writeHeader = function() {
-    this.table.append('<tr id=var_setup_header >');
-    $('#var_setup_header').append('<th colspan=3 ><input type=button value="Add Another Variation" onclick="addRowButton()" /></th>');
-    for (i in this.rows) {
-        $('#var_setup_header').append('<th><input type=button value="Remove Variation" onclick="table.deleteRow(' + i + ')" /></th>');
-    }
-}
-
 Table.prototype.deleteRow = function(number) {
     if (this.rows.length > 2) {
         this.rows.splice(number, 1);
@@ -250,32 +163,14 @@ Table.prototype.addRow = function() {
     this.rows.push(new TableRow('?', this.fields, ''));
 }
 
-function addRowButton() {
-    table.updateValues();
-    table.addRow();
-    table.write();
-}
-
-function addRowsButton() {
-    var number = $('#more_var_box').val();
-    if (number == '') {
-        number = 1;
-    }
-    table.addRows(number);
-    table.write();
-}
-
-function setAllButton(field_name) {
-    table.updateValues();
-    var value = $('#' + field_name + '0').val();
-    for (row in table.rows) {
-        for (field in table.rows[row].row) {
-            if (table.rows[row].row[field].name == field_name) {
-                table.rows[row].row[field].value = value;
-            } 
+function setAllButtonGenerator(field_name) {
+    return function(event){
+        table.updateValues();
+        for (variation in variations.variations) {
+            variations.variations[variation].details[field_name].value = variations.variations[0].details[field_name].value;
         }
+        table.write();
     }
-    table.write();
 }
 
 Table.prototype.addRows = function(number) {

@@ -1,7 +1,74 @@
+function VariationField(number, field, value='', disable=false) {
+    this.field = field;
+    this.number = number;
+    this.name = field['field_name'];
+    this.id = this.name + this.number;
+    this.type = field['field_type'];
+    this.size = field['size'];
+    this.value = value;
+    this.disabled = disable;
+    console.log(this.disabled);
+}
+
+VariationField.prototype.getInput = function() {
+    this.id = this.name + this.number;
+    
+    var row = '<td><input name=' + this.id + ' id=' + this.id + ' type=' + this.type + ' size=35 class="' + this.name + '"value="'
+    row = row + this.value + '"';
+    if (this.disabled === true) {
+        row = row + '" disabled';
+    }
+    if (this.type == 'checkbox') {
+        if (this.value == 'TRUE') {
+            row = row + ' checked ';
+        }
+    }
+    row = row + ' /></td>';
+    return row;
+}
+
+VariationField.prototype.updateValue = function() {
+    var input = $('#' + this.id);
+    if (input.val() != null) {
+        this.value = input.val();
+    }
+}
+
 function Variation(attributes) {
+    this.number = this.getNumber();
     this.attributes = attributes;
     this.active = true;
+    this.details = {};
+    for (afield in fields) {
+        var field = fields[afield];
+        
+        if (field.field_name === 'var_name'){
+            var name = productName;
+            for (attr in this.attributes) {
+                name = name + ' {' + this.attributes[attr] + '}';
+            }
+            this.details['var_name'] = new VariationField(this.number, field, name, true);
+            
+        } else if (this.attributes[field.field_title] !== undefined) {
+            console.log('is attr');
+            this.details[field.field_name] = new VariationField(this.number, field, this.attributes[field.field_title], true);
+            
+        } else {
+            this.details[field.field_name] = new VariationField(this.number, field);
+        }
+    }
 }
+
+Variation.prototype.getNumber = function() {
+    for (i = 0; i < variations.variations.lenght; i++){
+        if (variations.variations[i] === this) {
+            return i;
+        }
+    }
+    return false;
+}
+
+
 
 function VariationType(name, title){
     this.used = false;
