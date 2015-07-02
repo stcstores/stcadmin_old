@@ -142,6 +142,13 @@ h4 {
     box-shadow: 5px 5px 3px <?php $colours->echoColour(1, 4); ?>;
 }
 
+.variation_table {
+    table-layout: fixed;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%;
+}
+
 table.form_section td {
     padding: 0.5em;
     padding-bottom: 0.5em;

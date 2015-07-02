@@ -130,22 +130,24 @@ function writeVarSetup($product, $newRows=0) {
                 
             </table>
         </div>
+        <br />
+        <div id="var_error" class="hidden" ></div>
+        <form method="post" id="var_form" enctype="multipart/form-data">
+            <div class="variation_table">
+                <table id="var_setup" class="form_section" >
+                    
+                </table>
+            </div>
+            <table class="form_nav">
+                <tr>
+                    <td>
+                        <input value="<< Previous" type="submit" name="previous" />
+                        <input value="Next >>" type="submit" name="next" />
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
-    <br />
-    <div id="var_error" class="hidden" ></div>
-    <form method="post" id="var_form" enctype="multipart/form-data">
-        <table id="var_setup" class="form_section" >
-            
-        </table>
-        <table class="form_nav">
-            <tr>
-                <td>
-                    <input value="<< Previous" type="submit" name="previous" />
-                    <input value="Next >>" type="submit" name="next" />
-                </td>
-            </tr>
-        </table>
-    </form>
     
     <script src="/scripts/var_form_validate.js"></script>
     <script src="/scripts/variation_table.js"></script>
