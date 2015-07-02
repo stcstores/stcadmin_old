@@ -1,42 +1,8 @@
-function TableField(number, field, value='') {
-    this.field = field;
-    this.number = number;
-    this.name = field['field_name'];
-    this.id = this.name + this.number;
-    this.type = field['field_type'];
-    this.size = field['size'];
-    this.value = value;
-}
-
-TableField.prototype.getInput = function() {
-    this.id = this.name + this.number;
-    
-    var row = '<td><input name=' + this.id + ' id=' + this.id + ' type=' + this.type + ' size=35 class="' + this.name + '"value="'
-    if (this.name == 'var_name') {
-        row = row + '" disabled';
-    } else {
-        row = row + this.value + '"';
-    }
-    if (this.type == 'checkbox') {
-        if (this.value == 'TRUE') {
-            row = row + ' checked ';
-        }
-    }
-    row = row + ' /></td>';
-    return row;
-}
-
 function TableRow(number, fields, values=null) {
     this.number = number;
     this.fields = fields;
     this.values = values;
     this.row = [];
-    
-    for (field in this.fields) {
-        value = this.values[fields[field]['field_name']];
-        row = new TableField(this.number, fields[field], value);
-        this.row.push(row);
-    }
 }
 
 Table.prototype.updateValues = function() {
@@ -89,10 +55,10 @@ Table.prototype.write = function() {
         
         if (i > 0) {
             if (this.fields[i]['field_type'] == 'checkbox') {
-                newRow.append('<td><input type=button id=toggle_' + this.fields[i]['field_name'] + ' value="Toggle All" title="Toggles international shipping on or off for all variations."/>');
-                $('#toggle_' + this.fields[i]['field_name']).click(function() {
-                    toggleInternationalShipping();
-                });
+                var toggleButton = $('<input type=button id=toggle_' + this.fields[i]['field_name'] + ' value="Toggle All" title="Toggles international shipping on or off for all variations."/>');
+                toggleButton.click(toggleButtonGenerator(this.fields[i]['field_name']));
+                var toggleField = $('<td>').append(toggleButton);
+                newRow.append(toggleField);
             } else {
                 var setAllButton = $('<input type=button title="Sets ' + this.fields[i]['field_title'] + ' for every variation to match the left most." value="Set All" />')
                 setAllButton.click(setAllButtonGenerator(this.fields[i]['field_name']));
@@ -119,23 +85,16 @@ Table.prototype.write = function() {
     setFormStyle();
 }
 
-function toggleInternationalShipping() {
-    table.updateValues();
-    var setTo = ($('#int_shipping0').prop("checked"));
-    if (setTo === true) {
-        setTo = 'FALSE';
-    } else {
-        setTo = 'TRUE';
-    }                
-
-    for (row in table.rows) {
-        for (field in table.rows[row].row) {
-            if (table.rows[row].row[field].name == 'int_shipping') {
-                table.rows[row].row[field].value = setTo;      
-            } 
+function toggleButtonGenerator(field_name) {
+    return function(event){
+        table.updateValues();
+        var setTo = variations.variations[0].details[field_name].value;
+        setTo = !setTo;
+        for (variation in variations.variations) {
+            variations.variations[variation].details[field_name].value = setTo;
         }
+        table.write();
     }
-    table.write();
 }
 
 Table.prototype.resetRowNumbers = function() {

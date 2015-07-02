@@ -18,7 +18,7 @@ VariationField.prototype.getInput = function() {
         row = row + '" disabled';
     }
     if (this.type == 'checkbox') {
-        if (this.value == 'TRUE') {
+        if (this.value == true) {
             row = row + ' checked ';
         }
     }
@@ -28,7 +28,13 @@ VariationField.prototype.getInput = function() {
 
 VariationField.prototype.updateValue = function() {
     var input = $('#' + this.id);
-    if (input.val() != null) {
+    if (this.type == 'checkbox') {
+        if (input.attr('checked')) {
+            this.value = true;
+        } else {
+            this.value = false;
+        }
+    } else if (input.val() != null) {
         this.value = input.val();
     }
 }
