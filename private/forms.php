@@ -106,48 +106,45 @@ function echoVarSetupRow($fields, $i, $variation) {
 }
 
 function writeVarSetup($product, $newRows=0) {
-    ?>
-    <div class=pagebox>
-        <div>
-        <table id=add_variation_types class=form_section>
-            
-        </table>
-        </div>
-        <br />
-        <div>
-        <table id=add_variations class=form_section>
-            
-        </table>
-        </div>
-        <br />
-        <div>
-            <table id=list_of_variations class=form_section>
-                
-            </table>
-        </div>
-    </div>
-    <?php
-    echo "<div id=var_error class=hidden ></div>";
-    $fields = getVarSetupFields();
-    echo "\n<form method='post' id='var_form' enctype='multipart/form-data'>\n";
     $fields = getVarSetupFields();
     $values = getVarSetupValues();
     echo "<script>productName = '" . $product->details['item_title']->text . "';</script>\n";
     echo "<script>var fields = " . json_encode($fields) . "</script>\n";
     echo "<script>var values = " . json_encode($values) . "</script>\n";
-    echo "<script>keyFields = " . json_encode($product->keyFields) . "</script>";
-    echo "<table id=var_setup class=form_section >";
-    echo "</table>";
-    echo "</form>";
-    echo "<script src=/scripts/var_form_validate.js></script>";
-    echo "<script src=/scripts/variation_table.js></script>";
-    
+    echo "<script>keyFields = " . json_encode($product->keyFields) . "</script>\n";
     ?>
-    <table class=form_nav>
+    <div class="pagebox">
+        <div>
+        <table id="add_variation_types" class="form_section">
+            
+        </table>
+        </div>
+        <br />
+        <div>
+        <table id="add_variations" class="form_section">
+            
+        </table>
+        </div>
+        <div>
+            <table id="list_of_variations" class="form_section">
+                
+            </table>
+        </div>
+    </div>
+    <br />
+    <div id="var_error" class="hidden" ></div>
+        <form method="post" id="var_form" enctype="multipart/form-data">
+            <table id="var_setup" class="form_section" >
+    
+            </table>
+        </form>
+    <script src="/scripts/var_form_validate.js"></script>
+    <script src="/scripts/variation_table.js"></script>
+    <table class="form_nav">
         <tr>
             <td>
-                <input value='<< Previous' type=submit name=previous />
-                <input value='Next >>' type=submit name=next />
+                <input value="<< Previous" type="submit" name="previous" />
+                <input value="Next >>" type="submit" name="next" />
             </td>
         </tr>
     </table>
