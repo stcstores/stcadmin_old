@@ -355,6 +355,7 @@ function write() {
     $('#add_variation_types tr').remove();
     $('#list_of_variables tr').remove();
     $('#list_of_variations tr').remove();
+    $('#var_setup tr').remove();
     
     addAddVariationTypes();
     addAddVariations();
@@ -363,6 +364,8 @@ function write() {
     if (variations.variations.length > 1) {
         set_variation_numbers();
         table = new Table(fields, values);
+    } else {
+        table = undefined;
     }
     
     
