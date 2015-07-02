@@ -15,7 +15,7 @@ if ( !empty( $_POST ) ) {
     add_variation($product);
     
     if (isset($_POST['previous'])) {
-        header('Location: new_linnworks_product_1_basic_info.php');
+        header('Location: new_linnworks_product_var_setup.php');
         exit();
     }
     

@@ -182,6 +182,13 @@ function getSpecialCharacters() {
     return $results;
 }
 
+function getKeyFields() {
+    $selectQuery = "SELECT * FROM new_product_form_field WHERE `can_be_key` = TRUE;";
+    $database = new DatabaseConnection();
+    $results = $database->selectQuery($selectQuery);
+    return $results;
+}
+
 function list_pending_products() {
     $basicInfoCsv = new BasicInfoFile();
     $basicInfo = $basicInfoCsv->read();

@@ -50,7 +50,8 @@ if (isset($_SESSION['new_product'])) {
     <?php
             if (count($product->variations) > 0) {
                 echo '<h3>Variations<a class="editlink" href="new_linnworks_product_variations.php" >Edit</a></h3>';
-                echo "<table id=testvar>";
+                echo "<div class=variation_table >";
+                echo "<table id=testvar >";
                 echo "<tr>";
                 $fields = getVarSetupFields();
                 
@@ -81,6 +82,7 @@ if (isset($_SESSION['new_product'])) {
                     echo "</tr>";
                 }
                 echo "</table>";
+                echo "</div>";
             } else {
                 echo '<h3>Extended Properties<a class="editlink" href="new_linnworks_product_2_extended_properties.php" >Edit</a></h3>';
                 echo "<table>";

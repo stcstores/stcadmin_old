@@ -142,6 +142,13 @@ h4 {
     box-shadow: 5px 5px 3px <?php $colours->echoColour(1, 4); ?>;
 }
 
+.variation_table {
+    table-layout: fixed;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    width: 100%;
+}
+
 table.form_section td {
     padding: 0.5em;
     padding-bottom: 0.5em;
@@ -295,4 +302,22 @@ a.questionmark_link {
     font-size: 0.75em;
     font-weight: normal;
     margin-left: 1em;
+}
+
+.remove_x {
+    color: black;
+    cursor: pointer;
+    
+}
+
+.variation_box {
+    padding: 0.5em;
+    background: <?php $colours->echoColour(3, 1); ?>;
+    color: <?php $colours->echoColour(2, 2); ?>;
+    border-radius: 5px;
+}
+
+.varient_disabled {
+    color: black;
+    background: gray;
 }
