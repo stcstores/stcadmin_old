@@ -330,7 +330,7 @@ function addVariationGenerator(field) {
             rawInput = rawInput.replace(', ', ',');
             var variations = rawInput.split(',');
             for (i in variations) {
-                addVariation(field, variations[i]);
+                addVariation(field, variations[i].trim());
             }
             write();
         }
