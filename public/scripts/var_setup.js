@@ -28,6 +28,7 @@ VariationField.prototype.getInput = function() {
 
 VariationField.prototype.updateValue = function() {
     var input = $('#' + this.id);
+    
     if (this.type == 'checkbox') {
         if (input.attr('checked')) {
             this.value = true;
@@ -67,7 +68,20 @@ Variation.prototype.setNumber = function(number){
     this.number = number;
 }
 
-
+Variation.prototype.updateTitle = function() {
+    var title_append = this.details['var_append'].value;
+    if (title_append != null) {
+        var name = productName;
+        
+        for (attr in this.attributes) {
+            name = name + ' {' + this.attributes[attr] + '}';
+        }
+        
+        name = name + ' ' + title_append;
+        
+        this.details['var_name'].value = name;
+    }
+}
 
 function VariationType(name, title){
     this.used = false;

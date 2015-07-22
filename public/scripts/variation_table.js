@@ -7,8 +7,10 @@ function TableRow(number, fields, values=null) {
 
 Table.prototype.updateValues = function() {
     for (variation in variations.variations) {
-        for (detail in variations.variations[variation].details)
-        variations.variations[variation].details[detail].updateValue();
+        for (detail in variations.variations[variation].details) {
+            variations.variations[variation].details[detail].updateValue();
+        }
+        variations.variations[variation].updateTitle();
     }
 }
 
@@ -83,6 +85,19 @@ Table.prototype.write = function() {
     }
     
     setFormStyle();
+    
+    for (i=0; i < variations.variations.length; i++) {
+        $('#var_append' + i).blur(resetTableGenerator());
+    }
+    
+    
+}
+
+function resetTableGenerator() {
+    return function() {
+        table.updateValues();
+        table.write();
+    }
 }
 
 function toggleButtonGenerator(field_name) {
