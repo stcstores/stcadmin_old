@@ -15,5 +15,6 @@ $CONFIG = array(
     'include' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/include.php',
     'archive' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/new_product_files/archive/',
     'navbar' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/navbar.php',
-    'login_functions' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/login_functions.php'
+    'login_functions' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/login_functions.php',
+    'api_class' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/linnworks_api.php'
 );
