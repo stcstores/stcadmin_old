@@ -22,9 +22,12 @@ function getDatabaseColumn($table, $column){
     return $resultArray;
 }
 
-function getShippingMethods(){
-    $database = new DatabaseConnection();
-    $shippingMethods = $database -> getColumn('shipping_methods', 'method');
+function getShippingMethods($api){
+    $response = $api->getShippingMethods();
+    $shippingMethods = array();
+    foreach ($response as $method) {
+        $shippingMethods[] = $method['name'];
+    }
     return $shippingMethods;
 }
 
