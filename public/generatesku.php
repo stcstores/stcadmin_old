@@ -1,8 +1,9 @@
 <?php
-require_once('../private/axevalley_tools.php');
-require_once('../private/functions.php');
+require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
+require_once($CONFIG['include']);
 
+$api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
-echo generateSku();
+echo $api->getNewSKU();
 
 ?>

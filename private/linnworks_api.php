@@ -147,5 +147,11 @@ class LinnworksAPI {
         return $locations;
     }
     
+    function getNewSku() {
+        $url = $this -> server . '/api/Stock/GetNewSKU';
+        $response = $this -> request($url);
+        return $response;
+    }
+    
     
 }
