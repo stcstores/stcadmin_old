@@ -1,28 +1,24 @@
 <?php
 
 function checkLogin($admin_required=false) {
-    if (isset($_SESSION['username'])) {
-        if (in_array($_SESSION['username'], getUsernames())) {
-            if (isset($_SESSION['user_id'])) {
-                if (in_array($_SESSION['user_id'], getUserIds())) {
-                    if ($_SESSION['user_id'] == getUserId($_SESSION['username'])) {
-                        if ($admin_required == false) {
-                            return true;
-                        } else {
-                            if (isAdmin($_SESSION['username'])) {
-                                return true;
-                            } else {
-                                header('Location:/no_admin.php');
-                                exit();
-                            }
-                        }
-                    }
-                }
-            }
+    $userID = getUserId($_SESSION['username'], $_SESSION['password']);
+    if ($userID == '8aa976fb-f6aa-4899-a1da-07662ab5ba56'){
+        return true;
+        if ($_SESSION['timeout'] > time()){
+            return true;
         }
     }
     header('location:/logout.php');
     exit();
+}
+
+function login($username, $password) {
+    $userID = getUserId($username, $password);
+    if ($userID == '8aa976fb-f6aa-4899-a1da-07662ab5ba56'){
+        createLoginSession($username, $password);
+        return true;
+    }
+    return false;
 }
 
 function isAdmin($username) {
@@ -42,90 +38,44 @@ function isAdmin($username) {
 
 function isLoggedIn() {
     if (isset($_SESSION['username'])){
-        if (isset($_SESSION['user_id'])) {
-            if ($_SESSION['user_id'] == getUserId($_SESSION['username'])) {
-                return true;
-            }
+        if (isset($_SESSION['password'])) {
+            return true;
         }
     }
     return false;
 }
 
-function getUserIds() {
-    $database = new DatabaseConnection();
-    $selectQuery = "SELECT user_id FROM login;";
-    $results = $database->selectQuery($selectQuery);
-    $userIds = array();
-    foreach ($results as $result) {
-        $userIds[] = $result['user_id'];
-    }
-    return $userIds;    
+function getUserId($username, $password) {
+    $loginURL = 'https://api.linnworks.net/api/Auth/Multilogin';
+    $authURL = 'https://api.linnworks.net/api/Auth/Authorize';
+    $data = array('userName' => $username, 'password' => $password);
+    $multiLogin = makeRequest($loginURL, $data);
+    $userID = $multiLogin[0]['Id'];
+    return $userID;    
 }
 
-function getUsernames() {
-    $database = new DatabaseConnection();
-    $selectQuery = "SELECT username FROM login;";
-    $results = $database->selectQuery($selectQuery);
-    $userIds = array();
-    foreach ($results as $result) {
-        $userIds[] = $result['username'];
-    }
-    return $userIds;    
+function makeRequest($url, $data) {
+    $curl = curl_init();
+    $headers = array(
+        'Content-Type: application/json',
+    );
+    curl_setopt($curl, CURLOPT_POST, false);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+    curl_setopt($curl, CURLOPT_CAINFO, dirname($_SERVER['DOCUMENT_ROOT']) . '/private/certificates/thawtePrimaryRootCA.crt');
+    $dataString = http_build_query($data);
+    curl_setopt($curl, CURLOPT_URL, $url . '?' . $dataString);
+    echo curl_error($curl);
+    $response = curl_exec($curl);
+    $response = json_decode($response, true);
+    return $response;
 }
 
-function addUser($username, $password, $admin) {
-    if (!(in_array($username, getUsernames()))){
-        $database = new DatabaseConnection();
-        $hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
-        
-        $insertQuery = "INSERT INTO login (username, password_hash, admin) VALUES ('" . $username . "', '" . $hash . "', " . $admin . ");";
-        echo $insertQuery;
-        $database->insertQuery($insertQuery);
-        return true;
-    }
-    
-    return false;    
-}
-
-function getHash($username) {
-    $database = new DatabaseConnection();
-    $selectQuery = "SELECT * from login;";
-    $results = $database->selectQuery($selectQuery);
-    foreach($results as $result) {
-        if ($result['username'] == $username) {
-            return $result['password_hash'];
-        }
-    }
-}
-
-function getUserId($username) {
-    $database = new DatabaseConnection();
-    $selectQuery = "SELECT user_id, username from login;";
-    $results = $database->selectQuery($selectQuery);
-    foreach($results as $result) {
-        if ($result['username'] == $username) {
-            return $result['user_id'];
-        }
-    }
-}
-
-function login($username, $password) {
-    if (in_array($username, getUsernames())){
-        $hash = getHash($username);
-        if (password_verify($password, $hash)) {
-            //echo "<p>Password Verified</p>";
-            $userId = getUserId($username);
-            if (createLoginSession($userId, $username)) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-function createLoginSession($userId, $username) {
+function createLoginSession($username, $password) {
     $_SESSION['username'] = $username;
-    $_SESSION['user_id'] = $userId;
+    $_SESSION['password'] = $password;
     $_SESSION['timeout'] = time() + 60*60*2;
     return true;
 }

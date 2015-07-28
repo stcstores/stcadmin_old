@@ -33,7 +33,7 @@ if ( !empty($_POST) ) {
 
 require_once($CONFIG['header']);
 
-$api = new LinnworksAPI('stcstores@yahoo.com', 'cosworth');
+$api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
 ?>
 

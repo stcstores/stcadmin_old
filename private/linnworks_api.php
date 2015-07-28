@@ -57,6 +57,7 @@ class LinnworksAPI {
         $authorise = $this -> makeRequest($authURL, $data);
         $this -> token = $authorise['Token'];
         $this -> server = $authorise['Server'];
+        return true;
     }
     
     function getCategoryInfo() {
