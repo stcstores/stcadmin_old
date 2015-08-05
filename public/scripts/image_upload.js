@@ -35,7 +35,8 @@ function writeImages(data) {
         
         for (image in data[sku]['images']) {
             var imageNumber = image;
-            var imageId = data[sku]['images'][image]['id'];
+            var imageThumb = data[sku]['images'][image]['thumbPath'];
+            var imageGuid = data[sku]['images'][image]['guid'];
             var primary = data[sku]['images'][image]['primary'];
             $("#sku" + sku).append("<div id=sku" + sku + "image" + imageNumber + " class=imagebox >");
             var imageDiv = $('#sku' + sku + "image" + imageNumber);
@@ -44,22 +45,22 @@ function writeImages(data) {
                 imageDiv.addClass('primary');
                 imageDiv.append('<p>Primary Image</p>');
             }
-            imageDiv.append("<img src='image.php?id=" + imageId + "' width=100 />");
+            imageDiv.append("<img src='" + imageThumb + "' />");
             if (primary == false) {
                 var setPrimeButton = $("<input type=button value='Set Primary' />");
                 setPrimeButton.attr('sku', sku);
                 setPrimeButton.attr('imageId', imageId);
                 setPrimeButton.click(function() {
-                    var imageId = $(this).attr('imageId');
+                    var imageGuid = $(this).attr('imageId');
                     var sku = $(this).attr('sku');
-                    setPrimary(imageId, sku);
+                    setPrimary(imageGuid, sku);
                 });
                 imageDiv.append(setPrimeButton);
                 //imageDiv.append("<input type=button value='Set Primary' onclick='setPrimary(" + imageId + ", " + sku + ")' />");
             }
             var removeButton = $("<input type=button value=Remove />");
             removeButton.attr('sku', sku);
-            removeButton.attr('imageId', imageId);
+            removeButton.attr('imageId', imageGuid);
             removeButton.click(function(){
                 var imageId = $(this).attr('imageId');
                 var sku = $(this).attr('sku');
