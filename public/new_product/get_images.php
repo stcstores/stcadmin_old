@@ -5,29 +5,31 @@
     $product = $_SESSION['new_product'];
     
     if ($product->details['var_type']->value == true) {
-        $skus = array();
-        foreach ($product->variations as $variation) {
-            $skus[$variation->details['sku']->text] = $variation->details['var_name']->text;
-        }
+        $products = $product->variations;
     } else {
-        $skus = array($product->details['sku']->text => $product->details['item_title']->text);
+        $products = array($product);
     }
     
 
-    $imageDatabase = new DatabaseConnection();
     $skuList = array();
-    foreach ($skus as $sku => $title) {        
-        $selectQuery = ("SELECT * FROM images WHERE sku='{$sku}' ORDER BY is_primary DESC;");
-        $imageResults = $imageDatabase->selectQuery($selectQuery);
-        //print_r($imageResults);
+    foreach ($products as $item) {        
         $imageList = array();
-        foreach ($imageResults as $image) {
+        $i = 0;
+        foreach ($item->images->images as $image) {
             $imageData = array();
-            $imageData['id'] = $image['id'];
-            $imageData['primary'] = $image['is_primary'];
+            $imageData['thumbPath'] = $image->thumbPath;
+            $imageData['guid'] = $image->guid;
+            if ($i == 0){
+                $imageData['primary'] = true;
+            } else {
+                $imageData['primary'] = false;
+            }
             $imageList[] = $imageData;
+            
+            $i++;
         }
-        $skuList[$sku]['title'] = htmlspecialchars($title);
+        $sku = $product->details['sku']->text;
+        $skuList[$sku]['title'] = htmlspecialchars($item->details['item_title']->text);
         $skuList[$sku]['images'] = $imageList;
     }
 
