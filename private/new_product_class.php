@@ -5,6 +5,7 @@ class NewProduct{
         $this->errors = $this->createFieldsArray();
         $this->variations = array();
         $this->details['sku'] = new SKU('sku', $this);
+        $this->details['guid'] = new GUID('guid', $this);
         
         //basic info
         $this->details['item_title'] = new ProductDetail('item_title', $this);
@@ -74,6 +75,7 @@ class NewVariation  extends NewProduct {
         $this->product = $product;
         $this->errors = $this->createFieldsArray();
         $this->details['sku'] = new SKU('sku', $this);
+        $this->details['guid'] = new GUID('guid', $this);
         $this->details['var_append'] = new ProductDetail('var_append', $this);
         
         //basic info
@@ -119,6 +121,13 @@ class SKU extends ProductDetail {
     function __construct($name, $product) {
         parent::__construct($name, $product);
         $this->set(generateSku());
+    }
+}
+
+class GUID extends ProductDetail {
+    function __construct($name, $product) {
+        parent::__construct($name, $product);
+        $this->set(createGUID());
     }
 }
 
