@@ -3,6 +3,13 @@ require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
 checkLogin();
 
+if (isset($_SESSION['new_product'])) {
+    $product = $_SESSION['new_product'];
+} else {
+    echo "NO PRODUCT";
+    exit();
+}
+
 if (isset($_POST['sku'])){
     
     if (is_array($_FILES)) {
@@ -10,6 +17,15 @@ if (isset($_POST['sku'])){
         $i=0;
         $sku = $_POST['sku'];
         $errors = array();
+        if ($_SESSION['new_product']->details['var_type']->value) {
+            foreach ($product->variations as $variation) {
+                if ($variation->details['sku']->text == $sku) {
+                    $currentProduct = $variation;
+                }
+            }
+        } else {
+            $currentProduct = $product;
+        }
 
         if (isset($_FILES[$sku]['tmp_name'])) {
             $data = array();
@@ -36,7 +52,11 @@ if (isset($_POST['sku'])){
     $response = array();
     
     foreach ($data as $image){
-        $response[] = $api -> uploadImage($image);
+        $response = $api -> uploadImage($image);
+        $guid = $response[0]['FileId'];
+        $thumbPath = $response[0]['ThumbnailUrl'];
+        $fullPath = $response[0]['ImageUrl'];
+        $currentProduct->images->addImage($guid, $thumbPath, $fullPath);
     }
     print_r($response);
 } else {
