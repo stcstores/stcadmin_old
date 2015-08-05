@@ -55,9 +55,43 @@ if (!isset($_SESSION['new_product'])) {
         echo "</table>";
     }
     echo "</div>";
+    
+    
     ?>
     
-
+    <div>
+        <table>
+            <?php
+            if (count($product->variations) > 0) {
+                foreach ($product->variations as $var) {
+                    ?>
+                    <tr>
+                        <?php
+                            foreach ($var->images->images as $image) {
+                                ?>
+                                    <td><img src='<?php echo $image->thumbPath; ?>' /></td>
+                                <?php
+                            }
+                        ?>
+                    </tR>
+                    <?php
+                }
+            } else {
+                ?>
+                <tr>
+                <?php
+                foreach ($product->images->images as $image) {
+                    ?>
+                        <td><img src='<?php echo $image->thumbPath; ?>' /></td>
+                    <?php
+                }
+                ?>
+                </tr>
+                <?php
+            }
+            ?>
+        </table>
+    </div>
     
     <table>
         <tr>
@@ -81,7 +115,10 @@ if (!isset($_SESSION['new_product'])) {
         <?php } ?>
     </table>
     
+ <?php
+ print_r($product->images[0]->thumbPath);
  
+ ?>
     
     <script>
         $('#write_product').click(function() {

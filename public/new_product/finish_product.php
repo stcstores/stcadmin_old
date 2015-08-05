@@ -75,8 +75,8 @@ if (isset($_SESSION['new_product'])) {
                         }
                     }
                     echo "<td class=image_row>";
-                    foreach (getImageIdsForSKU($variation->details['sku']->text) as $image) {
-                        echo "<img class=in_table_image src='image.php?id=" . $image['id'] . "' width=50 />";
+                    foreach ($variation->images->images as $image) {
+                        echo "<img class=in_table_image src='" . $image->thumbPath . "' />";
                     }                    
                     echo "</td>";
                     echo "</tr>";
@@ -100,8 +100,8 @@ if (isset($_SESSION['new_product'])) {
                 echo "<tr>";
                 echo "<td>Images</td>";
                 echo "<td class=image_row>";
-                foreach (getImageIdsForSKU($product->details['sku']->text) as $image) {
-                    echo "<img class=in_table_image src='image.php?id=" . $image['id'] . "' width=100 />";
+                foreach ($product->images->images as $image) {
+                    echo "<img class=in_table_image src='" . $image->thumbPath . "' />";
                 }                    
                 echo "</td>";
                 echo "</tr>";
