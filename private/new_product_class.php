@@ -53,6 +53,8 @@ class NewProduct{
             $this->keyFields[$keyField['field_name']] = false;
         }
         
+        $this -> images = new Images();
+        
     }
     
     function setTitle($title) {
@@ -100,6 +102,8 @@ class NewVariation  extends NewProduct {
         $this->details['depth'] = new ProductDetail('depth', $this);
         $this->details['material'] = new ProductDetail('material', $this);
         $this->details['style'] = new ProductDetail('style', $this);
+        
+        $this -> images = new Images();
     }
 }
 
@@ -159,6 +163,47 @@ class Has_Variations extends ProductDetail {
             $this->value = false;
             $this->text = 'false';
         }
+    }
+}
+
+class Images {
+    function __construct() {
+        $this -> images = array();
+        $this -> primary = 0;
+    }
+    
+    function setPrimary($guid) {
+        $i = 0;
+        foreach ($this->images as $image) {
+            if ($image->guid == $guid) {
+                $this -> primary = $i;
+            }
+            $i++;
+        }
+    }
+    
+    function addImage($guid, $thumbPath, $fullPath) {
+        $this -> images[] = new Image($guid, $thumbPath, $fullPath);
+    }
+    
+    function removeImage($guid) {
+        $i = 0;
+        foreach ($this->images as $image) {
+            if ($image->guid == $guid) {
+                $idToRemove = $i;
+            }
+            $i++;
+        }
+        
+        unset($this->images[$idToRemove]);
+    }
+}
+
+class Image {
+    function __construct($guid, $thumbPath, $fullPath) {
+        $this -> guid = $guid;
+        $this -> thumbPath = $thumbPath;
+        $this -> fullPath = $fullPath;
     }
 }
 
