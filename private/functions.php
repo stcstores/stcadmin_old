@@ -39,22 +39,8 @@ function getFormFieldsByPage($page){
 }
 
 function generateSku() {
-    $newSKU = NULL;
-    $existingSKUs = getExistingSkus();
-    while ($newSKU == NULL) {        
-        $currentSKU = '';
-        
-        for ( $counter = 0; $counter <= 5; $counter += 1) {
-            $currentSKU = $currentSKU . rand(0,9);
-        }
-        
-        if (!in_array($currentSKU, $existingSKUs)) {
-            $newSKU = $currentSKU;
-        }
-    }
-    
-    //addSkuToDatabase($newSKU);
-    return $newSKU;
+    $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+    return $api->getNewSku();
 }
 
 function addSkuToDatabase($sku) {
@@ -227,7 +213,10 @@ function list_pending_products() {
 }
 
 function createGUID() {
-    return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+    $guid = shell_exec('python ' . dirname($_SERVER['DOCUMENT_ROOT']) . '/private/get_uuid.py');
+    $guid = str_replace(array("\r", "\n"), '', $guid);
+    return $guid;
+
 }
 
 ?>
