@@ -1,30 +1,24 @@
 <?php
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
-require_once($CONFIG['axevalley_tools']);
-require_once($CONFIG['functions']);
+require_once($CONFIG['include']);
+checkLogin();
 
 if (isset($_POST['sku'])){
     
     if (is_array($_FILES)) {
+        $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
         $i=0;
         $sku = $_POST['sku'];
         $errors = array();
 
         if (isset($_FILES[$sku]['tmp_name'])) {
+            $data = array();
             foreach ($_FILES[$sku]['tmp_name'] as $file) {
                 if(is_uploaded_file($file)) {
                     $filename = $_FILES[$sku]['name'][$i];
-                    if (hasImageExtenstion($filename)) {
-                        $extension = pathinfo($filename, PATHINFO_EXTENSION);
-                        if ( skuHasImages($sku) ) {
-                            $primary = false;
-                        } else {
-                            $primary = true;
-                        }
-                        imageToDatabase($file, $sku, $primary, $extension);
-                    } else {
-                        $errors[] = 'Is not a valid image type. Must be .jpg, .jpeg, .png or .gif';
-                    }
+                    $curlFile = curl_file_create(realpath($file), 'image/jpeg', $filename);
+                    $image = array('file' => $curlFile);
+                    $data[] = $image;
                 } else {
                     $errors[] = "not uploaded file";
                 }
@@ -35,9 +29,16 @@ if (isset($_POST['sku'])){
             $errors[] = 'No Errors';
         }
         foreach($errors as $err) {
-            echo "<p class=error >{$err}</p>";
+            //echo "<p class=error >{$err}</p>";
         }
     }
+    
+    $response = array();
+    
+    foreach ($data as $image){
+        $response[] = $api -> uploadImage($image);
+    }
+    print_r($response);
 } else {
     echo "no sku";
 }

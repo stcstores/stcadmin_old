@@ -153,5 +153,24 @@ class LinnworksAPI {
         return $response;
     }
     
+    function uploadImage($data) {
+        $url = $this -> server . '/api/Uploader/UploadFile?type=Image&expiredInHours=24&token=' . $this -> token;
+        $curl = curl_init();
+        $headers = array(
+            'Content-Type: multipart/form-data',
+        );
+        
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+        //curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        $response = json_decode($response, true);
+        return $response;
+    }
+    
     
 }
