@@ -3,11 +3,12 @@ require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
 checkLogin();
 
-if (isset($_SESSION['new_product'])) {
-    $product = $_SESSION['new_product'];
-} else {
-    echo "NO PRODUCT";
-    exit();
+$product = $_SESSION['new_product'];
+$products = array($product);
+if ($product->details['var_type']->value == true) {
+    foreach ($product->variations as $variation){
+        $products[] = $variation;
+    }
 }
 
 if (isset($_POST['sku'])){
@@ -17,15 +18,12 @@ if (isset($_POST['sku'])){
         $i=0;
         $sku = $_POST['sku'];
         $errors = array();
-        if ($_SESSION['new_product']->details['var_type']->value) {
-            foreach ($product->variations as $variation) {
-                if ($variation->details['sku']->text == $sku) {
-                    $currentProduct = $variation;
-                }
+        foreach ($products as $item) {
+            if ($item->details['sku']->text == $sku) {
+                $currentProduct = $item;
             }
-        } else {
-            $currentProduct = $product;
         }
+
 
         if (isset($_FILES[$sku]['tmp_name'])) {
             $data = array();

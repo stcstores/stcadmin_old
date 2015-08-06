@@ -3,34 +3,41 @@
     require_once($CONFIG['include']);
     
     $product = $_SESSION['new_product'];
-    
+    $products = array($product);
     if ($product->details['var_type']->value == true) {
-        $products = $product->variations;
-    } else {
-        $products = array($product);
+        foreach ($product->variations as $variation){
+            $products[] = $variation;
+        }
     }
     
 
     $skuList = array();
-    foreach ($products as $item) {        
+    foreach ($products as $item) {
+        $productNumber = 0;
         $imageList = array();
-        $i = 0;
+        $imageNumber = 0;
         foreach ($item->images->images as $image) {
             $imageData = array();
             $imageData['thumbPath'] = $image->thumbPath;
             $imageData['guid'] = $image->guid;
-            if ($i == 0){
+            if ($imageNumber == 0){
                 $imageData['primary'] = true;
             } else {
                 $imageData['primary'] = false;
             }
             $imageList[] = $imageData;
             
-            $i++;
+            $imageNumber++;
         }
-        $sku = $product->details['sku']->text;
-        $skuList[$sku]['title'] = htmlspecialchars($item->details['item_title']->text);
+        $sku = $item->details['sku']->text;
+        if (array_key_exists('item_title', $item->details)) {
+            $skuList[$sku]['title'] = htmlspecialchars($item->details['item_title']->text);
+        } else {
+            $skuList[$sku]['title'] = htmlspecialchars($item->details['var_name']->text);
+        }
         $skuList[$sku]['images'] = $imageList;
+        $productNumber ++;
+        
     }
 
     echo json_encode($skuList);

@@ -97,18 +97,20 @@ if (isset($_SESSION['new_product'])) {
                     echo "</td>";
                     echo "</tr>";
                 }
-                echo "<tr>";
-                echo "<td>Images</td>";
-                echo "<td class=image_row>";
-                foreach ($product->images->images as $image) {
-                    echo "<img class=in_table_image src='" . $image->thumbPath . "' />";
-                }                    
-                echo "</td>";
-                echo "</tr>";
                 echo "</table>";
             }
-        ?>
-    
+            ?>
+    <h3>Images</h3>
+    <table>
+        <tr>
+            <?php
+                foreach ($product->images->images as $image) {
+                    echo "<td class=image_row><img class=in_table_image src='" . $image->thumbPath . "' /></td>";
+                }
+            ?>
+        </tr>
+    </table>
+                
     <h3>eBay Details<a class="editlink" href="new_linnworks_product_ebay.php" >Edit</a></h3>
     <table>
         <tr>

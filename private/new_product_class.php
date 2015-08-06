@@ -176,10 +176,13 @@ class Images {
         $i = 0;
         foreach ($this->images as $image) {
             if ($image->guid == $guid) {
-                $this -> primary = $i;
+                $newPrimeId = $i;
             }
             $i++;
         }
+        $newPrimeImage = $this->images[$newPrimeId];
+        unset($this->images[$newPrimeId]);
+        array_unshift($this->images, $newPrimeImage);
     }
     
     function addImage($guid, $thumbPath, $fullPath) {

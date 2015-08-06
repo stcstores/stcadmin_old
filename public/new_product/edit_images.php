@@ -1,27 +1,37 @@
 <?php
 
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
-    require_once($CONFIG['include']);
+require_once($CONFIG['include']);
+
+$product = $_SESSION['new_product'];
+
+$product = $_SESSION['new_product'];
+    $products = array($product);
+    if ($product->details['var_type']->value == true) {
+        foreach ($product->variations as $variation){
+            $products[] = $variation;
+        }
+    }
     
 var_dump($_POST);
 
+$guid = $_POST['guid'];
+$sku = $_POST['sku'];
+
 if (isset($_POST['remove'])) {
-    
-    $query = "DELETE FROM images WHERE sku='{$_POST['sku']}' AND id={$_POST['imageId']};";
-    $imageDatabase = new DatabaseConnection();
-    $imageDatabase->insertQuery($query);
-    
-    $selectQuery = "SELECT id FROM images WHERE sku='{$_POST['sku']}';";
-    $imageResults = $imageDatabase->selectQuery($selectQuery);
-    if (count($imageResults) > 0) {
-        setImagePrimary($_POST['sku'], $imageResults[0]['id']);
+    foreach ($products as $currentProduct) {
+        if ($currentProduct->details['sku']->text == $sku) {
+            $currentProduct->images->removeImage($guid);
+        }
     }
 }
 
 if (isset($_POST['setprime'])) {
-    $sku = $_POST['sku'];
-    $imageId = $_POST['imageId'];
-    setImagePrimary($sku, $imageId);
+    foreach ($products as $currentProduct) {
+        if ($currentProduct->details['sku']->text == $sku) {
+            $currentProduct->images->setPrimary($guid);
+        }
+    }
 }
 
 ?>

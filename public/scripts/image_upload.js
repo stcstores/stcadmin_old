@@ -15,10 +15,11 @@ function reload() {
 
 function writeImages(data) {
     $('#currentImages').html('');
-    for (sku in data) {            
+    for (sku in data) {
+        var skuData = data[sku];
         $('#currentImages').append("<div id=sku" + sku + " class='skubox'>");
         var skuBox = $('#sku' + sku);
-        skuBox.append("<h3>" + data[sku]['title'] + "</h3>");
+        skuBox.append("<h3>" + skuData['title'] + "</h3>");
         
         skuBox.append("<form enctype='multipart/form-data' method='post' id=addImage" + sku + " class=addImage >");
         var form = $('#addImage' + sku);
@@ -27,17 +28,16 @@ function writeImages(data) {
         browseButton.sku = sku;
         browseButton.change(function() {
             var buttonsku = this.id.replace('browseButton', '');
-            //alert(buttonsku);
             uploadImages(buttonsku);
         });
         
-        //form.append("<input type=button value='Upload' onClick=uploadImages('" + sku + "') />");
-        
-        for (image in data[sku]['images']) {
-            var imageNumber = image;
-            var imageThumb = data[sku]['images'][image]['thumbPath'];
-            var imageGuid = data[sku]['images'][image]['guid'];
-            var primary = data[sku]['images'][image]['primary'];
+        for (thisImage in skuData['images']) {
+            var image = skuData['images'][thisImage];
+            var imageNumber = thisImage;
+            var imageThumb = image['thumbPath'];
+            var imageGuid = image['guid'];
+            console.log(sku);
+            var primary = image['primary'];
             $("#sku" + sku).append("<div id=sku" + sku + "image" + imageNumber + " class=imagebox >");
             var imageDiv = $('#sku' + sku + "image" + imageNumber);
             
@@ -48,37 +48,35 @@ function writeImages(data) {
             imageDiv.append("<img src='" + imageThumb + "' />");
             if (primary == false) {
                 var setPrimeButton = $("<input type=button value='Set Primary' />");
-                setPrimeButton.attr('sku', sku);
-                setPrimeButton.attr('imageId', imageId);
-                setPrimeButton.click(function() {
-                    var imageGuid = $(this).attr('imageId');
-                    var sku = $(this).attr('sku');
-                    setPrimary(imageGuid, sku);
-                });
+                setPrimeButton.click(setPrimaryGenerator(sku, imageGuid));
                 imageDiv.append(setPrimeButton);
-                //imageDiv.append("<input type=button value='Set Primary' onclick='setPrimary(" + imageId + ", " + sku + ")' />");
             }
             var removeButton = $("<input type=button value=Remove />");
-            removeButton.attr('sku', sku);
-            removeButton.attr('imageId', imageGuid);
-            removeButton.click(function(){
-                var imageId = $(this).attr('imageId');
-                var sku = $(this).attr('sku');
-                removeImage(imageId, sku);
-            });
+            removeButton.click(removeImageGenerator(sku, imageGuid));
             imageDiv.append(removeButton);
-            //imageDiv.append("<input type=button value=Remove onclick='removeImage(" + imageId + ", " + sku + ")' />");
         }
     }
 }
 
-function removeImage(imageId, sku){
-    console.log(sku);
+function removeImageGenerator(sku, guid) {
+    return function (event) {
+        removeImage(sku, guid);
+    };
+}
+
+function setPrimaryGenerator(sku, guid) {
+    return function (event) {
+        setPrimary(sku, guid);
+    };
+}
+
+function removeImage(sku, guid){
+    console.log(guid);
     disableInputs();
     var data = new FormData();
     data.append('remove', 1);
-    data.append('imageId', imageId);
     data.append('sku', String(sku));
+    data.append('guid', String(guid));
     $.ajax({
         url: '/new_product/edit_images.php',
         type: "POST",
@@ -91,16 +89,15 @@ function removeImage(imageId, sku){
         }
     });
     reload();
-    
 }
 
-function setPrimary(imageId, sku){
+function setPrimary(sku, guid){
     console.log(sku);
     disableInputs();
     var data = new FormData();
     data.append('setprime', 1);
-    data.append('imageId', imageId);
     data.append('sku', String(sku));
+    data.append('guid', String(guid));
     $.ajax({
         url: '/new_product/edit_images.php',
         type: "POST",
@@ -113,14 +110,12 @@ function setPrimary(imageId, sku){
         }
     });
     reload();
-    
 }
 
 function writeErrors(errors) {
     console.debug(errors);
     $('#errors').html('');
     $('#errors').append(errors['responseText']);
-    
 }
 
 function uploadImages(sku) {
@@ -146,10 +141,7 @@ function uploadImages(sku) {
         error: function()  {
             
         }
-    });
-    
-
-    
+    }); 
 }
 
 function disableInputs() {
