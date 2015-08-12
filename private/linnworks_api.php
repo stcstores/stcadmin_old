@@ -7,12 +7,16 @@ class LinnworksAPI {
         $this -> username = $username;
         $this -> password = $password;
         $this -> userID = null;
-        $this -> token = null;
         $this -> server = null;
+        
+        if (isset($_SESSION['token'])){
+            $this -> token = $_SESSION['token'];
+            $this -> server = $_SESSION['server'];
+        } else {
+            $this -> getToken();
+        }
+        
         $this -> curl = $this -> curlSetup();
-        
-        
-        $this -> getToken();
     }
     
     function curlSetup() {
@@ -26,6 +30,8 @@ class LinnworksAPI {
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($curl, CURLOPT_CAINFO, dirname($_SERVER['DOCUMENT_ROOT']) . '/private/certificates/thawtePrimaryRootCA.crt');
+        curl_setopt($curl, CURLOPT_VERBOSE, true);
+        curl_setopt($curl, CURLOPT_HEADER, true);
         return $curl;
     }
     
@@ -35,8 +41,19 @@ class LinnworksAPI {
         curl_setopt($curl, CURLOPT_URL, $url . '?' . $dataString);
         echo curl_error($curl);
         $response = curl_exec($curl);
-        $response = json_decode($response, true);
-        return $response;
+        $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $header_size);
+        $body = substr($response, $header_size);
+        //print_r($header);
+        //echo "<br />";
+        //echo "<br />";
+        //print_r($body);
+        //echo "<br />";
+        //echo "<br />";
+        //echo "<br />";
+        //echo "<br />";
+        $responseJson = json_decode($body, true);
+        return $responseJson;
     }
     
     function request($url, $data=null) {
@@ -55,7 +72,9 @@ class LinnworksAPI {
         $this -> userID = $multiLogin[0]['Id'];
         $data['userId'] = $this -> userID;
         $authorise = $this -> makeRequest($authURL, $data);
+        $_SESSION['token'] = $authorise['Token'];
         $this -> token = $authorise['Token'];
+        $_SESSION['server'] = $authorise['Server'];
         $this -> server = $authorise['Server'];
         return true;
     }
@@ -155,10 +174,12 @@ class LinnworksAPI {
     
     function uploadImage($data) {
         $url = $this -> server . '/api/Uploader/UploadFile?type=Image&expiredInHours=24&token=' . $this -> token;
-        $curl = curl_init();
+        $curl = $this->curl;
         $headers = array(
             'Content-Type: multipart/form-data',
         );
+        
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLINFO_HEADER_OUT, true);
@@ -168,8 +189,19 @@ class LinnworksAPI {
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($curl);
-        $response = json_decode($response, true);
-        return $response;
+        $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $header_size);
+        $body = substr($response, $header_size);
+        //print_r($header);
+        //echo "<br />";
+        //echo "<br />";
+        //print_r($body);
+        //echo "<br />";
+        //echo "<br />";
+        //echo "<br />";
+        //echo "<br />";
+        $responseJson = json_decode($body, true);
+        return $responseJson;
     }
     
     function assignImages($productGuid, $imageGuidArray) {
