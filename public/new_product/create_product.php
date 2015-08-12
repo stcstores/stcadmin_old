@@ -129,20 +129,49 @@ function getExtendedPropertiesArray($product) {
     return $extendedProperties;
 }
 
-function getImageUploadArray($product) {
-    $sku = $product->details['sku']->text;
-    $url = $api->server . '/api/Uploader/UploadFileFromUrl'
-    $imageInfo = getImageIdsForSKU($sku);
-    foreach ($imageInfo as $image) {
-        $imageUrl = $IMAGEURLPATH . $image['id'];
-        $data = array();
-        $data['type'] = 'Image';
-        $data['url'] = $imageUrl;
-        $data['expiredInHours'] = '24';
-        $api->request($url, $data);
+function getImageAssignArrays($products) {
+    $imageArrays = array();
+    foreach ($products as $item) {
+        $guid = $item->details['guid']->text;
+        $imageArrays[$guid] = array();
+        foreach ($item->images->images as $image) {
+            $imageArrays[$guid][] = $image->guid;
+        }
+    }
+    
+    return $imageArrays;
+    
+}
+
+function getPrimaryImages($products) {
+    $primaryImages = array();
+    foreach ($products as $item) {
+        $guid = $item->details['guid']->text;
+        $imageGuid = $item->images->images[0]->guid;
+        $primaryImages[$guid] = $imageGuid;
+    }
+    return $primaryImages;
+}
+
+function assignImages($api, $product) {
+    $product = $_SESSION['new_product'];
+    $products = array($product);
+    if ($product->details['var_type']->value == true) {
+        foreach ($product->variations as $variation){
+            $products[] = $variation;
+        }
+    }
+    foreach (getImageAssignArrays($products) as $productGuid => $imageArray) {
+        echo "<br />";
+        print_r($api->assignImages($productGuid, $imageArray));
+    }
+    foreach (getPrimaryImages($products) as $guid => $imageGuid) {
+        print_r($api->setPrimaryImage($guid, $imageGuid));
+        echo "<br />";
     }
 }
 
 createItem($api, $product);
 updateItem($api, $product);
 createExtendedProperties($api, $product);
+assignImages($api, $product);
