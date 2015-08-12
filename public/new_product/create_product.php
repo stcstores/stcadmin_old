@@ -15,7 +15,11 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 function getCreateInventoryItem($product) {
     $item = array();
     $item['ItemNumber'] = (string)$product->details['sku']->text;
-    $item['ItemTitle'] = (string)$product->details['item_title']->text;
+    if (array_key_exists('var_name', $product->details)){
+        $item['ItemTitle'] = (string)$product->details['var_name']->text;
+    } else {
+        $item['ItemTitle'] = (string)$product->details['item_title']->text;
+    }
     $item['BarcodeNumber'] = (string)$product->details['barcode']->text;
     $item['PurchasePrice'] = (string)$product->details['purchase_price']->text;
     $item['RetailPrice'] = (string)$product->details['retail_price']->text;
@@ -173,7 +177,37 @@ function assignImages($api, $product) {
     }
 }
 
-createItem($api, $product);
-updateItem($api, $product);
-createExtendedProperties($api, $product);
+function getCreateVariationGroupTemplate($product) {
+    $template = array();
+    $template['ParentSKU'] = $product->details['sku']->text;
+    $template['VariationGroupName'] = $product->details['item_title']->text;
+    $template['ParentStockItemId'] = $product->details['guid']->text;
+    $variationIds = array();
+    foreach ($product->variations as $variation) {
+        $variationIds[] = $variation->details['guid']->text;
+    }
+    $template['VariationItemIds'] = $variationIds;
+    return json_encode($template);
+}
+
+function createVariationGroup($api, $product) {
+    $url = $api->server . '/api/Stock/CreateVariationGroup';
+    $data = array();
+    $data['template'] = getCreateVariationGroupTemplate($product);
+    print_r($api->request($url, $data));
+}
+
+if ($product->details['var_type']->value == true) {
+    foreach ($product->variations as $variation) {
+        createItem($api, $variation);
+        updateItem($api, $product);
+        createExtendedProperties($api, $product);
+    }
+    createVariationGroup($api, $product);
+} else {
+    createItem($api, $product);
+    updateItem($api, $product);
+    createExtendedProperties($api, $product);
+}
+
 assignImages($api, $product);
