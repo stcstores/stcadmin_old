@@ -172,5 +172,24 @@ class LinnworksAPI {
         return $response;
     }
     
+    function assignImages($productGuid, $imageGuidArray) {
+        $url = $this->server . '/api/Inventory/UploadImagesToInventoryItem';
+        $data = array();
+        $data['inventoryItemId'] = $productGuid;
+        $data['imageIds'] = json_encode($imageGuidArray);
+        echo "<br />";
+        print_r($data);
+        echo "<br />";
+        $response = $this->request($url, $data);
+        return $response;
+    }
     
+    function setPrimaryImage($productGuid, $imageGuid) {
+        $url = $this->server . '/api/Inventory/SetInventoryItemImageAsMain';
+        $data = array();
+        $data['inventoryItemId'] = $productGuid;
+        $data['mainImageId'] = $imageGuid;
+        $response = $this->request($url, $data);
+        return $response;
+    }
 }
