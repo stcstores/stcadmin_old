@@ -111,8 +111,8 @@ class ProductDetail {
     function __construct($name, $product) {
         $this->name = $name;
         $this->product = $product;
-        $this->value = NULL;
-        $this->text = NULL;
+        $this->value = null;
+        $this->text = '';
     }
     
     function set($value) {
@@ -198,7 +198,7 @@ class Images {
             $i++;
         }
         
-        unset($this->images[$idToRemove]);
+        array_splice($this->images, $idToRemove, 1);
     }
 }
 
