@@ -9,14 +9,14 @@ class LinnworksAPI {
         $this -> userID = null;
         $this -> server = null;
         
+        $this -> curl = $this -> curlSetup();
+        
         if (isset($_SESSION['token'])){
             $this -> token = $_SESSION['token'];
             $this -> server = $_SESSION['server'];
         } else {
             $this -> getToken();
         }
-        
-        $this -> curl = $this -> curlSetup();
     }
     
     function curlSetup() {
