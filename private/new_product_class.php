@@ -89,7 +89,7 @@ class NewVariation  extends NewProduct {
         $this->details['manufacturer']->set($product->details['manufacturer']->value);
         
         //extended properties
-        $this->details['weight'] = new ProductDetail('weight', $this);
+        $this->details['weight'] = new NumericDetail('weight', $this);
         $this->details['int_shipping'] = new internationalShipping('int_shipping', $this);
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
@@ -97,9 +97,9 @@ class NewVariation  extends NewProduct {
         $this->details['barcode'] = new ProductDetail('barcode', $this);
         $this->details['size'] = new ProductDetail('size', $this);
         $this->details['colour'] = new ProductDetail('colour', $this);
-        $this->details['height'] = new ProductDetail('height', $this);
-        $this->details['width'] = new ProductDetail('width', $this);
-        $this->details['depth'] = new ProductDetail('depth', $this);
+        $this->details['height'] = new NumericDetail('height', $this);
+        $this->details['width'] = new NumericDetail('width', $this);
+        $this->details['depth'] = new NumericDetail('depth', $this);
         $this->details['material'] = new ProductDetail('material', $this);
         $this->details['style'] = new ProductDetail('style', $this);
         
