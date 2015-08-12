@@ -32,7 +32,8 @@ function getCategoryId($api, $categoryName) {
             return $category['id'];
         }
     }
-    // ERROR HANDLE
+    echo "CATEGORY ID ERROR";
+    exit;
 }
 
 function getPackageId($api, $groupName) {
@@ -42,7 +43,8 @@ function getPackageId($api, $groupName) {
             return $group['id'];
         }
     }
-    // ERROR HANDLE
+    echo "PACKAGE ID ERROR";
+    exit;
 }
 
 function getServiceId($api) {
@@ -61,7 +63,7 @@ function getUpdateInventoryItem($api, $product) {
     $item['TaxRate'] = '0';
     $item['StockItemId'] = (string)$product->details['guid']->text;
     $item['VariationGroupName'] = '';
-    $item['MetaData'] = 'short_description';
+    $item['MetaData'] = (string)$product->details['short_description']->text;
     $item['CategoryId'] = getCategoryId($api, $product->details['department']->text);
     $item['PackageGroupId'] = getPackageId($api, $product->details['shipping_method']->text);
     $item['PostalServiceId'] = getServiceId($api);
