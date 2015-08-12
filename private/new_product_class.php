@@ -16,7 +16,7 @@ class NewProduct{
         $this->details['short_description'] = new ProductDetail('short_description', $this);
         
         //extended properties
-        $this->details['weight'] = new ProductDetail('weight', $this);
+        $this->details['weight'] = new NumericDetail('weight', $this);
         $this->details['int_shipping'] = new ProductDetail('int_shipping', $this);
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
@@ -25,9 +25,9 @@ class NewProduct{
         $this->details['shipping_method'] = new ProductDetail('shipping_method', $this);
         $this->details['size'] = new ProductDetail('size', $this);
         $this->details['colour'] = new ProductDetail('colour', $this);
-        $this->details['height'] = new ProductDetail('height', $this);
-        $this->details['width'] = new ProductDetail('width', $this);
-        $this->details['depth'] = new ProductDetail('depth', $this);
+        $this->details['height'] = new NumericDetail('height', $this);
+        $this->details['width'] = new NumericDetail('width', $this);
+        $this->details['depth'] = new NumericDetail('depth', $this);
         $this->details['material'] = new ProductDetail('material', $this);
         $this->details['style'] = new ProductDetail('style', $this);
         
@@ -118,6 +118,24 @@ class ProductDetail {
     function set($value) {
         $this->value = $value;
         $this->text = (string)$value;
+    }
+}
+
+class NumericDetail extends ProductDetail {
+    function __construct($name, $product) {
+        $this->name = $name;
+        $this->product = $product;
+        $this->value = null;
+        $this->text = '0';
+    }
+    
+    function set($value) {
+        $this->value = $value;
+        if ($value > 0) {
+            $this->text = (string)$value;
+        } else {
+            $this->text = '0';
+        }
     }
 }
 
