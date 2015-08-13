@@ -13,7 +13,7 @@ if (isset($_SESSION['new_product'])) {
     header('Location: new_product_start.php');
     exit();
 }
-    echo "<input type=button value='Write Product' id=write_product />";
+    echo "<input type=button value='Create Product' id=create_product />";
     ?>
     <h3>Basic Product Info <a class="editlink" href="new_linnworks_product_1_basic_info.php" >Edit</a></h3>
     <table>
@@ -156,7 +156,7 @@ if (isset($_SESSION['new_product'])) {
     </table>
     
     <script>
-        $('#write_product').click(function() {
+        $('#create_product').click(function() {
             $.ajax({
                 url: 'writeproduct.php',
                 async: false,
@@ -164,7 +164,13 @@ if (isset($_SESSION['new_product'])) {
                 success: function(data){
                 }
             });
-            
+            $.ajax({
+                url: 'create_product.php',
+                async: false,
+                dataType: 'json',
+                success: function(data){
+                }
+            });
             $(this).attr('disabled','disabled');
         });
         
