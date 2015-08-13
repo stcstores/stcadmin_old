@@ -59,7 +59,11 @@ function getServiceId($api) {
 function getUpdateInventoryItem($api, $product) {
     $item = array();
     $item['ItemNumber'] = (string)$product->details['sku']->text;
-    $item['ItemTitle'] = (string)$product->details['item_title']->text;
+    if (array_key_exists('item_title', $product->details)) {
+        $item['ItemTitle'] = (string)$product->details['item_title']->text;
+    } else {
+        $item['ItemTitle'] = (string)$product->details['var_name']->text;
+    }
     $item['BarcodeNumber'] = (string)$product->details['barcode']->text;
     $item['PurchasePrice'] = (string)$product->details['purchase_price']->text;
     $item['RetailPrice'] = (string)$product->details['retail_price']->text;
@@ -83,7 +87,16 @@ function createItem($api, $product) {
     $dataArray = getCreateInventoryItem($product);
     $dataJson = json_encode($dataArray);
     $data = array('inventoryItem' => $dataJson);
+    echo "<br />\n";
+    echo "Create Item Request " . $product->details['sku']->text . "\n";
+    echo "<br />\n";
+    echo "<p>Request</p>\n";
+    print_r($data);
+    echo "<br />\n";
+    echo "<p>Response</p>\n";
     print_r($api -> request($url, $data));
+    echo "<br />\n";
+    echo "<hr>\n";
 }
 
 function updateItem($api, $product) {
@@ -91,7 +104,16 @@ function updateItem($api, $product) {
     $dataArray = getUpdateInventoryItem($api, $product);
     $dataJson = json_encode($dataArray);
     $data = array('inventoryItem' => $dataJson);
+    echo "<br />\n";
+    echo "Update Item Request " . $product->details['sku']->text . "\n";
+    echo "<br />\n";
+    echo "<p>Request</p>\n";
+    print_r($data);
+    echo "<br />\n";
+    echo "<p>Response</p>\n";
     print_r($api -> request($url, $data));
+    echo "<br />\n";
+    echo "<hr>\n";
 }
 
 function createExtendedProperties($api, $product) {
@@ -105,7 +127,16 @@ function createExtendedProperties($api, $product) {
     echo $dataJson;
     echo "<br />";
     $data = array('inventoryItemExtendedProperties' => $dataJson);
+    echo "<br />\n";
+    echo "Extended Properties Request " . $product->details['sku']->text . "\n";
+    echo "<br />\n";
+    echo "<p>Request</p>\n";
+    print_r($data);
+    echo "<br />\n";
+    echo "<p>Response</p>\n";
     print_r($api -> request($url, $data));
+    echo "<br />\n";
+    echo "<hr>\n";
 }
 
 function createExtendedProperty($product, $name, $value, $type) {
@@ -168,12 +199,28 @@ function assignImages($api, $product) {
         }
     }
     foreach (getImageAssignArrays($products) as $productGuid => $imageArray) {
-        echo "<br />";
+        echo "<br />\n";
+        echo "Assign Image Request " . $productGuid . "\n";
+        echo "<br />\n";
+        echo "<p>Request</p>\n";
+        print_r($imageArray);
+        echo "<br />\n";
+        echo "<p>Response</p>\n";
         print_r($api->assignImages($productGuid, $imageArray));
+        echo "<br />\n";
+        echo "<hr>\n";
     }
     foreach (getPrimaryImages($products) as $guid => $imageGuid) {
+        echo "<br />\n";
+        echo "Assign Image Request " . $guid . "\n";
+        echo "<br />\n";
+        echo "<p>Request</p>\n";
+        print_r($imageGuid);
+        echo "<br />\n";
+        echo "<p>Response</p>\n";
         print_r($api->setPrimaryImage($guid, $imageGuid));
-        echo "<br />";
+        echo "<br />\n";
+        echo "<hr>\n";
     }
 }
 
@@ -194,20 +241,27 @@ function createVariationGroup($api, $product) {
     $url = $api->server . '/api/Stock/CreateVariationGroup';
     $data = array();
     $data['template'] = getCreateVariationGroupTemplate($product);
+    echo "Assign Image Request " . $product->details['sku']->text . "\n";
+    echo "<br />\n";
+    echo "<p>Request</p>\n";
+    print_r($data);
+    echo "<br />\n";
+    echo "<p>Response</p>\n";
     print_r($api->request($url, $data));
+    echo "<br />\n";
+    echo "<hr>\n";
 }
 
 if ($product->details['var_type']->value == true) {
     foreach ($product->variations as $variation) {
         createItem($api, $variation);
-        updateItem($api, $product);
-        createExtendedProperties($api, $product);
+        updateItem($api, $variation);
+        createExtendedProperties($api, $variation);
     }
     createVariationGroup($api, $product);
 } else {
     createItem($api, $product);
-    updateItem($api, $product);
-    createExtendedProperties($api, $product);
 }
-
+updateItem($api, $product);
+createExtendedProperties($api, $product);
 assignImages($api, $product);
