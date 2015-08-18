@@ -18,6 +18,10 @@ if (isset($_SESSION['new_product'])) {
     <h3>Basic Product Info <a class="editlink" href="new_linnworks_product_1_basic_info.php" >Edit</a></h3>
     <table>
         <tr>
+            <td>Product ID</td>
+            <td><input value="<?php echo $product->details['guid']->text; ?>" disabled /></td>
+        </tr>
+        <tr>
             <td>Product SKU</td>
             <td><input value="<?php echo $product->details['sku']->text; ?>" disabled /></td>
         </tr>
