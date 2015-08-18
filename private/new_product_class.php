@@ -107,6 +107,41 @@ class NewVariation  extends NewProduct {
         $this->details['material'] = new ProductDetail('material', $this);
         $this->details['style'] = new ProductDetail('style', $this);
         
+        //chn_ebay
+        $this->details['ebay_title'] = new ProductDetail('ebay_title', $this);
+        $this->details['ebay_title']->set($product->details['ebay_title']->value);
+        $this->details['ebay_description'] = new ProductDetail('ebay_description', $this);
+        $this->details['ebay_description']->set($product->details['ebay_description']->value);
+        
+        //ech_amazon
+        $this->details['am_title'] = new ProductDetail('am_title', $this);
+        $this->details['am_title']->set($product->details['am_title']->value);
+        $this->details['am_bullet_1'] = new ProductDetail('am_bullet_1', $this);
+        $this->details['am_bullet_1']->set($product->details['am_bullet_1']->value);
+        $this->details['am_bullet_2'] = new ProductDetail('am_bullet_2', $this);
+        $this->details['am_bullet_2']->set($product->details['am_bullet_2']->value);
+        $this->details['am_bullet_3'] = new ProductDetail('am_bullet_3', $this);
+        $this->details['am_bullet_3']->set($product->details['am_bullet_3']->value);
+        $this->details['am_bullet_4'] = new ProductDetail('am_bullet_4', $this);
+        $this->details['am_bullet_4']->set($product->details['am_bullet_4']->value);
+        $this->details['am_bullet_5'] = new ProductDetail('am_bullet_5', $this);
+        $this->details['am_bullet_5']->set($product->details['am_bullet_5']->value);
+        $this->details['am_description'] = new ProductDetail('am_description', $this);
+        $this->details['am_description']->set($product->details['am_description']->value);
+        
+        //chn_shopify
+        $this->details['shopify_title'] = new ProductDetail('shopify_title', $this);
+        $this->details['shopify_title']->set($product->details['shopify_title']->value);
+        $this->details['shopify_description'] = new ProductDetail('shopify_description', $this);
+        $this->details['shopify_description']->set($product->details['shopify_description']->value);
+        
+        $this->keyFields = array();
+        foreach (getKeyFields() as $keyField) {
+            $this->keyFields[$keyField['field_name']] = false;
+        }
+        
+        $this -> images = new Images();
+        
         $this -> images = new Images();
     }
 }
