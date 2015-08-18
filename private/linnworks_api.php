@@ -224,4 +224,15 @@ class LinnworksAPI {
         $response = $this->request($url, $data);
         return $response;
     }
+    
+    function getVariationGroupIdBySKU($sku) {
+        $url = $this -> server . '/api/Stock/SearchVariationGroups';
+        $data = array();
+        $data['searchText'] = $sku;
+        $data['searchType'] = 'ParentSKU';
+        $data['entriesPerPage'] = '100';
+        $data['pageNumber'] = 1;
+        $response = $this -> request($url, $data);
+        return $response['Data'][0]['pkVariationItemId'];
+    }
 }

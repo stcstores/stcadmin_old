@@ -65,8 +65,16 @@ function getUpdateInventoryItem($api, $product) {
         $item['ItemTitle'] = (string)$product->details['var_name']->text;
     }
     $item['BarcodeNumber'] = (string)$product->details['barcode']->text;
-    $item['PurchasePrice'] = (string)$product->details['purchase_price']->text;
-    $item['RetailPrice'] = (string)$product->details['retail_price']->text;
+    $purchasePrice = (string)$product->details['purchase_price']->text;
+    if ($purchasePrice == "") {
+        $purchasePrice = "0";
+    }
+    $item['PurchasePrice'] = $purchasePrice;
+    $retailPrice = (string)$product->details['retail_price']->text;
+    if ($retailPrice == "") {
+        $retailPrice = "0";
+    }
+    $item['RetailPrice'] = $retailPrice;
     $item['Quantity'] = '0';
     $item['TaxRate'] = '0';
     $item['StockItemId'] = (string)$product->details['guid']->text;
@@ -259,6 +267,8 @@ if ($product->details['var_type']->value == true) {
         createExtendedProperties($api, $variation);
     }
     createVariationGroup($api, $product);
+    $new_guid = $api->getVariationGroupIdBySKU($product->details['sku']->text);
+    $product->details['guid']->set($new_guid);
 } else {
     createItem($api, $product);
 }
