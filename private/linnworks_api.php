@@ -21,11 +21,7 @@ class LinnworksAPI {
     
     function curlSetup() {
         $curl = curl_init();
-        $headers = array(
-            'Content-Type: application/json',
-        );
-        curl_setopt($curl, CURLOPT_POST, false);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
@@ -37,21 +33,14 @@ class LinnworksAPI {
     
     function makeRequest($url, $data) {
         $curl = $this -> curl;
-        $dataString = http_build_query($data);
-        curl_setopt($curl, CURLOPT_URL, $url . '?' . $dataString);
-        echo curl_error($curl);
+        $datastring = http_build_query($data);
+        curl_setopt($curl, CURLOPT_URL, $url . '?token=' . $this->token);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $datastring);
+        $information = curl_getinfo($curl);
         $response = curl_exec($curl);
         $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $header = substr($response, 0, $header_size);
         $body = substr($response, $header_size);
-        //print_r($header);
-        //echo "<br />";
-        //echo "<br />";
-        //print_r($body);
-        //echo "<br />";
-        //echo "<br />";
-        //echo "<br />";
-        //echo "<br />";
         $responseJson = json_decode($body, true);
         return $responseJson;
     }
@@ -60,7 +49,7 @@ class LinnworksAPI {
         if ($data == null) {
             $data = array();
         }
-        $data['token'] = $this -> token;
+        //$data['token'] = $this -> token;
         return $this -> makeRequest($url, $data);
     }
     
