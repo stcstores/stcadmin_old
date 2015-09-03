@@ -169,7 +169,9 @@ function getExtendedPropertiesArray($product) {
         array('Amazon_Bullet_2', (string)$product->details['am_bullet_2']->text, 'Attribute'),
         array('Amazon_Bullet_3', (string)$product->details['am_bullet_3']->text, 'Attribute'),
         array('Amazon_Bullet_4', (string)$product->details['am_bullet_4']->text, 'Attribute'),
-        array('Amazon_Bullet_5', (string)$product->details['am_bullet_5']->text, 'Attribute')
+        array('Amazon_Bullet_5', (string)$product->details['am_bullet_5']->text, 'Attribute'),
+        array('VAT Free', (string)$product->details['vat_free'->text, 'Attribute'),
+        array('InternationalShipping', (string)$product->details['int_shipping']->text, 'Attribute')
     );
     foreach ($properties as $prop) {
         $exProp = createExtendedProperty($product, $prop[0], $prop[1], $prop[2]);

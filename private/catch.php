@@ -48,6 +48,12 @@ function add_extended_properties($product) {
         $product->details['int_shipping']->set('FALSE');
     }
     
+    if (isset($_POST['vat_free'])) {
+        $product->details['vat_free']->set('TRUE');
+    } else {
+        $product->details['vat_free']->set('FALSE');
+    }
+    
     if (isset($_POST['retail_price'])) {
         $product->details['retail_price']->set($_POST['retail_price']);
     }
@@ -168,6 +174,12 @@ function add_variation($product) {
                 $variation->details['int_shipping']->set('TRUE');
             } else {
                 $variation->details['int_shipping']->set('FALSE');
+            }
+            
+            if (isset($_POST['vat_free' . $i])) {
+                $variation->details['vat_free']->set('TRUE');
+            } else {
+                $variation->details['vat_free']->set('FALSE');
             }
             
         }
