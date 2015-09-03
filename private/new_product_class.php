@@ -31,6 +31,7 @@ class NewProduct{
         $this->details['depth'] = new NumericDetail('depth', $this);
         $this->details['material'] = new ProductDetail('material', $this);
         $this->details['style'] = new ProductDetail('style', $this);
+        $this->details['quantity'] = new NumericDetail('quantity', $this);
         
         //chn_ebay
         $this->details['ebay_title'] = new ProductDetail('ebay_title', $this);
@@ -108,6 +109,7 @@ class NewVariation  extends NewProduct {
         $this->details['depth'] = new NumericDetail('depth', $this);
         $this->details['material'] = new ProductDetail('material', $this);
         $this->details['style'] = new ProductDetail('style', $this);
+        $this->details['quantity'] = new NumericDetail('quantity', $this);
         
         //chn_ebay
         $this->details['ebay_title'] = new ProductDetail('ebay_title', $this);

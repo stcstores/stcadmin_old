@@ -23,7 +23,7 @@ function getCreateInventoryItem($product) {
     $item['BarcodeNumber'] = (string)$product->details['barcode']->text;
     $item['PurchasePrice'] = (string)$product->details['purchase_price']->text;
     $item['RetailPrice'] = (string)$product->details['retail_price']->text;
-    $item['Quantity'] = '0';
+    $item['Quantity'] = (string)$product->details['quantity']->text;
     $item['TaxRate'] = '0';
     $item['StockItemId'] = (string)$product->details['guid']->text;
     return $item;
@@ -75,7 +75,7 @@ function getUpdateInventoryItem($api, $product) {
         $retailPrice = "0";
     }
     $item['RetailPrice'] = $retailPrice;
-    $item['Quantity'] = '0';
+    $item['Quantity'] = (string)$product->details['quantity']->text;
     $item['TaxRate'] = '0';
     $item['StockItemId'] = (string)$product->details['guid']->text;
     $item['VariationGroupName'] = '';

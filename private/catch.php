@@ -97,6 +97,10 @@ function add_extended_properties($product) {
     if (isset($_POST['size'])) {
         $product->details['size']->set($_POST['size']);
     }
+    
+    if (isset($_POST['quantity'])) {
+        $product->details['quantity']->set($_POST['quantity']);
+    }
 }
 
 function add_chn_ebay($product) {
