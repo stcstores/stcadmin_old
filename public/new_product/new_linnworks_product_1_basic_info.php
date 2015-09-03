@@ -109,7 +109,9 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                         $shippingMethods = $api->getPackagingGroupInfo();
                         foreach ($shippingMethods as $shippingMethod){
                             $method = $shippingMethod['name'];
-                            echo "<option value='" . $method . "' >" . $method . "</option>" . $method . "\n";
+                            if($method != 'Default') {
+                                echo "<option value='" . $method . "' >" . $method . "</option>" . $method . "\n";
+                            }
                         }
                     ?>
                 </select>
