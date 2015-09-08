@@ -63,7 +63,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
             <td class=form_table_input>
                 <input name=var_type type=checkbox />
             </td>
-            <td class=form_field_table_description >Does the product have variations?</td>
+            <td class=form_field_table_description >Is the product a variation item</td>
         </tr>
         <tr>
             <td class=form_table_field_name >
@@ -79,7 +79,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                     ?>
                 </select>
             </td>
-            <td class=form_field_table_description >Department to which this product will belong</td>
+            <td class=form_field_table_description >Department to which this product belongs</td>
         </tr>
         <tr>
             <td class=form_table_field_name >
@@ -116,7 +116,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                     ?>
                 </select>
             </td>
-            <td class=form_field_table_description >Select the method by which the item will be posted. Select courier for items too large to send by Royal Mail.</td>
+            <td class=form_field_table_description >Select the method by which the item will be posted</td>
         </tr>
         <tr>
             <td class=form_table_field_name >
@@ -125,7 +125,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
             <td class=form_table_input>
                 <textarea rows=4 cols=45 id=short_description name=short_description required ></textarea>
             </td>
-            <td class=form_field_table_description >A brief description of the product. Primarily used for identification within Linnworks</td>
+            <td class=form_field_table_description >Product description text</td>
         </tr>
     </table>
     <table class=form_nav>
