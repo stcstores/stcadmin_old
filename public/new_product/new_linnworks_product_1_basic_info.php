@@ -50,10 +50,11 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                 <label for="item_title">Item Title</label>
             </td>
             <td class=form_table_input>
-                <input id=item_title name=item_title type=text value='' size=50 required  />
+                <input id=item_title name=item_title type=text value='<?php echo $product->details['item_title']->text;?>' size=50 required  />
             </td>
             <td class=form_field_table_description >
                 Required. Between 5 and 50 characters. Must not contain <a href="/new_product/specialcharacters.php" tabindex=-1>special characters</a>.
+                This title is for internal identification and should NOT contain search terms or keywords.
             </td>
         </tr>
         <tr>
@@ -74,7 +75,11 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                     <?php
                         $departments = $api->getCategoryNames();
                         foreach ($departments as $dept){
-                            echo "<option value='" . $dept . "' >" . $dept . "</option>" . $dept . "\n";
+                            echo "<option value='" . $dept . "' ";
+                                if ($dept == $product->details['department']->text) {
+                                    echo " selected ";
+                                }
+                                echo ">" . $dept . "</option>" . $dept . "\n";
                         }
                     ?>
                 </select>
@@ -86,7 +91,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                 <label for="brand">Brand</label>
             </td>
             <td class=form_table_input>
-                <input id=brand name=brand type=text value='' size=20  />
+                <input id=brand name=brand type=text value='<?php echo $product->details['brand']->text;?>' size=20  />
             </td>
             <td class=form_field_table_description >The brand of the product</td>
         </tr>
@@ -95,7 +100,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                 <label for="manufacturer">Manufacturer</label>
             </td>
             <td class=form_table_input>
-                <input id=manufacturer name=manufacturer type=text value='' size=20  />
+                <input id=manufacturer name=manufacturer type=text value='<?php echo $product->details['manufacturer']->text;?>' size=20  />
             </td>
             <td class=form_field_table_description >The manufacturer of the product</td>
         </tr>
@@ -110,7 +115,12 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                         foreach ($shippingMethods as $shippingMethod){
                             $method = $shippingMethod['name'];
                             if($method != 'Default') {
-                                echo "<option value='" . $method . "' >" . $method . "</option>" . $method . "\n";
+                                echo "<option value='" . $method . "' ";
+                                if ($method == $product->details['shipping_method']->text) {
+                                    echo " selected ";
+                                }
+                                echo ">" . $method . "</option>" . $method . "\n";
+                                
                             }
                         }
                     ?>
@@ -123,7 +133,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                 <label for="short_description">Short Description</label>
             </td>
             <td class=form_table_input>
-                <textarea rows=4 cols=45 id=short_description name=short_description required ></textarea>
+                <textarea rows=4 cols=45 id=short_description name=short_description required ><?php echo $product->details['short_description']->text;?></textarea>
             </td>
             <td class=form_field_table_description >Product description text</td>
         </tr>
