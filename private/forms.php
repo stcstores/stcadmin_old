@@ -46,7 +46,10 @@ function echoInput($field, $product, $number='') {
     } elseif ($field['field_type'] == 'text') {
         echo "<input id={$field['field_name']} ";
         echo "name={$field['field_name']}{$number} type=text ";
-        echo "value='" . htmlspecialchars($value, ENT_QUOTES) . "' size={$field['size']} ";
+        if ($value != 0) {
+            echo "value='" . htmlspecialchars($value, ENT_QUOTES) . "' ";
+        }
+        echo "size={$field['size']} ";
         if ($field['required'] == true) {
             echo "required ";
         }
