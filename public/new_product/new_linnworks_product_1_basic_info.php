@@ -62,7 +62,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                 <label for="var_type">Variations</label>
             </td>
             <td class=form_table_input>
-                <input name=var_type type=checkbox />
+                <input name=var_type type=checkbox <?php if ($product->details['var_type']->value == true) { echo 'checked'; } ?> />
             </td>
             <td class=form_field_table_description >Is the product a variation item</td>
         </tr>
