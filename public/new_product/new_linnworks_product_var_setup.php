@@ -43,7 +43,6 @@ $_SESSION['new_product'] = $product;
 <script>product_title = '<?php echo $product->details['item_title']->text;?>'</script>
 <script>product_price = '<?php echo $product->details['retail_price']->text;?>'</script>
 <script>product_description = <?php echo json_encode($product->details['short_description']->text);?></script>
-<script src=/scripts/channel_forms.js ></script>
 
 <?php
 
