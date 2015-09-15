@@ -162,6 +162,7 @@ function getExtendedPropertiesArray($product) {
     $properties = array(
         array('Manufacturer', (string)$product->details['manufacturer']->text, 'Attribute'),
         array('Brand', (string)$product->details['brand']->text, 'Attribute'),
+        array('Size', (string)$product->details['size']->text, 'Attribute'),
         array('Colour', (string)$product->details['colour']->text, 'Attribute'),
         array('Material', (string)$product->details['material']->text, 'Attribute'),
         array('Style', (string)$product->details['style']->text, 'Attribute'),
