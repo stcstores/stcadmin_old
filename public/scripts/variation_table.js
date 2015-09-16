@@ -154,6 +154,9 @@ $('#var_form').submit(function(){
         window.scrollTo(0, 0);
         return false;
     }
+    for(varType in variations.variationTypes){
+        $('#var_form').append('<input name="var_' + varType + '" value="' + variations.variationTypes[varType].used + '" />');
+    }
     $(':input').removeAttr('disabled');
     return true;
 });

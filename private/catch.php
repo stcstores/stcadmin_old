@@ -156,6 +156,8 @@ function add_chn_shopify($product) {
 function add_variation($product) {
     $i = 0;
     $variations = array();
+    
+    
     foreach (range(0, getNumberOfVariationsInPost()) as $x) {
         if (array_key_exists($i, $product->variations)) {
             $variation = $product->variations[$i];
@@ -200,16 +202,16 @@ function add_variation($product) {
     $product->variations = $variations;
     
     
-    foreach ($product->keyFields as $field=>$value) {
-        if (array_key_exists('set_key_' . $field, $_POST)){
-            $product->keyFields[$field] = true;
+    foreach ($product->keyFields as $varType => $varValue){
+        if($_POST['var_' . $varType] == 'true') {
+            $product->keyFields[$varType] = true;
         } else {
-            $product->keyFields[$field] = false;
+            $product->keyFields[$varType] = false;
         }
     }
 
     
-    $_SESSION['new_product'] = $product;
+    //$_SESSION['new_product'] = $product;
 }
 
 ?>
