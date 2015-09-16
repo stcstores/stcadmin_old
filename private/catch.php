@@ -209,6 +209,19 @@ function add_variation($product) {
             $product->keyFields[$varType] = false;
         }
     }
+    
+    foreach(getExtendedProperties() as $extendedProperty) {
+        $match = true;
+        $value = $product->variations[0]->details[$extendedProperty['field_name']]->value;
+        foreach($product->variations as $variation) {
+            if ($variation->details[$extendedProperty['field_name']]->value != $value) {
+                $match = false;
+            }
+        }
+        if ($match == true) {
+            $product->details[$extendedProperty['field_name']]->set($product->variations[0]->details[$extendedProperty['field_name']]->value);
+        }
+    }
 
     
     //$_SESSION['new_product'] = $product;

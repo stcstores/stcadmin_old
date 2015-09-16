@@ -125,6 +125,17 @@ function updateItem($api, $product) {
 }
 
 function createExtendedProperties($api, $product) {
+    if ($product->details['var_type']->value == false) {
+        requestExtendedProperties($api, $product, 'single');
+    } else {
+        requestExtendedProperties($api, $product, 'group');
+        foreach ($product->variations as $variation) {
+            requestExtendedProperties($api, $variation, 'variation');
+        }
+    }
+}
+
+function requestExtendedProperties($api, $product, $type) {
     $url = $api -> server . '/api/Inventory/CreateInventoryItemExtendedProperties';
     $dataArray = getExtendedPropertiesArray($product);
     print_r($dataArray);
@@ -157,7 +168,7 @@ function createExtendedProperty($product, $name, $value, $type) {
     return $exProp;
 }
 
-function getExtendedPropertiesArray($product) {
+function getExtendedPropertiesArray($product, $type) {
     $extendedProperties = array();
     $properties = array(
         array('Manufacturer', (string)$product->details['manufacturer']->text, 'Attribute'),
@@ -174,6 +185,15 @@ function getExtendedPropertiesArray($product) {
         array('VAT Free', (string)$product->details['vat_free']->text, 'Attribute'),
         array('InternationalShipping', (string)$product->details['int_shipping']->text, 'Attribute')
     );
+    
+    if ($type == 'variation') {
+        foreach ($product->keyFields as $varType => $varValue) {
+            if ($varValue == true) {
+                $properties[] = array('var_' . $varType), (string)$product->details[$varType]->text, 'Attribute');
+            }
+        }
+    }
+    
     foreach ($properties as $prop) {
         $exProp = createExtendedProperty($product, $prop[0], $prop[1], $prop[2]);
         $extendedProperties[] = $exProp;
@@ -406,7 +426,6 @@ if ($product->details['var_type']->value == true) {
     foreach ($product->variations as $variation) {
         createItem($api, $variation);
         updateItem($api, $variation);
-        createExtendedProperties($api, $variation);
         addPrices($api, $variation);
     }
     createVariationGroup($api, $product);
