@@ -62,6 +62,7 @@ function Variation(attributes) {
             this.details[field.field_name] = new VariationField(this.number, field);
         }
     }
+    this.details['shipping_price'].value = shippingPrice;
 }
 
 Variation.prototype.setNumber = function(number){

@@ -37,6 +37,9 @@ $_SESSION['new_product'] = $product;
 <script>
     keyFields = <?php echo json_encode(getKeyFields()); ?>
 </script>
+<script>
+    shippingPrice = <?php echo $product->details['shipping_price']->value; ?>
+</script>
 <script src=/scripts/var_setup.js ></script>
 <script src=/scripts/formstyle.js ></script>
 <script src=/scripts/validation.js ></script>

@@ -34,6 +34,14 @@ function add_basic_info() {
         $product->details['short_description']->set($_POST['short_description']);
     }
     
+    if ($product->details['shipping_method']->text == 'Packet') {
+        $product->details['shipping_price']->set(2.95);
+    } else if ($product->details['shipping_method']->text == 'Courier') {
+        $product->details['shipping_price']->set(6.70);
+    } else if ($product->details['shipping_method']->text == 'Large Letter') {
+        $product->details['shipping_price']->set(1.00);
+    }
+    
     return $product;
 }
 
