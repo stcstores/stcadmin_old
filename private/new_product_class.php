@@ -30,6 +30,10 @@ class NewProduct{
         $this->details['width'] = new NumericDetail('width', $this);
         $this->details['depth'] = new NumericDetail('depth', $this);
         $this->details['material'] = new ProductDetail('material', $this);
+        $this->details['age'] = new ProductDetail('age', $this);
+        $this->details['design'] = new ProductDetail('design', $this);
+        $this->details['shape'] = new ProductDetail('shape', $this);
+        $this->details['texture'] = new ProductDetail('texture', $this);
         $this->details['style'] = new ProductDetail('style', $this);
         $this->details['quantity'] = new NumericDetail('quantity', $this);
         
@@ -108,6 +112,10 @@ class NewVariation  extends NewProduct {
         $this->details['width'] = new NumericDetail('width', $this);
         $this->details['depth'] = new NumericDetail('depth', $this);
         $this->details['material'] = new ProductDetail('material', $this);
+        $this->details['age'] = new ProductDetail('age', $this);
+        $this->details['design'] = new ProductDetail('design', $this);
+        $this->details['shape'] = new ProductDetail('shape', $this);
+        $this->details['texture'] = new ProductDetail('texture', $this);
         $this->details['style'] = new ProductDetail('style', $this);
         $this->details['quantity'] = new NumericDetail('quantity', $this);
         

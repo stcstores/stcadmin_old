@@ -176,6 +176,10 @@ function getExtendedPropertiesArray($product, $product_type) {
         array('Size', (string)$product->details['size']->text, 'Attribute'),
         array('Colour', (string)$product->details['colour']->text, 'Attribute'),
         array('Material', (string)$product->details['material']->text, 'Attribute'),
+        array('Age', (string)$product->details['age']->text, 'Attribute'),
+        array('Design', (string)$product->details['design']->text, 'Attribute'),
+        array('Shape', (string)$product->details['shape']->text, 'Attribute'),
+        array('Texture', (string)$product->details['texture']->text, 'Attribute'),
         array('Style', (string)$product->details['style']->text, 'Attribute'),
         array('Amazon_Bullet_1', (string)$product->details['am_bullet_1']->text, 'Attribute'),
         array('Amazon_Bullet_2', (string)$product->details['am_bullet_2']->text, 'Attribute'),
@@ -336,7 +340,7 @@ function addPrices($api, $product) {
     $url = $api->server . '/api/Inventory/CreateInventoryItemPrices';
     $inventoryItemPrices = array();
     foreach (getAddPricesForProduct($product) as $channel) {
-        $inventoryItemTitles[] = $channel;
+        $inventoryItemPrices[] = $channel;
     }
     $data = array();
     $data['inventoryItemPrices'] = json_encode($inventoryItemPrices);

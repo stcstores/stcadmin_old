@@ -94,6 +94,22 @@ function add_extended_properties($product) {
         $product->details['material']->set($_POST['material']);
     }
     
+    if (isset($_POST['age'])) {
+        $product->details['age']->set($_POST['age']);
+    }
+    
+    if (isset($_POST['design'])) {
+        $product->details['design']->set($_POST['design']);
+    }
+    
+    if (isset($_POST['shape'])) {
+        $product->details['shape']->set($_POST['shape']);
+    }
+    
+    if (isset($_POST['texture'])) {
+        $product->details['texture']->set($_POST['texture']);
+    }
+    
     if (isset($_POST['style'])) {
         $product->details['style']->set($_POST['style']);
     }
