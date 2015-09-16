@@ -321,3 +321,12 @@ a.questionmark_link {
     color: black;
     background: gray;
 }
+
+.description {
+    border: 1px solid black;
+    background: white;
+    color: black;
+    font-family: sans-serif;
+    font-size: 12px;
+    padding: 1em;
+}

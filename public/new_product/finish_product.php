@@ -123,7 +123,8 @@ if (isset($_SESSION['new_product'])) {
         </tr>
         <tr>
             <td>eBay Description</td>
-            <td><textarea rows=8 cols=75 disabled ><?php echo $product->details['ebay_description']->text; ?></textarea></td>
+            <td><div class=description ><?php echo to_html($product->details['ebay_description']->text); ?></div></td>
+            <td><textarea rows=15 cols=50 disabled ><?php echo to_html($product->details['ebay_description']->text); ?></textarea></td></td>
         </tr>
     </table>
     
@@ -133,17 +134,24 @@ if (isset($_SESSION['new_product'])) {
             <td>Amazon Title</td>
             <td><input value="<?php echo $product->details['am_title']->text; ?>" disabled /></td>
         </tr>
-        <?php
-        for ($i=1; $i<6; $i++) {
-            echo "<tr>";
-            echo "<td>Amazon Bullet " . $i . "</td>";
-            echo '<td><input value="' . $product->details['am_bullet_' . $i]->text . '" disabled /></td>';
-            echo "</tr>";
-        }
-        ?>
         <tr>
             <td>Amazon Description</td>
-            <td><textarea rows=8 cols=75 disabled ><?php echo $product->details['am_description']->text; ?></textarea></td>
+            <td>
+                <div class=description >
+                    <ul>
+                        <?php
+                            $i = 1;
+                            while ($i < 6) {
+                                echo "<li>" . $product->details['am_bullet_' . $i]->text . "</li>";
+                                $i ++;
+                            }
+                            
+                        ?>
+                    </ul>
+                    <?php echo to_html($product->details['am_description']->text); ?>
+                </div>
+            </td>
+            <td><td><textarea rows=15 cols=50 disabled ><?php echo to_html($product->details['am_description']->text); ?></textarea></td></td>
         </tr>
     </table>
     
@@ -155,7 +163,8 @@ if (isset($_SESSION['new_product'])) {
         </tr>
         <tr>
             <td>stcstores.co.uk Description</td>
-            <td><textarea rows=8 cols=75 disabled ><?php echo $product->details['shopify_description']->text; ?></textarea></td>
+            <td><div class=description ><?php echo to_html($product->details['shopify_description']->text); ?></div></td>
+            <td><textarea rows=15 cols=50 disabled ><?php echo to_html($product->details['shopify_description']->text); ?></textarea></td>
         </tr>
     </table>
     

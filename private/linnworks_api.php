@@ -1,5 +1,7 @@
 <?php
 
+set_time_limit ( 150 );
+
 class LinnworksAPI {
     
     

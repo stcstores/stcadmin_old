@@ -1,5 +1,7 @@
 <?php
 
+set_time_limit ( 150 );
+
 function getValuesFromDatabase($table, $column){
     $database = new DatabaseConnection();
     $query = "SELECT {$column} FROM {$table} ORDER BY is_default DESC, {$column};";
@@ -217,6 +219,19 @@ function createGUID() {
     $guid = str_replace(array("\r", "\n"), '', $guid);
     return $guid;
 
+}
+
+function to_html($string) {
+    $lines = explode("\n", $string);
+    $new_string = "";
+    foreach ($lines as $line) {
+        if (trim($line) == '') {
+            $new_string = $new_string . "<br />\n";
+        } else {
+            $new_string = $new_string . "<p>" . trim($line) . "</p>\n";
+        }
+    }
+    return $new_string;
 }
 
 ?>

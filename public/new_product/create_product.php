@@ -135,9 +135,9 @@ function createExtendedProperties($api, $product) {
     }
 }
 
-function requestExtendedProperties($api, $product, $type) {
+function requestExtendedProperties($api, $product, $product_type) {
     $url = $api -> server . '/api/Inventory/CreateInventoryItemExtendedProperties';
-    $dataArray = getExtendedPropertiesArray($product);
+    $dataArray = getExtendedPropertiesArray($product, $product_type);
     print_r($dataArray);
     echo "<br />";
     $dataJson = json_encode($dataArray);
@@ -168,7 +168,7 @@ function createExtendedProperty($product, $name, $value, $type) {
     return $exProp;
 }
 
-function getExtendedPropertiesArray($product, $type) {
+function getExtendedPropertiesArray($product, $product_type) {
     $extendedProperties = array();
     $properties = array(
         array('Manufacturer', (string)$product->details['manufacturer']->text, 'Attribute'),
@@ -186,10 +186,10 @@ function getExtendedPropertiesArray($product, $type) {
         array('InternationalShipping', (string)$product->details['int_shipping']->text, 'Attribute')
     );
     
-    if ($type == 'variation') {
-        foreach ($product->keyFields as $varType => $varValue) {
+    if ($product_type == 'variation') {
+        foreach ($product->product->keyFields as $varType => $varValue) {
             if ($varValue == true) {
-                $properties[] = array('var_' . $varType), (string)$product->details[$varType]->text, 'Attribute');
+                $properties[] = array('var_' . $varType, (string)$product->details[$varType]->text, 'Attribute');
             }
         }
     }
@@ -332,6 +332,54 @@ function getAddTitlesForProduct($product) {
     return array($ebay, $amazon, $shopify);
 }
 
+function addPrices($api, $product) {
+    $url = $api->server . '/api/Inventory/CreateInventoryItemPrices';
+    $inventoryItemPrices = array();
+    foreach (getAddPricesForProduct($product) as $channel) {
+        $inventoryItemTitles[] = $channel;
+    }
+    $data = array();
+    $data['inventoryItemPrices'] = json_encode($inventoryItemPrices);
+    echo "Create Item Prices Request\n";
+    echo "<br />\n";
+    echo "<p>Request</p>\n";
+    print_r($data);
+    echo "<br />\n";
+    echo "<p>Response</p>\n";
+    print_r($api->request($url, $data));
+    echo "<br />\n";
+    echo "<hr>\n";
+}
+
+function getAddPricesForProduct($product) {
+    $price = $product->details['retail_price']->value;
+    $priceWithShipping = $price +  $product->details['shipping_price']->value;
+    
+    $guid = $product->details['guid']->text;
+    $ebay = array();
+    $ebay['pkRowId'] = createGUID();
+    $ebay['Source'] = 'EBAY';
+    $ebay['SubSource'] = 'EBAY0';
+    $ebay['Price'] = (string)$priceWithShipping;
+    $ebay['StockItemId'] = $guid;
+    
+    $amazon = array();
+    $amazon['pkRowId'] = createGUID();
+    $amazon['Source'] = 'AMAZON';
+    $amazon['SubSource'] = 'Stc Stores';
+    $amazon['Price'] = (string)$priceWithShipping;
+    $amazon['StockItemId'] = $guid;
+    
+    $shopify = array();
+    $shopify['pkRowId'] = createGUID();
+    $shopify['Source'] = 'SHOPIFY';
+    $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
+    $shopify['Price'] = $price;
+    $shopify['StockItemId'] = $guid;
+    
+    return array($ebay, $amazon, $shopify);
+}
+
 function addDescriptions($api, $product) {
     $url = $api->server . '/api/Inventory/CreateInventoryItemDescriptions';
     $inventoryItemDescriptions = array();
@@ -357,7 +405,7 @@ function getAddDescriptionsForProduct($product) {
     $ebay['pkRowId'] = createGUID();
     $ebay['Source'] = 'EBAY';
     $ebay['SubSource'] = 'EBAY0';
-    $ebay['Description'] = $product->details['ebay_description']->text;
+    $ebay['Description'] = to_html($product->details['ebay_description']->text);
     $ebay['StockItemId'] = $guid;
     
     $amazon = array();
@@ -371,52 +419,7 @@ function getAddDescriptionsForProduct($product) {
     $shopify['pkRowId'] = createGUID();
     $shopify['Source'] = 'SHOPIFY';
     $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
-    $shopify['Description'] = $product->details['shopify_description']->text;
-    $shopify['StockItemId'] = $guid;
-    
-    return array($ebay, $amazon, $shopify);
-}
-
-function addPrices($api, $product) {
-    $url = $api->server . '/api/Inventory/CreateInventoryItemPrices';
-    $inventoryItemPrices = array();
-    foreach (getAddPricesForProduct($product) as $channel) {
-        $inventoryItemPrices[] = $channel;
-    }
-    $data = array();
-    $data['inventoryItemPrices'] = json_encode($inventoryItemPrices);
-    echo "Create Item Prices Request\n";
-    echo "<br />\n";
-    echo "<p>Request</p>\n";
-    print_r($data);
-    echo "<br />\n";
-    echo "<p>Response</p>\n";
-    print_r($api->request($url, $data));
-    echo "<br />\n";
-    echo "<hr>\n";
-}
-
-function getAddPricesForProduct($product) {
-    $guid = $product->details['guid']->text;
-    $ebay = array();
-    $ebay['pkRowId'] = createGUID();
-    $ebay['Source'] = 'EBAY';
-    $ebay['SubSource'] = 'EBAY0';
-    $ebay['Price'] = $product->details['retail_price']->text;
-    $ebay['StockItemId'] = $guid;
-    
-    $amazon = array();
-    $amazon['pkRowId'] = createGUID();
-    $amazon['Source'] = 'AMAZON';
-    $amazon['SubSource'] = 'Stc Stores';
-    $amazon['Price'] = $product->details['retail_price']->text;
-    $amazon['StockItemId'] = $guid;
-    
-    $shopify = array();
-    $shopify['pkRowId'] = createGUID();
-    $shopify['Source'] = 'SHOPIFY';
-    $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
-    $shopify['Price'] = $product->details['retail_price']->text;
+    $shopify['Description'] = to_html($product->details['shopify_description']->text);
     $shopify['StockItemId'] = $guid;
     
     return array($ebay, $amazon, $shopify);
