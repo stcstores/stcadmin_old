@@ -125,6 +125,14 @@ function add_extended_properties($product) {
     if (isset($_POST['quantity'])) {
         $product->details['quantity']->set($_POST['quantity']);
     }
+    
+    $intPostagePrices = get_international_shipping($product->details['weight']->value);
+    $product->details['shipping_fr']->set($intPostagePrices['fr']);
+    $product->details['shipping_de']->set($intPostagePrices['de']);
+    $product->details['shipping_eu']->set($intPostagePrices['eu']);
+    $product->details['shipping_usa']->set($intPostagePrices['usa']);
+    $product->details['shipping_aus']->set($intPostagePrices['aus']);
+    $product->details['shipping_row']->set($intPostagePrices['row']);
 }
 
 function add_chn_ebay($product) {
@@ -246,9 +254,16 @@ function add_variation($product) {
             $product->details[$extendedProperty['field_name']]->set($product->variations[0]->details[$extendedProperty['field_name']]->value);
         }
     }
-
     
-    //$_SESSION['new_product'] = $product;
+    foreach ($product->variations as $variation) {
+        $intPostagePrices = get_international_shipping($variation->details['weight']->value);
+        $variation->details['shipping_fr']->set($intPostagePrices['fr']);
+        $variation->details['shipping_de']->set($intPostagePrices['de']);
+        $variation->details['shipping_eu']->set($intPostagePrices['eu']);
+        $variation->details['shipping_usa']->set($intPostagePrices['usa']);
+        $variation->details['shipping_aus']->set($intPostagePrices['aus']);
+        $variation->details['shipping_row']->set($intPostagePrices['row']);
+    }
 }
 
 ?>

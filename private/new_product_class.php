@@ -37,6 +37,14 @@ class NewProduct{
         $this->details['style'] = new ProductDetail('style', $this);
         $this->details['quantity'] = new NumericDetail('quantity', $this);
         
+        //international shipping
+        $this->details['shipping_fr'] = new ProductDetail('shipping_fr', $this);
+        $this->details['shipping_de'] = new ProductDetail('shipping_de', $this);
+        $this->details['shipping_eu'] = new ProductDetail('shipping_eu', $this);
+        $this->details['shipping_usa'] = new ProductDetail('shipping_usa', $this);
+        $this->details['shipping_aus'] = new ProductDetail('shipping_aus', $this);
+        $this->details['shipping_row'] = new ProductDetail('shipping_row', $this);
+        
         //chn_ebay
         $this->details['ebay_title'] = new ProductDetail('ebay_title', $this);
         $this->details['ebay_description'] = new ProductDetail('ebay_description', $this);
@@ -118,6 +126,14 @@ class NewVariation  extends NewProduct {
         $this->details['texture'] = new ProductDetail('texture', $this);
         $this->details['style'] = new ProductDetail('style', $this);
         $this->details['quantity'] = new NumericDetail('quantity', $this);
+        
+        //international shipping
+        $this->details['shipping_fr'] = new ProductDetail('shipping_fr', $this);
+        $this->details['shipping_de'] = new ProductDetail('shipping_de', $this);
+        $this->details['shipping_eu'] = new ProductDetail('shipping_eu', $this);
+        $this->details['shipping_usa'] = new ProductDetail('shipping_usa', $this);
+        $this->details['shipping_aus'] = new ProductDetail('shipping_aus', $this);
+        $this->details['shipping_row'] = new ProductDetail('shipping_row', $this);
         
         //chn_ebay
         $this->details['ebay_title'] = new ProductDetail('ebay_title', $this);

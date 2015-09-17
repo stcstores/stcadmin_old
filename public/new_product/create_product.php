@@ -187,7 +187,12 @@ function getExtendedPropertiesArray($product, $product_type) {
         array('Amazon_Bullet_4', (string)$product->details['am_bullet_4']->text, 'Attribute'),
         array('Amazon_Bullet_5', (string)$product->details['am_bullet_5']->text, 'Attribute'),
         array('VAT Free', (string)$product->details['vat_free']->text, 'Attribute'),
-        array('InternationalShipping', (string)$product->details['int_shipping']->text, 'Attribute')
+        array('Shipping FR', (string)$product->details['shipping_fr']->text, 'Attribute'),
+        array('Shipping DE', (string)$product->details['shipping_de']->text, 'Attribute'),
+        array('Shipping EU', (string)$product->details['shipping_eu']->text, 'Attribute'),
+        array('Shipping USA', (string)$product->details['shipping_usa']->text, 'Attribute'),
+        array('Shipping AUS', (string)$product->details['shipping_aus']->text, 'Attribute'),
+        array('Shipping ROW', (string)$product->details['shipping_row']->text, 'Attribute'),
     );
     
     if ($product_type == 'variation') {

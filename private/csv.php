@@ -70,6 +70,17 @@ class CsvFile {
 }
 
 
+class InternationalShippingLookup extends CsvFile {
+    function __construct() {
+        include(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
+        include($CONFIG['constants']);
+        $this->path = dirname($_SERVER['DOCUMENT_ROOT']) . '/private/';
+        $this->filename = 'international_shipping_lookup.csv';
+        $this->filepath = $this->path . '/' . $this->filename;
+        $this->header = ['weight', 'fr', 'de', 'eu', 'usa', 'aus', 'row'];
+    }
+}
+
 
 
 class NewVarGroupFile extends CsvFile {

@@ -234,4 +234,28 @@ function to_html($string) {
     return $new_string;
 }
 
-?>
+function get_international_shipping($weight) {
+    $csv = new InternationalShippingLookup();
+
+    $table = $csv->read();
+    
+    $i = 1;
+    
+    if ($weight > $table['weight'][1]) {
+        while ($table['weight'][$i] < $weight) {
+            $i++;
+        }
+        
+        $i --;
+    }
+    
+    $weights = array();
+    $weights['fr'] = $table['fr'][$i];
+    $weights['de'] = $table['de'][$i];
+    $weights['eu'] = $table['eu'][$i];
+    $weights['usa'] = $table['usa'][$i];
+    $weights['aus'] = $table['aus'][$i];
+    $weights['row'] = $table['row'][$i];
+    
+    return $weights;
+}

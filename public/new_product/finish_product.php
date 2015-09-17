@@ -168,6 +168,34 @@ if (isset($_SESSION['new_product'])) {
         </tr>
     </table>
     
+    <h3>International Shipping</h3>
+    <table>
+        <tr>
+            <td>France</td>
+            <td><input disabled value='<?php echo $product->details['shipping_fr']->value;?>' /></td>
+        </tr>
+        <tr>
+            <td>Germany</td>
+            <td><input disabled value='<?php echo $product->details['shipping_de']->value;?>' /></td>
+        </tr>
+        <tr>
+            <td>Europe</td>
+            <td><input disabled value='<?php echo $product->details['shipping_eu']->value;?>' /></td>
+        </tr>
+        <tr>
+            <td>United States</td>
+            <td><input disabled value='<?php echo $product->details['shipping_usa']->value;?>' /></td>
+        </tr>
+        <tr>
+            <td>Austrailia</td>
+            <td><input disabled value='<?php echo $product->details['shipping_aus']->value;?>' /></td>
+        </tr>
+        <tr>
+            <td>Rest of World</td>
+            <td><input disabled value='<?php echo $product->details['shipping_row']->value;?>' /></td>
+        </tr>
+    </table>
+    
     <script>
         $('#create_product').click(function() {
             $.ajax({
