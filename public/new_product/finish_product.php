@@ -167,7 +167,7 @@ if (isset($_SESSION['new_product'])) {
             <td><textarea rows=15 cols=50 disabled ><?php echo to_html($product->details['shopify_description']->text); ?></textarea></td>
         </tr>
     </table>
-    
+    <?php if (count($product->variations) == 0) { ?>
     <h3>International Shipping</h3>
     <table>
         <tr>
@@ -187,7 +187,7 @@ if (isset($_SESSION['new_product'])) {
             <td><input disabled value='<?php echo $product->details['shipping_usa']->value;?>' /></td>
         </tr>
         <tr>
-            <td>Austrailia</td>
+            <td>Australia</td>
             <td><input disabled value='<?php echo $product->details['shipping_aus']->value;?>' /></td>
         </tr>
         <tr>
@@ -195,7 +195,33 @@ if (isset($_SESSION['new_product'])) {
             <td><input disabled value='<?php echo $product->details['shipping_row']->value;?>' /></td>
         </tr>
     </table>
-    
+    <?php
+    } else {
+        ?>
+        <table>
+            <tr>
+        <?php
+        foreach ($product->variations as $variation) {
+            ?><td colspan=2 /><?php echo $variation->details['var_name']->text;?></td><?php            
+        }
+        ?>
+            </tr>
+            <?php
+            foreach ([['France', 'fr'], ['Germany', 'de'], ['Europe', 'eu'], ['United States', 'usa'], ['Australia', 'aus'],['Rest of World', 'row']] as $country){
+            ?>
+                <tr>
+                    <?php foreach($product->variations as $variation) {
+                        ?>
+                            <td><?php echo $country[0]; ?></td><td><input disabled value='<?php echo $variation->details['shipping_' . $country[1]]->value;?>' /></td>
+                        <?php
+                    }
+                    ?>
+                </tr>
+            <?php } ?>
+        </table>
+        <?php
+    }
+    ?>
     <script>
         $('#create_product').click(function() {
             $.ajax({
