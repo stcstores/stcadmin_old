@@ -193,6 +193,7 @@ function getExtendedPropertiesArray($product, $product_type) {
         array('Shipping USA', (string)$product->details['shipping_usa']->text, 'Attribute'),
         array('Shipping AUS', (string)$product->details['shipping_aus']->text, 'Attribute'),
         array('Shipping ROW', (string)$product->details['shipping_row']->text, 'Attribute'),
+        array('stcadmin', 'TRUE', 'Attribute')
     );
     
     if ($product_type == 'variation') {
