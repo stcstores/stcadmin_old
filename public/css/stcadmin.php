@@ -332,3 +332,7 @@ a.questionmark_link {
 .disabled {
     background: #f0f0f0;
 }
+
+.hidden {
+    display: none;
+}

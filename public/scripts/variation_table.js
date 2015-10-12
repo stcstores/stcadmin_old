@@ -157,7 +157,7 @@ $('#var_form').submit(function(){
         return false;
     }
     for(varType in variations.variationTypes){
-        $('#var_form').append('<input name="var_' + varType + '" value="' + variations.variationTypes[varType].used + '" />');
+        $('#var_form').append('<input name="var_' + varType + '" value="' + variations.variationTypes[varType].used + '" class=hidden />');
     }
     $(':input').removeAttr('disabled');
     return true;
