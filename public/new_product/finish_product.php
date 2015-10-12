@@ -171,56 +171,58 @@ if (isset($_SESSION['new_product'])) {
     </table>
     <?php if (count($product->variations) == 0) { ?>
     <h3>International Shipping</h3>
-    <table>
-        <tr>
-            <td>France</td>
-            <td><input class=disabled readonly value='<?php echo $product->details['shipping_fr']->value;?>' /></td>
-        </tr>
-        <tr>
-            <td>Germany</td>
-            <td><input class=disabled readonly value='<?php echo $product->details['shipping_de']->value;?>' /></td>
-        </tr>
-        <tr>
-            <td>Europe</td>
-            <td><input class=disabled readonly value='<?php echo $product->details['shipping_eu']->value;?>' /></td>
-        </tr>
-        <tr>
-            <td>United States</td>
-            <td><input class=disabled readonly value='<?php echo $product->details['shipping_usa']->value;?>' /></td>
-        </tr>
-        <tr>
-            <td>Australia</td>
-            <td><input class=disabled readonly value='<?php echo $product->details['shipping_aus']->value;?>' /></td>
-        </tr>
-        <tr>
-            <td>Rest of World</td>
-            <td><input class=disabled readonly value='<?php echo $product->details['shipping_row']->value;?>' /></td>
-        </tr>
-    </table>
+        <table>
+            <tr>
+                <td>France</td>
+                <td><input class=disabled readonly value='<?php echo $product->details['shipping_fr']->value;?>' /></td>
+            </tr>
+            <tr>
+                <td>Germany</td>
+                <td><input class=disabled readonly value='<?php echo $product->details['shipping_de']->value;?>' /></td>
+            </tr>
+            <tr>
+                <td>Europe</td>
+                <td><input class=disabled readonly value='<?php echo $product->details['shipping_eu']->value;?>' /></td>
+            </tr>
+            <tr>
+                <td>United States</td>
+                <td><input class=disabled readonly value='<?php echo $product->details['shipping_usa']->value;?>' /></td>
+            </tr>
+            <tr>
+                <td>Australia</td>
+                <td><input class=disabled readonly value='<?php echo $product->details['shipping_aus']->value;?>' /></td>
+            </tr>
+            <tr>
+                <td>Rest of World</td>
+                <td><input class=disabled readonly value='<?php echo $product->details['shipping_row']->value;?>' /></td>
+            </tr>
+        </table>
     <?php
     } else {
         ?>
-        <table>
+        <div class=variation_table>
+            <table>
             <tr>
-        <?php
-        foreach ($product->variations as $variation) {
-            ?><td colspan=2 /><?php echo $variation->details['var_name']->text;?></td><?php            
-        }
-        ?>
-            </tr>
             <?php
-            foreach ([['France', 'fr'], ['Germany', 'de'], ['Europe', 'eu'], ['United States', 'usa'], ['Australia', 'aus'],['Rest of World', 'row']] as $country){
+            foreach ($product->variations as $variation) {
+                ?><td colspan=2 /><?php echo $variation->details['var_name']->text;?></td><?php            
+            }
             ?>
-                <tr>
-                    <?php foreach($product->variations as $variation) {
-                        ?>
-                            <td><?php echo $country[0]; ?></td><td><input class=disabled readonly value='<?php echo $variation->details['shipping_' . $country[1]]->value;?>' /></td>
-                        <?php
-                    }
-                    ?>
                 </tr>
-            <?php } ?>
-        </table>
+                <?php
+                foreach ([['France', 'fr'], ['Germany', 'de'], ['Europe', 'eu'], ['United States', 'usa'], ['Australia', 'aus'],['Rest of World', 'row']] as $country){
+                ?>
+                    <tr>
+                        <?php foreach($product->variations as $variation) {
+                            ?>
+                                <td><?php echo $country[0]; ?></td><td><input class=disabled readonly value='<?php echo $variation->details['shipping_' . $country[1]]->value;?>' /></td>
+                            <?php
+                        }
+                        ?>
+                    </tr>
+                <?php } ?>
+            </table>
+        </div>
         <?php
     }
     ?>
