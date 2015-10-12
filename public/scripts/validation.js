@@ -133,21 +133,6 @@ function itemTitleValidate(input) {
     clearError(input);
 }
 
-function shortDescriptionValidate(input) {
-    input.blur(function() {
-        var value = input.val();
-        removeIllegalChars(input);
-        
-        if (input.val().length == 0) { // if empty
-            writeError(input, 'Product description is required');
-        } else if (input.val().length < 26) { // if title less than 5 chars
-            writeError(input, 'Description must be at least 25 Characters');
-        }
-    });
-    
-    clearError(input);
-}
-
 function writeError(input, text) {
     input.addClass('error');
     var written = false;

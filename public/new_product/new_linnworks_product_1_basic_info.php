@@ -133,7 +133,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                     <label for="short_description">Short Description</label>
                 </td>
                 <td class=form_table_input>
-                    <textarea rows=4 style='width: 100%;' id=short_description name=short_description required ><?php echo $product->details['short_description']->text;?></textarea>
+                    <textarea rows=4 style='width: 100%;' id=short_description name=short_description ><?php echo $product->details['short_description']->text;?></textarea>
                 </td>
                 <td class=form_field_table_description >Product description text</td>
             </tr>
