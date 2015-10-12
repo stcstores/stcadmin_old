@@ -41,20 +41,20 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
 <form method='post' enctype='multipart/form-data'>
     <table id='basic_info' class=form_section>
-        <col span='1' style='width: 10%;' />
-        <col span='1' style='width: 24%;' />
-        <col span='1' style='width: 33%;' />
-        <col span='1' style='width: 33%;' />
+        <col span='1' width= 10% />
+        <col span='1' width= 33% />
+        <col span='1' width= 33% />
+        <!--<col span='1' style='width: 33%;' />-->
         <tr>
             <td class=form_table_field_name >
                 <label for="item_title">Item Title</label>
             </td>
             <td class=form_table_input>
-                <input id=item_title name=item_title type=text value='<?php echo $product->details['item_title']->text;?>' size=50 required  />
+                <input id=item_title name=item_title type=text value='<?php echo $product->details['item_title']->text;?>' style="width: 100%;" maxlength=80 required  />
             </td>
             <td class=form_field_table_description >
-                Required. Between 5 and 50 characters. Must not contain <a href="/new_product/specialcharacters.php" tabindex=-1>special characters</a>.
-                This title is for internal identification and should NOT contain search terms or keywords.
+                <p>Required. Between 5 and 80 characters. Must not contain <a href="/new_product/specialcharacters.php" tabindex=-1>special characters</a>.</p>
+                <p>This title is for internal identification and should NOT contain search terms or keywords.</p>
             </td>
         </tr>
         <tr>
@@ -133,7 +133,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                 <label for="short_description">Short Description</label>
             </td>
             <td class=form_table_input>
-                <textarea rows=4 cols=45 id=short_description name=short_description required ><?php echo $product->details['short_description']->text;?></textarea>
+                <textarea rows=4 style='width: 100%;' id=short_description name=short_description required ><?php echo $product->details['short_description']->text;?></textarea>
             </td>
             <td class=form_field_table_description >Product description text</td>
         </tr>
