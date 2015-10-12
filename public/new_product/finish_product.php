@@ -70,13 +70,29 @@ if (isset($_SESSION['new_product'])) {
                 }
                 echo "<th>Images</th>";
                 
+                $var_names = array();
+                foreach ($product->variations as $variaion) {
+                    $var_names[] = $variaion->details['var_name']->text;
+                }
+                $max_var_name = max(array_map('strlen', $var_names));
+                
                 foreach ($product->variations as $variation) {
                     echo "<tr>";
                     echo "<td><input value='" . $variation->details['sku']->text . "' class=disabled readonly size=11 /></td>";
                     foreach ($fields as $field) {
                         if (!(in_array($field['field_name'], $ignoreFields))) {
                             echo "<td>";
-                            echo '<input value="' . $variation->details[$field['field_name']]->text . '" class=disabled readonly size=10/>';
+                            ?>
+                            <input value="<?php
+                                                if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
+                                                    echo '&pound;' . sprintf("%0.2f",$variation->details[$field['field_name']]->text) .'"';
+                                                } else if ($field['field_name'] == 'var_name') {
+                                                    echo $variation->details[$field['field_name']]->text .'" size="' . $max_var_name;
+                                                } else {
+                                                    echo $variation->details[$field['field_name']]->text .'"';
+                                                }
+                                            ?>" class=disabled readonly size=10/>
+                            <?php
                             echo "</td>";
                         }
                     }
@@ -174,27 +190,27 @@ if (isset($_SESSION['new_product'])) {
         <table>
             <tr>
                 <td>France</td>
-                <td><input class=disabled readonly value='<?php echo $product->details['shipping_fr']->value;?>' /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_fr']->value);?>' size=5 /></td>
             </tr>
             <tr>
                 <td>Germany</td>
-                <td><input class=disabled readonly value='<?php echo $product->details['shipping_de']->value;?>' /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_de']->value);?>' size=5 /></td>
             </tr>
             <tr>
                 <td>Europe</td>
-                <td><input class=disabled readonly value='<?php echo $product->details['shipping_eu']->value;?>' /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_eu']->value);?>' size=5 /></td>
             </tr>
             <tr>
                 <td>United States</td>
-                <td><input class=disabled readonly value='<?php echo $product->details['shipping_usa']->value;?>' /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_usa']->value);?>' size=5 /></td>
             </tr>
             <tr>
                 <td>Australia</td>
-                <td><input class=disabled readonly value='<?php echo $product->details['shipping_aus']->value;?>' /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_aus']->value);?>' size=5 /></td>
             </tr>
             <tr>
                 <td>Rest of World</td>
-                <td><input class=disabled readonly value='<?php echo $product->details['shipping_row']->value;?>' /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_row']->value);?>' size=5 /></td>
             </tr>
         </table>
     <?php
@@ -215,7 +231,7 @@ if (isset($_SESSION['new_product'])) {
                     <tr>
                         <?php foreach($product->variations as $variation) {
                             ?>
-                                <td><?php echo $country[0]; ?></td><td><input class=disabled readonly value='<?php echo $variation->details['shipping_' . $country[1]]->value;?>' /></td>
+                                <td><?php echo $country[0]; ?></td><td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$variation->details['shipping_' . $country[1]]->value);?>' size=5 /></td>
                             <?php
                         }
                         ?>
@@ -226,6 +242,8 @@ if (isset($_SESSION['new_product'])) {
         <?php
     }
     ?>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <script  src="/scripts/jquery.doubleScroll.js"></script>
     <script>
         $('#create_product').click(function() {
             $.ajax({
@@ -255,6 +273,10 @@ if (isset($_SESSION['new_product'])) {
                 }
             }
         });
+        $(document).ready(function(){
+            $('.variation_table').doubleScroll();
+        });
+    
         
     </script>
     
