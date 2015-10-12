@@ -34,10 +34,6 @@ function validate(input) {
         }
     }
     
-    if (inputId === 'short_description') {
-        shortDescriptionValidate(input);
-    }
-    
     var textFields = [/^manufacturer\d*$/i, /^brand\d*$/i, /^size\d*$/i, /^colour\d*$/i, /^style\d*$/i, /^material\d*$/i];
     for (key in textFields) {
         if (textFields[key].test(inputId)) {
