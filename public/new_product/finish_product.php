@@ -19,35 +19,35 @@ if (isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>Product ID</td>
-            <td><input value="<?php echo $product->details['guid']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['guid']->text; ?>" class=disabled readonly size=38 /></td>
         </tr>
         <tr>
             <td>Product SKU</td>
-            <td><input value="<?php echo $product->details['sku']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['sku']->text; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Product Title</td>
-            <td><input value="<?php echo $product->details['item_title']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['item_title']->text; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Description</td>
-            <td><textarea rows=8 cols=75 disabled ><?php echo $product->details['short_description']->text; ?></textarea></td>
+            <td><textarea rows=8 cols=75 class=disabled readonly ><?php echo $product->details['short_description']->text; ?></textarea></td>
         </tr>
         <tr>
             <td>Department</td>
-            <td><input value="<?php echo $product->details['department']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['department']->text; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Brand</td>
-            <td><input value="<?php echo $product->details['brand']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['brand']->text; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Manufacturer</td>
-            <td><input value="<?php echo $product->details['manufacturer']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['manufacturer']->text; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Shipping Method</td>
-            <td><input value="<?php echo $product->details['shipping_method']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['shipping_method']->text; ?>" class=disabled readonly /></td>
         </tr>
     </table>
     
@@ -74,7 +74,7 @@ if (isset($_SESSION['new_product'])) {
                     foreach ($fields as $field) {
                         if (!(in_array($field['field_name'], $ignoreFields))) {
                             echo "<td>";
-                            echo '<input value="' . $variation->details[$field['field_name']]->text . '" disabled size=10/>';
+                            echo '<input value="' . $variation->details[$field['field_name']]->text . '" class=disabled readonly size=10/>';
                             echo "</td>";
                         }
                     }
@@ -97,7 +97,7 @@ if (isset($_SESSION['new_product'])) {
                     echo $field['field_title'];
                     echo "</td>";
                     echo "<td>";
-                    echo '<input value="' . $product->details[$field['field_name']]->text . '" disabled />';
+                    echo '<input value="' . $product->details[$field['field_name']]->text . '" class=disabled readonly />';
                     echo "</td>";
                     echo "</tr>";
                 }
@@ -119,12 +119,12 @@ if (isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>eBay Title</td>
-            <td><input value="<?php echo $product->details['ebay_title']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['ebay_title']->text; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>eBay Description</td>
             <td><div class=description ><?php echo to_html($product->details['ebay_description']->text); ?></div></td>
-            <td><textarea rows=15 cols=50 disabled ><?php echo to_html($product->details['ebay_description']->text); ?></textarea></td></td>
+            <td><textarea rows=15 cols=50 class=disabled readonly ><?php echo to_html($product->details['ebay_description']->text); ?></textarea></td></td>
         </tr>
     </table>
     
@@ -132,7 +132,7 @@ if (isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>Amazon Title</td>
-            <td><input value="<?php echo $product->details['am_title']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['am_title']->text; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Amazon Description</td>
@@ -151,7 +151,7 @@ if (isset($_SESSION['new_product'])) {
                     <?php echo to_html($product->details['am_description']->text); ?>
                 </div>
             </td>
-            <td><td><textarea rows=15 cols=50 disabled ><?php echo to_html($product->details['am_description']->text); ?></textarea></td></td>
+            <td><td><textarea rows=15 cols=50 class=disabled readonly ><?php echo to_html($product->details['am_description']->text); ?></textarea></td></td>
         </tr>
     </table>
     
@@ -159,12 +159,12 @@ if (isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>stcstores.co.uk Title</td>
-            <td><input value="<?php echo $product->details['shopify_title']->text; ?>" disabled /></td>
+            <td><input value="<?php echo $product->details['shopify_title']->text; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>stcstores.co.uk Description</td>
             <td><div class=description ><?php echo to_html($product->details['shopify_description']->text); ?></div></td>
-            <td><textarea rows=15 cols=50 disabled ><?php echo to_html($product->details['shopify_description']->text); ?></textarea></td>
+            <td><textarea rows=15 cols=50 class=disabled readonly ><?php echo to_html($product->details['shopify_description']->text); ?></textarea></td>
         </tr>
     </table>
     <?php if (count($product->variations) == 0) { ?>
@@ -172,27 +172,27 @@ if (isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>France</td>
-            <td><input disabled value='<?php echo $product->details['shipping_fr']->value;?>' /></td>
+            <td><input class=disabled readonly value='<?php echo $product->details['shipping_fr']->value;?>' /></td>
         </tr>
         <tr>
             <td>Germany</td>
-            <td><input disabled value='<?php echo $product->details['shipping_de']->value;?>' /></td>
+            <td><input class=disabled readonly value='<?php echo $product->details['shipping_de']->value;?>' /></td>
         </tr>
         <tr>
             <td>Europe</td>
-            <td><input disabled value='<?php echo $product->details['shipping_eu']->value;?>' /></td>
+            <td><input class=disabled readonly value='<?php echo $product->details['shipping_eu']->value;?>' /></td>
         </tr>
         <tr>
             <td>United States</td>
-            <td><input disabled value='<?php echo $product->details['shipping_usa']->value;?>' /></td>
+            <td><input class=disabled readonly value='<?php echo $product->details['shipping_usa']->value;?>' /></td>
         </tr>
         <tr>
             <td>Australia</td>
-            <td><input disabled value='<?php echo $product->details['shipping_aus']->value;?>' /></td>
+            <td><input class=disabled readonly value='<?php echo $product->details['shipping_aus']->value;?>' /></td>
         </tr>
         <tr>
             <td>Rest of World</td>
-            <td><input disabled value='<?php echo $product->details['shipping_row']->value;?>' /></td>
+            <td><input class=disabled readonly value='<?php echo $product->details['shipping_row']->value;?>' /></td>
         </tr>
     </table>
     <?php
@@ -212,7 +212,7 @@ if (isset($_SESSION['new_product'])) {
                 <tr>
                     <?php foreach($product->variations as $variation) {
                         ?>
-                            <td><?php echo $country[0]; ?></td><td><input disabled value='<?php echo $variation->details['shipping_' . $country[1]]->value;?>' /></td>
+                            <td><?php echo $country[0]; ?></td><td><input class=disabled readonly value='<?php echo $variation->details['shipping_' . $country[1]]->value;?>' /></td>
                         <?php
                     }
                     ?>
@@ -238,11 +238,11 @@ if (isset($_SESSION['new_product'])) {
                 success: function(data){
                 }
             });
-            $(this).attr('disabled','disabled');
+            $(this).attr('class=disabled readonly','class=disabled readonly');
         });
         
         $(':input').each(function() {
-            if ($(this).prop('disabled')) {
+            if ($(this).prop('class=disabled readonly')) {
                 var valLength = $(this).val().length
                 if (valLength > 5) {
                     $(this).attr('size', valLength + 2);

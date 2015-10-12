@@ -330,3 +330,7 @@ a.questionmark_link {
     font-size: 12px;
     padding: 1em;
 }
+
+.disabled {
+    background: #f0f0f0;
+}
