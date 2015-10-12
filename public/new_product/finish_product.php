@@ -13,8 +13,13 @@ if (isset($_SESSION['new_product'])) {
     header('Location: new_product_start.php');
     exit();
 }
-    echo "<input type=button value='Create Product' id=create_product />";
+    $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+    $product_exists = $api->SKU_Exists($product->details['sku']->text);
+    
     ?>
+    
+    <input type=button value='Create Product' id=create_product <?php if ($product_exists) { echo ' disabled '; } ?>/>
+    
     <h3>Basic Product Info <a class="editlink" href="new_linnworks_product_1_basic_info.php" >Edit</a></h3>
     <table>
         <tr>

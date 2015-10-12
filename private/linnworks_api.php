@@ -226,4 +226,12 @@ class LinnworksAPI {
         $response = $this -> request($url, $data);
         return $response['Data'][0]['pkVariationItemId'];
     }
+    
+    function SKU_Exists($sku) {
+        $url = $this -> server . '/api/Stock/SKUExists';
+        $data = array();
+        $data['SKU'] = $sku;
+        $response = $this->request($url, $data);
+        return $response;
+    }
 }
