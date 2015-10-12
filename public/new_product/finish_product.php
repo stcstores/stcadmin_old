@@ -60,7 +60,7 @@ if (isset($_SESSION['new_product'])) {
                 $fields = getVarSetupFields();
                 
                 $ignoreFields = ['var_append'];
-                
+                echo "<th>SKU</th>";
                 foreach ($fields as $field) {
                     if (!(in_array($field['field_name'], $ignoreFields))) {
                         echo "<th>";
@@ -69,8 +69,10 @@ if (isset($_SESSION['new_product'])) {
                     }
                 }
                 echo "<th>Images</th>";
+                
                 foreach ($product->variations as $variation) {
                     echo "<tr>";
+                    echo "<td><input value='" . $variation->details['sku']->text . "' class=disabled readonly size=11 /></td>";
                     foreach ($fields as $field) {
                         if (!(in_array($field['field_name'], $ignoreFields))) {
                             echo "<td>";
