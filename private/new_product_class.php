@@ -99,6 +99,7 @@ class NewVariation  extends NewProduct {
         $this->details['department'] = new ProductDetail('deparmtent', $this);
         $this->details['department']->set($product->details['department']->value);
         $this->details['brand'] = new ProductDetail('brand', $this);
+        $this->details['brand']->set($product->details['brand']->value);
         $this->details['manufacturer'] = new ProductDetail('manufacturer', $this);
         $this->details['manufacturer']->set($product->details['manufacturer']->value);
         $this->details['short_description'] = new ProductDetail('short_description', $this);
