@@ -246,6 +246,8 @@ if (isset($_SESSION['new_product'])) {
     <script  src="/scripts/jquery.doubleScroll.js"></script>
     <script>
         $('#create_product').click(function() {
+            $('#content').empty()
+            $('#content').html('<div style="margin 0 auto;" ><img class=working src=/images/ajax-loader.gif alt=working /></div>');
             $.ajax({
                 url: 'writeproduct.php',
                 async: false,
@@ -268,7 +270,7 @@ if (isset($_SESSION['new_product'])) {
                 success: function(data){
                 }
             });
-            $(this).attr('disabled ','disabled');
+            location.reload();
         });
         
         $(':input').each(function() {
