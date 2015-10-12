@@ -47,7 +47,7 @@ require_once($CONFIG['header']);
                     <label for="ebay_title">eBay Title</label>
                 </td>
                 <td class=form_table_input>
-                    <input id=ebay_title name=ebay_title type=text size=50 value='<?php echo $product->details['ebay_title']->text; ?>' />
+                    <input id=ebay_title name=ebay_title type=text size=50 maxlength=80 value='<?php echo $product->details['ebay_title']->text; ?>' />
                 </td>
                 <td class=form_field_table_description >
                     Title for listing on eBay. Must not contain special characters. Up to 80 characters.
@@ -123,15 +123,15 @@ $_SESSION['new_product'] = $product;
 
 <script>
     $('#set_item_title').click(function() {
-       $('#ebay_title').val(product_title); 
+       $('#ebay_title').val(product_title.substring(0, 79)); 
     });
     
     $('#set_amazon_title').click(function() {
-       $('#ebay_title').val(amazon_title); 
+       $('#ebay_title').val(amazon_title.substring(0, 79)); 
     });
     
     $('#set_shopify_title').click(function() {
-       $('#ebay_title').val(shopify_title); 
+       $('#ebay_title').val(shopify_title.substring(0, 79)); 
     });
     
     

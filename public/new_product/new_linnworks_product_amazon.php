@@ -41,7 +41,7 @@ require_once($CONFIG['header']);
                     <label for="am_title">Amazon Title</label>
                 </td>
                 <td class=form_table_input>
-                    <input id=am_title name=am_title type=text size=50 value='<?php echo $product->details['am_title']->text; ?>' />
+                    <input id=am_title name=am_title type=text size=50 maxlength=80 value='<?php echo $product->details['am_title']->text; ?>' />
                 </td>
                 <td class=form_field_table_description >
                     Title for listing on Amazon. Must not contain special characters. Up to 80 characters.
@@ -135,15 +135,15 @@ $_SESSION['new_product'] = $product;
 
 <script>
     $('#set_item_title').click(function() {
-       $('#am_title').val(product_title); 
+       $('#am_title').val(product_title.substring(0, 79)); 
     });
     
     $('#set_ebay_title').click(function() {
-       $('#am_title').val(ebay_title); 
+       $('#am_title').val(ebay_title.substring(0, 79)); 
     });
     
     $('#set_shopify_title').click(function() {
-       $('#am_title').val(shopify_title); 
+       $('#am_title').val(shopify_title.substring(0, 79)); 
     });
     
     
