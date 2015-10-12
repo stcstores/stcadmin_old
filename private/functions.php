@@ -68,11 +68,8 @@ function isValidPrice($price) {
 function getNumberOfVariationsInPost() {
     $variationNumber = 0;
     foreach ($_POST as $detail=>$value) {
-        $lastChar = substr($detail, -1);
-        if (is_numeric($lastChar)) {
-            if ($lastChar > $variationNumber) {
-                $variationNumber = $lastChar;
-            }
+        if (substr($detail, 0, 8) == 'var_name') {
+            $variationNumber++;
         }
     }
     return $variationNumber;
