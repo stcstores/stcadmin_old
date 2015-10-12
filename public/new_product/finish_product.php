@@ -238,11 +238,11 @@ if (isset($_SESSION['new_product'])) {
                 success: function(data){
                 }
             });
-            $(this).attr('class=disabled readonly','class=disabled readonly');
+            $(this).attr('disabled ','disabled');
         });
         
         $(':input').each(function() {
-            if ($(this).prop('class=disabled readonly')) {
+            if ($(this).prop('disabled')) {
                 var valLength = $(this).val().length
                 if (valLength > 5) {
                     $(this).attr('size', valLength + 2);
