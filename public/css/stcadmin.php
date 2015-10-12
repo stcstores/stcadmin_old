@@ -168,7 +168,7 @@ table.form_section td {
 
 .form_table_field_name {
     text-align: right;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 .form_field_table_description {
