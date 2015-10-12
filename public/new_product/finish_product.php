@@ -254,6 +254,14 @@ if (isset($_SESSION['new_product'])) {
                 }
             });
             $.ajax({
+                url: 'archive_new_product_csv.php',
+                async: false,
+                dataType: 'json',
+                success: function(data){
+                    
+                }
+            })
+            $.ajax({
                 url: 'create_product.php',
                 async: false,
                 dataType: 'json',
