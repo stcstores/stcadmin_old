@@ -53,7 +53,7 @@ if (isset($_SESSION['new_product'])) {
     
     <?php
             if (count($product->variations) > 0) {
-                echo '<h3>Variations<a class="editlink" href="new_linnworks_product_variations.php" >Edit</a></h3>';
+                echo '<h3>Variations<a class="editlink" href="new_linnworks_product_var_setup.php" >Edit</a></h3>';
                 echo "<div class=variation_table >";
                 echo "<table id=testvar >";
                 echo "<tr>";
