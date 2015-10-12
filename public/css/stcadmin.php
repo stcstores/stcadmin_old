@@ -15,13 +15,14 @@ html, body {
     padding: 0;
     font-family: bretan;
     background-color: <?php $colours->echoColour(1, 2); ?>;
-    width: 80%;
     margin: 0 auto;
     height: 100%;
 }
 
 #header {
     padding: 10px;
+    width: 80%;
+    margin: 0 auto;
 }
 
 #wrapper {
@@ -38,15 +39,12 @@ html, body {
     width: 80%;
     height: 30px;
     padding: 1em;
-    position: absolute;
-    bottom: 0;
-    left: 0;
     background: <?php $colours->echoColour(2, 2); ?>;
     border: solid 5px <?php $colours->echoColour(2, 3); ?>;
     border-radius: 15px;
     box-shadow: 5px 5px 3px <?php $colours->echoColour(1, 4); ?>;
     color: <?php $colours->echoColour(2, 4); ?>;
-    margin-bottom: 2em;
+    margin: 0 auto;
 }
 
 #footer a {
