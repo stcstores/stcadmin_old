@@ -96,9 +96,10 @@ if (isset($_SESSION['new_product'])) {
                                                 } else {
                                                     echo $variation->details[$field['field_name']]->text .'"';
                                                 }
-                                            ?>" class=disabled readonly size=10/>
+                                            ?>
+                            " class=disabled readonly size=10/>
+                            </td>
                             <?php
-                            echo "</td>";
                         }
                     }
                     echo "<td class=image_row>";
@@ -120,7 +121,13 @@ if (isset($_SESSION['new_product'])) {
                     echo $field['field_title'];
                     echo "</td>";
                     echo "<td>";
-                    echo '<input value="' . $product->details[$field['field_name']]->text . '" class=disabled readonly />';
+                    echo '<input value="';
+                    if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
+                        echo '&pound;' . sprintf("%0.2f",$product->details[$field['field_name']]->text) .'" size="5';
+                    } else {
+                        echo $product->details[$field['field_name']]->text .'"';
+                    }
+                    echo '" class=disabled readonly />';
                     echo "</td>";
                     echo "</tr>";
                 }
