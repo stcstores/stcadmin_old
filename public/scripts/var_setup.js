@@ -240,7 +240,7 @@ function addAddVariations(){
             $('#add_variations').append('<tr>');
             var newRow = $('#add_variations tr:last');
             newRow.append('<td class="add_to_label"><label for=' + id + '>Add ' + name + ': </label></td>');
-            newRow.append('<td class="add_to_input"><input size=75 name=' + id + ' id=' + id + ' /></td>');
+            newRow.append('<td class="add_to_input"><input style="width: 100%;" name=' + id + ' id=' + id + ' /></td>');
             newRow.append('<td class="add_variations_to_button"><input type=button value=Add id=add_variations_to_' + field + '_button /></td>');
             newRow.append('<td class=remove_variation_type ><input type=button value=Remove id=remove_variation_type_' + field + ' </td>');
             

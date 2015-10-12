@@ -127,7 +127,11 @@ function writeVarSetup($product, $newRows=0) {
         <br />
         <div>
             <table id="add_variations" class="form_section">
-                
+                <col width=10% />
+                <col width=35% />
+                <col width=10% />
+                <col width=10% />
+                <col width=35% />
             </table>
         </div>
         <div>
