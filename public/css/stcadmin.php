@@ -143,10 +143,10 @@ h4 {
 }
 
 .variation_table {
-    table-layout: fixed;
+    /*table-layout: fixed;*/
     overflow-x: scroll;
     overflow-y: hidden;
-    width: 100%;
+    /*width: 100%;*/
 }
 
 table.form_section td {

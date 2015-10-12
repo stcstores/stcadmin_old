@@ -115,6 +115,8 @@ function writeVarSetup($product, $newRows=0) {
     echo "<script>var values = " . json_encode($values) . "</script>\n";
     echo "<script>keyFields = " . json_encode($product->keyFields) . "</script>\n";
     ?>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <script  src="/scripts/jquery.doubleScroll.js"></script>
     <div class="pagebox">
         <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
         <div>
@@ -154,6 +156,8 @@ function writeVarSetup($product, $newRows=0) {
     
     <script src="/scripts/var_form_validate.js"></script>
     <script src="/scripts/variation_table.js"></script>
+
+    
     
     <?php
 }

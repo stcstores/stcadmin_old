@@ -90,6 +90,8 @@ Table.prototype.write = function() {
         $('#var_append' + i).blur(resetTableGenerator());
     }
     
+    $('.variation_table').doubleScroll();
+    
     
 }
 
