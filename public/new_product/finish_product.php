@@ -16,17 +16,7 @@ if (isset($_SESSION['new_product'])) {
     $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
     $product_exists = $api->SKU_Exists($product->details['sku']->text);
     
-    $item_title = $product->details['item_title']->text;
-    $location = $product->details['location']->text;
-    $mpn = $product->details['mpn']->text;
-    
-    if (strlen($location) > 0) {
-        $item_title = $location . ' ' . $item_title;
-    }
-    
-    if (strlen($mpn) > 0) {
-        $item_title = $item_title . ' ' . $mpn;
-    }
+    $item_title = get_linn_title($product);
     
     ?>
     
@@ -89,18 +79,7 @@ if (isset($_SESSION['new_product'])) {
                 
                 $var_names = array();
                 foreach ($product->variations as $variation) {
-                    $item_title = $variation->details['var_name']->text;
-                    $location = $variation->details['location']->text;
-                    $mpn = $variation->details['mpn']->text;
-                    
-                    if (strlen($location) > 0) {
-                        $item_title = $location . ' ' . $item_title;
-                    }
-                    
-                    if (strlen($mpn) > 0) {
-                        $item_title = $item_title . ' ' . $mpn;
-                    }
-                    $var_names[] = $item_title;
+                    $var_names[] = get_linn_title($variation);
                 }
                 $max_var_name = max(array_map('strlen', $var_names));
                 
@@ -110,30 +89,15 @@ if (isset($_SESSION['new_product'])) {
                     foreach ($fields as $field) {
                         if (!(in_array($field['field_name'], $ignoreFields))) {
                             echo "<td>";
-                            ?>
-                            <input value="<?php
-                                                if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
-                                                    echo '&pound;' . sprintf("%0.2f",$variation->details[$field['field_name']]->text) .'"';
-                                                } else if ($field['field_name'] == 'var_name') {
-                                                    $item_title = $variation->details['var_name']->text;
-                                                    $location = $variation->details['location']->text;
-                                                    $mpn = $variation->details['mpn']->text;
-                                                    
-                                                    if (strlen($location) > 0) {
-                                                        $item_title = $location . ' ' . $item_title;
-                                                    }
-                                                    
-                                                    if (strlen($mpn) > 0) {
-                                                        $item_title = $item_title . ' ' . $mpn;
-                                                    }
-                                                    echo $item_title .'" size="' . $max_var_name;
-                                                } else {
-                                                    echo $variation->details[$field['field_name']]->text .'"';
-                                                }
-                                            ?>
-                            " class=disabled readonly size=10/>
-                            </td>
-                            <?php
+                            echo '<input value="';
+                            if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
+                                echo '&pound;' . sprintf("%0.2f",$variation->details[$field['field_name']]->text) .'"';
+                            } else if ($field['field_name'] == 'var_name') {
+                                echo get_linn_title($variation) . '" size="' . $max_var_name . ' "';
+                            } else {
+                                echo $variation->details[$field['field_name']]->text .'"';
+                            }
+                            echo " class=disabled readonly size=10/></td>\n";
                         }
                     }
                     echo "<td class=image_row>";

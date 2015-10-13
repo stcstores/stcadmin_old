@@ -15,11 +15,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 function getCreateInventoryItem($product) {
     $item = array();
     $item['ItemNumber'] = (string)$product->details['sku']->text;
-    if (array_key_exists('var_name', $product->details)){
-        $item['ItemTitle'] = (string)$product->details['var_name']->text;
-    } else {
-        $item['ItemTitle'] = (string)$product->details['item_title']->text;
-    }
+    $item['ItemTitle'] = get_linn_title($product);
     $item['BarcodeNumber'] = (string)$product->details['barcode']->text;
     $item['PurchasePrice'] = (string)$product->details['purchase_price']->text;
     $item['RetailPrice'] = (string)$product->details['retail_price']->text;
@@ -72,7 +68,7 @@ function getUpdateInventoryItem($api, $product) {
     }
     
     if (strlen($mpn) > 0) {
-        $item_title = $item_title . ' ' . $mpn;
+        $item_title = $mpn . ' ' . $item_title;
     }
     $item['ItemTitle'] = $item_title;
     $item['BarcodeNumber'] = (string)$product->details['barcode']->text;

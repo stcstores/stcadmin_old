@@ -256,3 +256,23 @@ function get_international_shipping($weight) {
     
     return $weights;
 }
+
+function get_linn_title($product) {
+    if (in_array('item_title', $product->details)){
+        $item_title = $product->details['item_title']->text;
+    } else {
+        $item_title = $product->details['var_name']->text;
+    }
+    $location = $product->details['location']->text;
+    $mpn = $product->details['mpn']->text;
+    
+    if (strlen($mpn) > 0) {
+        $item_title = $mpn . ' ' . $item_title;
+    }
+    
+    if (strlen($location) > 0) {
+        $item_title = $location . ' ' . $item_title;
+    }
+    
+    return $item_title;
+}
