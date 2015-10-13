@@ -30,7 +30,7 @@ VariationField.prototype.updateValue = function() {
     var input = $('#' + this.id);
     
     if (this.type == 'checkbox') {
-        if (input.attr('checked')) {
+        if (input.is(':checked')) {
             this.value = true;
         } else {
             this.value = false;
@@ -54,6 +54,9 @@ function Variation(attributes) {
                 name = name + ' {' + this.attributes[attr] + '}';
             }
             this.details['var_name'] = new VariationField(this.number, field, name, true);
+            
+        } else if (field.field_name === 'int_shipping') {
+            this.details[field.field_name] = new VariationField(this.number, field, 1, false);
             
         } else if (this.attributes[field.field_title] !== undefined) {
             this.details[field.field_name] = new VariationField(this.number, field, this.attributes[field.field_title], true);

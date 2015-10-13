@@ -20,7 +20,7 @@ class NewProduct{
         $this->details['location'] = new ProductDetail('location', $this);
         $this->details['weight'] = new NumericDetail('weight', $this);
         $this->details['int_shipping'] = new ProductDetail('int_shipping', $this);
-        $this->details['int_shipping'] -> set(true);
+        $this->details['int_shipping'] -> set('TRUE');
         $this->details['vat_free'] = new ProductDetail('vat_free', $this);
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
@@ -113,7 +113,7 @@ class NewVariation  extends NewProduct {
         $this->details['location'] = new ProductDetail('location', $this);
         $this->details['weight'] = new NumericDetail('weight', $this);
         $this->details['int_shipping'] = new internationalShipping('int_shipping', $this);
-        $this->details['int_shipping'] -> set(true);
+        $this->details['int_shipping'] -> set('TRUE');
         $this->details['vat_free'] = new ProductDetail('vat_free', $this);
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
