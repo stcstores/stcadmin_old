@@ -84,6 +84,8 @@ html, body {
 .pagebox {
     padding: 1em;
     font-size: 1.25em;
+    max-width: 80%;
+    margin: 0 auto;
 }
 
 .pagebox ul li a {
