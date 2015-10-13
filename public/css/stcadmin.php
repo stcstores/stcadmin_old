@@ -247,11 +247,20 @@ input[type="text"], input[type="password"], textarea, select, checkbox {
 }
 
 #login_form {
-    margin: 2em;
+    text-align: center;
+    margin: 0 auto;
     padding: 2em;
     background: <?php $colours->echoColour(3, 2); ?>;
     display: inline-block;
-    overflow: hidden;
+    /*overflow: hidden;*/
+}
+
+#login_container {
+    text-align: center;
+}
+
+#login_button {
+    width: 100%;
 }
 
 .working {
