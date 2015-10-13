@@ -142,7 +142,7 @@ h4 {
     box-shadow: 5px 5px 3px <?php $colours->echoColour(1, 4); ?>;
 }
 
-#basic_info_containter {
+.small_form_container {
     max-width: 1000px;
     margin: 0 auto;
 }

@@ -32,7 +32,7 @@ require_once($CONFIG['header']);
 
 ?>
 
-<div id=content>
+<div class=small_form_container>
     <form method='post' enctype='multipart/form-data'>
         <table id='basic_info' class=form_section>
             <col span='1' style='width: 10%;'>
@@ -47,7 +47,7 @@ require_once($CONFIG['header']);
                     <input id=shopify_title name=shopify_title type=text size=50 value='<?php echo $product->details['shopify_title']->text; ?>' />
                 </td>
                 <td class=form_field_table_description >
-                    Title for listing on Shopify. Must not contain special characters. Up to 80 characters.
+                    Title for listing on Shopify. Must not contain <a href="/new_product/specialcharacters.php" tabindex=-1>special characters</a>.
                 </td>
             </tr>
             <tr>

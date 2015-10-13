@@ -29,7 +29,7 @@ require_once($CONFIG['header']);
 
 ?>
 
-<div id=content>
+<div class=small_form_container>
     <form method='post' enctype='multipart/form-data'>
         <table id='basic_info' class=form_section>
             <col span='1' style='width: 10%;'>
@@ -44,7 +44,7 @@ require_once($CONFIG['header']);
                     <input id=am_title name=am_title type=text size=50 maxlength=80 value='<?php echo $product->details['am_title']->text; ?>' />
                 </td>
                 <td class=form_field_table_description >
-                    Title for listing on Amazon. Must not contain special characters. Up to 80 characters.
+                    Title for listing on Amazon. Must not contain <a href="/new_product/specialcharacters.php" tabindex=-1>special characters</a>. Maximum 80 characters.
                 </td>
             </tr>
             <tr>

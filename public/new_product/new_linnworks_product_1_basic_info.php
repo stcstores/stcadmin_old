@@ -38,7 +38,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 ?>
 
 
-<div id=basic_info_containter>
+<div class=small_form_container>
     <form method='post' enctype='multipart/form-data'>
         <table id='basic_info' class=form_section>
             <col span='1' width= 10% />
