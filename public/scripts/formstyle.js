@@ -28,9 +28,16 @@ function setFormStyle(){
 setFormStyle();
 
 $("form").keypress(function(e){
+    var no_enter = true;
     if (e.which == 13) {
-       if ($(e.target).prop('type') != 'password' ){
-           return false;
-       }
+        if ($(e.target).prop('type') == 'password') {
+            no_enter = false;
+        }
+        if ($(e.target).is('textarea')) {
+            no_enter = false;
+        }
+        if (no_enter) {
+            return false;
+        }
    }
 });
