@@ -49,7 +49,6 @@ require_once($CONFIG['header']);
                 <td><input type="password" size="25" name="password" id="login_password" class=login required /></td>
             </tr>
             <?php if ((isset($failedLoggin)) && ($failedLoggin == true)) {echo '<tr><td colspan="2" class="error" >Authentication Failed</td></tr>';}?>
-            <tr><p></p></tr>
             <tr>
                 <td colspan=2 ><input id=login_button type=submit value='Login' /></td>
             </tr>
