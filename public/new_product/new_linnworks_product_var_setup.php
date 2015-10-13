@@ -30,9 +30,65 @@ if ( !empty($_POST) ) {
 
 require_once($CONFIG['header']);
 
-writeVarSetup($product);
+$fields = getVarSetupFields();
+$values = getVarSetupValues();
+?>
 
-$_SESSION['new_product'] = $product;
+<script>
+    productName = <?php echo $product->details['item_title']->text; ?>;
+    var fields = <?php echo json_encode($fields); ?>;
+    var values = <?php echo json_encode($values); ?>;
+    keyFields = <?php echo json_encode($product->keyFields); ?>;
+</script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+<script  src="/scripts/jquery.doubleScroll.js"></script>
+
+<div class="pagebox">
+    <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
+    <div>
+        <table id="add_variation_types" class="form_section">
+            
+        </table>
+    </div>
+    <br />
+    <div>
+        <table id="add_variations" class="form_section">
+            <col width=10% />
+            <col width=40% />
+            <col width=5% />
+            <col width=5% />
+            <col width=45% />
+        </table>
+    </div>
+    <div>
+        <table id="list_of_variations" class="form_section">
+            
+        </table>
+    </div>
+    <br />
+    <div id="var_error" class="hidden" ></div>
+    <form method="post" id="var_form" enctype="multipart/form-data">
+        <div class="variation_table">
+            <table id="var_setup" class="form_section" >
+                
+            </table>
+        </div>
+        <table class="form_nav">
+            <tr>
+                <td>
+                    <input value="<< Previous" type="submit" name="previous" />
+                    <input value="Next >>" type="submit" name="next" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script src="/scripts/var_form_validate.js"></script>
+<script src="/scripts/variation_table.js"></script>
+
+<?php
+    $_SESSION['new_product'] = $product;
 ?>
 <script>
     keyFields = <?php echo json_encode(getKeyFields()); ?>

@@ -16,8 +16,11 @@ class NewProduct{
         $this->details['short_description'] = new ProductDetail('short_description', $this);
         
         //extended properties
+        $this->details['mpn'] = new ProductDetail('mpn', $this);
+        $this->details['location'] = new ProductDetail('location', $this);
         $this->details['weight'] = new NumericDetail('weight', $this);
         $this->details['int_shipping'] = new ProductDetail('int_shipping', $this);
+        $this->details['int_shipping'] -> set(true);
         $this->details['vat_free'] = new ProductDetail('vat_free', $this);
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
@@ -106,8 +109,11 @@ class NewVariation  extends NewProduct {
         $this->details['short_description']->set($product->details['short_description']->value);
         
         //extended properties
+        $this->details['mpn'] = new ProductDetail('mpn', $this);
+        $this->details['location'] = new ProductDetail('location', $this);
         $this->details['weight'] = new NumericDetail('weight', $this);
         $this->details['int_shipping'] = new internationalShipping('int_shipping', $this);
+        $this->details['int_shipping'] -> set(true);
         $this->details['vat_free'] = new ProductDetail('vat_free', $this);
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
