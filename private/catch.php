@@ -50,6 +50,14 @@ function add_extended_properties($product) {
         $product->details['weight']->set($_POST['weight']);
     }
     
+    if (isset($_POST['location'])) {
+        $product->details['location']->set($_POST['location']);
+    }
+    
+    if (isset($_POST['mpn'])) {
+        $product->details['mpn']->set($_POST['mpn']);
+    }
+    
     if (isset($_POST['int_shipping'])) {
         $product->details['int_shipping']->set('TRUE');
     } else {

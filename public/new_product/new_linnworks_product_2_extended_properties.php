@@ -38,7 +38,9 @@ $fields = getFormFieldsByPage('extended_properties');
                     ?>
                 <tr>
                     <td class=form_table_field_name ><label for="<?php echo $field['field_name']; ?>"><?php echo $field['field_title']; ?></label></td>
-                    <td class=form_table_input> <?php echoInput($field, $product); ?> </td>
+                    <td class=form_table_input>
+                        <?php echoInput($field, $product); ?>
+                    </td>
                     <td class=form_field_table_description ><?php echo $field['field_description']; ?></td>
                 </tr>
                 <?php } ?>

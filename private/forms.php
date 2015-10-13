@@ -11,24 +11,14 @@ function echoInput($field, $product, $number='') {
         $name = substr($field['field_name'], 0, -2) . $number . '[]';
         echo "<input id={$field['field_name']} ";
         echo "name={$name} type=file multiple";
-        echo " />";            
-    
-    }elseif (substr($field['field_type'], 0, 6) == 'table(' ) {            
-        $table = substr($field['field_type'], 6, (strlen($field['field_type']) - 7));
-        $selectInputs = getValuesFromDatabase($table, 'value');
-        arrayToSelectInputs($field['field_name'] . $number, $selectInputs, $value);
+        echo " />";
     
     } elseif ($field['field_type'] == 'text') {
-        echo "<input id={$field['field_name']} ";
-        echo "name={$field['field_name']}{$number} type=text ";
-        if ($value != 0) {
-            echo "value='" . htmlspecialchars($value, ENT_QUOTES) . "' ";
-        }
-        echo "size={$field['size']} ";
-        if ($field['required'] == true) {
-            echo "required ";
-        }
-        echo " />";
+        ?><input id="<?php echo $field['field_name']; ?>" name="<?php echo $field['field_name'] . $number;?>" type="text" <?php
+        if ((!is_numeric($value)) or (is_numeric($value) and $value != 0)) {
+            ?> value="<?php echo htmlspecialchars($value, ENT_QUOTES); ?>"<?php
+            } ?> size="<?php echo $field['size']; ?>" <?php if ($field['required'] == true) { echo "required "; } ?>/>
+        <?php
     
     } elseif ($field['field_type'] == 'checkbox') {
         echo "<input name={$field['field_name']}{$number} type={$field['field_type']} ";
