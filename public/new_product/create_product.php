@@ -60,10 +60,21 @@ function getUpdateInventoryItem($api, $product) {
     $item = array();
     $item['ItemNumber'] = (string)$product->details['sku']->text;
     if (array_key_exists('item_title', $product->details)) {
-        $item['ItemTitle'] = (string)$product->details['item_title']->text;
+        $item_title = $product->details['item_title']->text;
     } else {
-        $item['ItemTitle'] = (string)$product->details['var_name']->text;
+        $item_title = $product->details['var_name']->text;
     }
+    $location = $product->details['location']->text;
+    $mpn = $product->details['mpn']->text;
+    
+    if (strlen($location) > 0) {
+        $item_title = $location . ' ' . $item_title;
+    }
+    
+    if (strlen($mpn) > 0) {
+        $item_title = $item_title . ' ' . $mpn;
+    }
+    $item['ItemTitle'] = $item_title;
     $item['BarcodeNumber'] = (string)$product->details['barcode']->text;
     $purchasePrice = (string)$product->details['purchase_price']->text;
     if ($purchasePrice == "") {
@@ -173,6 +184,8 @@ function getExtendedPropertiesArray($product, $product_type) {
     $properties = array(
         array('Manufacturer', (string)$product->details['manufacturer']->text, 'Attribute'),
         array('Brand', (string)$product->details['brand']->text, 'Attribute'),
+        array('Location', (string)$product->details['location']->text, 'Attribute'),
+        array('MPN', (string)$product->details['mpn']->text, 'Attribute'),
         array('Size', (string)$product->details['size']->text, 'Attribute'),
         array('Colour', (string)$product->details['colour']->text, 'Attribute'),
         array('Material', (string)$product->details['material']->text, 'Attribute'),

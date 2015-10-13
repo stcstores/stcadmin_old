@@ -16,6 +16,18 @@ if (isset($_SESSION['new_product'])) {
     $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
     $product_exists = $api->SKU_Exists($product->details['sku']->text);
     
+    $item_title = $product->details['item_title']->text;
+    $location = $product->details['location']->text;
+    $mpn = $product->details['mpn']->text;
+    
+    if (strlen($location) > 0) {
+        $item_title = $location . ' ' . $item_title;
+    }
+    
+    if (strlen($mpn) > 0) {
+        $item_title = $item_title . ' ' . $mpn;
+    }
+    
     ?>
     
     <input type=button value='Create Product' id=create_product <?php if ($product_exists) { echo ' disabled '; } ?>/>
@@ -32,7 +44,7 @@ if (isset($_SESSION['new_product'])) {
         </tr>
         <tr>
             <td>Product Title</td>
-            <td><input value="<?php echo $product->details['item_title']->text; ?>" class=disabled readonly /></td>
+            <td><input value="<?php echo $item_title; ?>" class=disabled size=100 readonly /></td>
         </tr>
         <tr>
             <td>Description</td>
@@ -76,8 +88,19 @@ if (isset($_SESSION['new_product'])) {
                 echo "<th>Images</th>";
                 
                 $var_names = array();
-                foreach ($product->variations as $variaion) {
-                    $var_names[] = $variaion->details['var_name']->text;
+                foreach ($product->variations as $variation) {
+                    $item_title = $variation->details['var_name']->text;
+                    $location = $variation->details['location']->text;
+                    $mpn = $variation->details['mpn']->text;
+                    
+                    if (strlen($location) > 0) {
+                        $item_title = $location . ' ' . $item_title;
+                    }
+                    
+                    if (strlen($mpn) > 0) {
+                        $item_title = $item_title . ' ' . $mpn;
+                    }
+                    $var_names[] = $item_title;
                 }
                 $max_var_name = max(array_map('strlen', $var_names));
                 
@@ -92,7 +115,18 @@ if (isset($_SESSION['new_product'])) {
                                                 if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
                                                     echo '&pound;' . sprintf("%0.2f",$variation->details[$field['field_name']]->text) .'"';
                                                 } else if ($field['field_name'] == 'var_name') {
-                                                    echo $variation->details[$field['field_name']]->text .'" size="' . $max_var_name;
+                                                    $item_title = $variation->details['var_name']->text;
+                                                    $location = $variation->details['location']->text;
+                                                    $mpn = $variation->details['mpn']->text;
+                                                    
+                                                    if (strlen($location) > 0) {
+                                                        $item_title = $location . ' ' . $item_title;
+                                                    }
+                                                    
+                                                    if (strlen($mpn) > 0) {
+                                                        $item_title = $item_title . ' ' . $mpn;
+                                                    }
+                                                    echo $item_title .'" size="' . $max_var_name;
                                                 } else {
                                                     echo $variation->details[$field['field_name']]->text .'"';
                                                 }
