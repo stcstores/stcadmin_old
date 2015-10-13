@@ -35,13 +35,13 @@ $values = getVarSetupValues();
 ?>
 
 <script>
-    productName = <?php echo $product->details['item_title']->text; ?>;
+    productName = '<?php echo $product->details['item_title']->text; ?>';
     var fields = <?php echo json_encode($fields); ?>;
     var values = <?php echo json_encode($values); ?>;
     keyFields = <?php echo json_encode($product->keyFields); ?>;
 </script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-<script  src="/scripts/jquery.doubleScroll.js"></script>
+<script src="/scripts/jquery.doubleScroll.js"></script>
 
 <div class="pagebox">
     <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
