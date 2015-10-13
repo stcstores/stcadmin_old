@@ -27,11 +27,10 @@ function setFormStyle(){
 
 setFormStyle();
 
-$(document).ready(function() {
-  $(window).keydown(function(event){
-    if(event.keyCode == 13) {
-      event.preventDefault();
-      return false;
-    }
-  });
+$("form").keypress(function(e){
+    if (e.which == 13) {
+       if ($(e.target).prop('type') != 'password' ){
+           return false;
+       }
+   }
 });
