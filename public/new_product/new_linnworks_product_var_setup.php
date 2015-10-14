@@ -43,7 +43,7 @@ $values = getVarSetupValues();
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <script src="/scripts/jquery.doubleScroll.js"></script>
 
-<div class="pagebox">
+<div class="">
     <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
     <div>
         <table id="add_variation_types" class="form_section">

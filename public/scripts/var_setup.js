@@ -11,18 +11,41 @@ function VariationField(number, field, value='', disable=false) {
 
 VariationField.prototype.getInput = function() {
     this.id = this.name + this.number;
-    
-    var row = '<td><input name=' + this.id + ' id=' + this.id + ' type=' + this.type + ' size=35 class="' + this.name + '"value="'
-    row = row + this.value + '"';
-    if (this.disabled === true) {
-        row = row + '" disabled';
-    }
-    if (this.type == 'checkbox') {
-        if (this.value == true) {
-            row = row + ' checked ';
+    if (this.name == 'var_name') {
+        var variation_title = product_title;
+        var row = '<td><table>';
+        console.log(variations.variationTypes);
+        for (variation in variations.variationTypes) {
+            if (variations.variationTypes[variation].used) {
+                var variation_type_title = variations.variationTypes[variation].title;
+                var variation_type_name = variations.variationTypes[variation].name;
+                for (variant in variations.variations) {
+                    if (variations.variations[variant].details['var_name'].value == this.value) {
+                        var variation_value = variations.variations[variant].details[variation_type_name].value;
+                        var var_title_append = variations.variations[variant].details['var_append'].value;
+                    }
+                }
+                
+                row = row + '<tr><td>' + variation_type_title + ': </td><td>' + variation_value + '</td></tr>';
+                variation_title = variation_title + ' {' + variation_value + '}';
+            }
         }
+        row = row + '</td></table>';
+        variation_title = variation_title + ' ' + var_title_append;
+        $('#var_setup').append('<tr class="hidden" ><td><input class="" name="' + this.id + '" value="' + variation_title + '" /></td></tr>');
+    } else {
+        var row = '<td><input name=' + this.id + ' id=' + this.id + ' type=' + this.type + ' size=35 class="' + this.name + '"value="'
+        row = row + this.value + '"';
+        if (this.disabled === true) {
+            row = row + '" disabled';
+        }
+        if (this.type == 'checkbox') {
+            if (this.value == true) {
+                row = row + ' checked ';
+            }
+        }
+        row = row + ' /></td>';
     }
-    row = row + ' /></td>';
     return row;
 }
 
