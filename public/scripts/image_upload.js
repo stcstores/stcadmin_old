@@ -71,7 +71,7 @@ function createImageBox(product, location) {
 function writeImages(data) {
     $('#currentImages').html('');
     console.log(data);
-    if ((!'variations' in data)) {
+    if (!('variations' in data)) {
         createImageBox(data['product'], $('#currentImages'));
     } else {
         var product = data['product'];
