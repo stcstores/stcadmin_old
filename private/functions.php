@@ -258,7 +258,7 @@ function get_international_shipping($weight) {
 }
 
 function get_linn_title($product) {
-    if (in_array('item_title', $product->details)){
+    if (array_key_exists('item_title', $product->details)){
         $item_title = $product->details['item_title']->text;
     } else {
         $item_title = $product->details['var_name']->text;
