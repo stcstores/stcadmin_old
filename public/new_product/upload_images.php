@@ -3,6 +3,8 @@ require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
 checkLogin();
 
+print_r($_FILES);
+
 $product = $_SESSION['new_product'];
 $products = array($product);
 if ($product->details['var_type']->value == true) {
@@ -57,6 +59,41 @@ if (isset($_POST['sku'])){
         $currentProduct->images->addImage($guid, $thumbPath, $fullPath);
     }
     print_r($response);
+} else if (isset($_POST['field'])) {
+    if (is_array($_FILES)) {
+        $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+        $i=0;
+        $field = $_POST['field'];
+        $value = $_POST['value'];
+        $errors = array();
+        if (isset($_FILES['var_type']['tmp_name'])) {
+            $data = array();
+            foreach ($_FILES['var_type']['tmp_name'] as $file) {
+                if(is_uploaded_file($file)) {
+                    $filename = $_FILES['var_type']['name'][$i];
+                    $curlFile = curl_file_create(realpath($file), 'image/jpeg', $filename);
+                    $image = array('file' => $curlFile);
+                    $data[] = $image;
+                } else {
+                    $errors[] = "not uploaded file";
+                }
+                $i++;
+            }
+            $response = array();
+            foreach ($data as $image){
+                $response = $api -> uploadImage($image);
+                $guid = $response[0]['FileId'];
+                $thumbPath = $response[0]['ThumbnailUrl'];
+                $fullPath = $response[0]['ImageUrl'];
+                foreach ($product->variations as $variation) {
+                    if ($variation->details[$field]->text == $value) {
+                        $variation->images->addImage($guid, $thumbPath, $fullPath);
+                    }
+                }
+            }
+            print_r($response);
+        }
+    }
 } else {
     echo "no sku";
 }

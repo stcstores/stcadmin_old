@@ -6,6 +6,12 @@ String.prototype.capitalize = function(){
     });
 };
 
+function unique(array) {
+    return $.grep(array, function(el, index) {
+        return index == $.inArray(el, array);
+    });
+}
+
 function reload() {
     $.ajax({
         url: 'get_images.php',
@@ -27,12 +33,12 @@ function createImageBox(product, location) {
     if ('variations' in product) {
         for (keyField in product['variations']) {
             var fieldName = keyField.capitalize();
-            imageBox = imageBox + '<h2>' + fieldName + ': ' + product['variations'][keyField];
+            imageBox = imageBox + '<h3>' + fieldName + ': ' + product['variations'][keyField] + '</h3>';
         }
     } else {
         imageBox = imageBox + "<h3>" + title + "</h3>"
     }
-    imageBox = imageBox + "<form enctype='multipart/form-data' method='post' id=addImage" + sku + " class=addImage >"
+    imageBox = imageBox + "<form enctype='multipart/form-data' method='post' id=addImage" + sku + " class=addImage >";
     location.append(imageBox);
     var form = $('#addImage' + sku);
     var browseButton = $("<input type=file value='Get Data' id=browseButton" + sku + " name=" + sku + "[] multiple />");
@@ -70,13 +76,32 @@ function createImageBox(product, location) {
 
 function writeImages(data) {
     $('#currentImages').html('');
-    console.log(data);
     if (!('variations' in data)) {
         createImageBox(data['product'], $('#currentImages'));
     } else {
         var product = data['product'];
-        $('#currentImages').append('<div id=main_product_images><h2>Main Product</h2></div');
+        $('#currentImages').append("<div id=main_product_images><h2>Main Product</h2></div>");
         createImageBox(product, $('#main_product_images'));
+        $('#currentImages').append('<div id=variation_type_images><h2>Variation Types</h2></div');
+        var valueId = 0;
+        for (field in data['variations'][0]['variations']) {
+            $('#variation_type_images').append('<div id=var_type_' + field + ' class=skubox ><h3>' + field.capitalize() + '</h3></div');
+            var variation_type_values = [];
+            for (avariation in data['variations']) {
+                var variation = data['variations'][avariation];
+                variation_type_values.push(variation['variations'][field]);
+            }
+            variation_type_values = unique(variation_type_values);
+            for (variation_value in variation_type_values) {
+                var value = variation_type_values[variation_value];
+                $('#var_type_' + field).append("<form id=form_" + valueId + " enctype='multipart/form-data' method='post' class=addImage >")
+                $("#form_" + valueId).append('<h3>' + value + '</h3><input id=browse_button_' + valueId + ' type=file multiple name="var_type[]" />')
+                var browseButton = $('#browse_button_' + valueId);
+                browseButton.change(browse_button_generator(field, value, valueId));
+                valueId ++;
+            }
+        }
+        
         $('#currentImages').append('<div id=variation_images><h2>Variations</h2></div');
         for (avariation in data['variations']) {
             var variation = data['variations'][avariation];
@@ -84,6 +109,12 @@ function writeImages(data) {
         }
         
     }
+}
+
+function browse_button_generator(field, value, valueId) {
+    return function (event) {
+        uploadVariationTypeImages(field, value, valueId);
+    };
 }
 
 function removeImageGenerator(sku, guid) {
@@ -96,6 +127,55 @@ function setPrimaryGenerator(sku, guid) {
     return function (event) {
         setPrimary(sku, guid);
     };
+}
+
+function uploadVariationTypeImages(field, value, valueId) {
+    var form = new FormData($("#form_" + valueId).get(0));
+    form.append('field', field);
+    form.append('value', value);
+    disableInputs();
+    
+    $.ajax({
+        url: "upload_images.php",
+        type: "POST",
+        data:  form,
+        contentType: false,
+        cache: false,
+        processData:false,
+        complete: function(data) {
+            writeErrors(data);
+            $('#browseButton').val('');
+            reload();
+        },
+        error: function()  {
+            
+        }
+    }); 
+}
+
+function uploadImages(sku) {
+    var form = new FormData($('#addImage' + sku).get(0));
+
+    form.append('sku', sku);
+    
+    disableInputs();
+    
+    $.ajax({
+        url: "upload_images.php",
+        type: "POST",
+        data:  form,
+        contentType: false,
+        cache: false,
+        processData:false,
+        complete: function(data) {
+            writeErrors(data);
+            $('#browseButton').val('');
+            reload();
+        },
+        error: function()  {
+            
+        }
+    }); 
 }
 
 function removeImage(sku, guid){
@@ -144,32 +224,6 @@ function writeErrors(errors) {
     console.debug(errors);
     $('#errors').html('');
     $('#errors').append(errors['responseText']);
-}
-
-function uploadImages(sku) {
-    console.log(sku);
-    var form = new FormData($('#addImage' + sku).get(0));
-
-    form.append('sku', sku);
-    
-    disableInputs();
-    
-    $.ajax({
-        url: "upload_images.php",
-        type: "POST",
-        data:  form,
-        contentType: false,
-        cache: false,
-        processData:false,
-        complete: function(data) {
-            writeErrors(data);
-            $('#browseButton').val('');
-            reload();
-        },
-        error: function()  {
-            
-        }
-    }); 
 }
 
 function disableInputs() {

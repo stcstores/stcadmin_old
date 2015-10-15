@@ -241,6 +241,7 @@ input[type="text"], input[type="password"], textarea, select, checkbox {
     overflow: hidden;
     vertical-align: text-top;
     background: <?php $colours->echoColour(3, 2); ?>;
+    text-align: left;
 }
 
 .imagebox {
@@ -351,4 +352,12 @@ a.questionmark_link {
 
 .hidden {
     display: none;
+}
+
+.image_variation_type_table {
+    width: 100%;
+}
+
+#currentImages {
+    text-align: center;
 }
