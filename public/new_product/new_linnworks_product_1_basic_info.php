@@ -50,7 +50,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                     <label for="item_title">Item Title</label>
                 </td>
                 <td class=form_table_input>
-                    <input id=item_title name=item_title type=text value='<?php echo $product->details['item_title']->text;?>' style="width: 100%;" maxlength=80 required  />
+                    <input id=item_title name=item_title type=text value='<?php echo $product->details['item_title']->text;?>' maxlength=80 required  />
                 </td>
                 <td class=form_field_table_description >
                     <p>Required. Between 5 and 80 characters. Must not contain <a href="/new_product/specialcharacters.php" tabindex=-1>special characters</a>.</p>
@@ -133,7 +133,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                     <label for="short_description">Short Description</label>
                 </td>
                 <td class=form_table_input>
-                    <textarea rows=4 style='width: 100%;' id=short_description name=short_description ><?php echo $product->details['short_description']->text;?></textarea>
+                    <textarea rows=4 id=short_description name=short_description ><?php echo $product->details['short_description']->text;?></textarea>
                 </td>
                 <td class=form_field_table_description >Product description text</td>
             </tr>

@@ -354,10 +354,14 @@ a.questionmark_link {
     display: none;
 }
 
+#currentImages {
+    text-align: center;
+}
+
 .image_variation_type_table {
     width: 100%;
 }
 
-#currentImages {
-    text-align: center;
+#item_title, #short_description {
+    width: 100%;
 }
