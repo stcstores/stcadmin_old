@@ -26,15 +26,15 @@ if (isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>Product ID</td>
-            <td><input value="<?php echo $product->details['guid']->text; ?>" class=disabled readonly size=38 /></td>
+            <td><input value="<?php echo $product->details['guid']->text; ?>" size="<?php echo strlen($product->details['guid']->text) + 2; ?>" class=disabled readonly size=38 /></td>
         </tr>
         <tr>
             <td>Product SKU</td>
-            <td><input value="<?php echo $product->details['sku']->text; ?>" class=disabled readonly /></td>
+            <td><input value="<?php echo $product->details['sku']->text; ?>" size="<?php echo strlen($product->details['sku']->text); ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Product Title</td>
-            <td><input value="<?php echo $item_title; ?>" class=disabled size=100 readonly /></td>
+            <td><input value="<?php echo $item_title; ?>" class=disabled size="<?php echo strlen($item_title); ?>" readonly /></td>
         </tr>
         <tr>
             <td>Description</td>
@@ -42,19 +42,19 @@ if (isset($_SESSION['new_product'])) {
         </tr>
         <tr>
             <td>Department</td>
-            <td><input value="<?php echo $product->details['department']->text; ?>" class=disabled readonly /></td>
+            <td><input value="<?php echo $product->details['department']->text; ?>" size="<?php echo strlen($product->details['department']->text); ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Brand</td>
-            <td><input value="<?php echo $product->details['brand']->text; ?>" class=disabled readonly /></td>
+            <td><input value="<?php echo $product->details['brand']->text; ?>" size="<?php echo strlen($product->details['brand']->text); ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Manufacturer</td>
-            <td><input value="<?php echo $product->details['manufacturer']->text; ?>" class=disabled readonly /></td>
+            <td><input value="<?php echo $product->details['manufacturer']->text; ?>" size="<?php echo strlen($product->details['manufacturer']->text); ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Shipping Method</td>
-            <td><input value="<?php echo $product->details['shipping_method']->text; ?>" class=disabled readonly /></td>
+            <td><input value="<?php echo $product->details['shipping_method']->text; ?>" size="<?php echo strlen($product->details['shipping_method']->text); ?>" class=disabled readonly /></td>
         </tr>
     </table>
     
@@ -88,16 +88,24 @@ if (isset($_SESSION['new_product'])) {
                     echo "<td><input value='" . $variation->details['sku']->text . "' class=disabled readonly size=11 /></td>";
                     foreach ($fields as $field) {
                         if (!(in_array($field['field_name'], $ignoreFields))) {
+                            $var_values = array();
+                            foreach ($product->variations as $variation) {
+                                $var_values[] = $variation->details[$field['field_name']]->text;
+                            }
+                            $field_size = max(array_map('strlen', $var_values));
+                            if ($field_size < 5) {
+                                $field_size = 5;
+                            }
                             echo "<td>";
                             echo '<input value="';
                             if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
-                                echo '&pound;' . sprintf("%0.2f",$variation->details[$field['field_name']]->text) .'"';
+                                echo '&pound;' . sprintf("%0.2f",$variation->details[$field['field_name']]->text) .'" size=5';
                             } else if ($field['field_name'] == 'var_name') {
                                 echo get_linn_title($variation) . '" size="' . $max_var_name . ' "';
                             } else {
-                                echo $variation->details[$field['field_name']]->text .'"';
+                                echo $variation->details[$field['field_name']]->text .'" size=' . $field_size;
                             }
-                            echo " class=disabled readonly size=10/></td>\n";
+                            echo " class=disabled readonly /></td>\n";
                         }
                     }
                     echo "<td class=image_row>";
@@ -123,7 +131,7 @@ if (isset($_SESSION['new_product'])) {
                     if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
                         echo '&pound;' . sprintf("%0.2f",$product->details[$field['field_name']]->text) .'" size="5';
                     } else {
-                        echo $product->details[$field['field_name']]->text .'"';
+                        echo $product->details[$field['field_name']]->text .'" size=' . strlen($product->details[$field['field_name']]->text);
                     }
                     echo '" class=disabled readonly />';
                     echo "</td>";
@@ -147,7 +155,7 @@ if (isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>eBay Title</td>
-            <td><input value="<?php echo $product->details['ebay_title']->text; ?>" class=disabled readonly /></td>
+            <td><input value="<?php echo $product->details['ebay_title']->text; ?>" size="<?php echo strlen($product->details['ebay_title']->text); ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>eBay Description</td>
@@ -160,7 +168,7 @@ if (isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>Amazon Title</td>
-            <td><input value="<?php echo $product->details['am_title']->text; ?>" class=disabled readonly /></td>
+            <td><input value="<?php echo $product->details['am_title']->text; ?>" size="<?php echo strlen($product->details['am_title']->text); ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Amazon Description</td>
@@ -187,7 +195,7 @@ if (isset($_SESSION['new_product'])) {
     <table>
         <tr>
             <td>stcstores.co.uk Title</td>
-            <td><input value="<?php echo $product->details['shopify_title']->text; ?>" class=disabled readonly /></td>
+            <td><input value="<?php echo $product->details['shopify_title']->text; ?>" size="<?php echo strlen($product->details['shopify_title']->text); ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>stcstores.co.uk Description</td>
