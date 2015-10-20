@@ -89,8 +89,8 @@ if (isset($_SESSION['new_product'])) {
                     foreach ($fields as $field) {
                         if (!(in_array($field['field_name'], $ignoreFields))) {
                             $var_values = array();
-                            foreach ($product->variations as $variation) {
-                                $var_values[] = $variation->details[$field['field_name']]->text;
+                            foreach ($product->variations as $_variation) {
+                                $var_values[] = $_variation->details[$field['field_name']]->text;
                             }
                             $field_size = max(array_map('strlen', $var_values));
                             if ($field_size < 5) {
