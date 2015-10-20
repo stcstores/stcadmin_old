@@ -16,5 +16,6 @@ $CONFIG = array(
     'archive' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/new_product_files/archive/',
     'navbar' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/navbar.php',
     'login_functions' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/login_functions.php',
-    'api_class' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/linnworks_api.php'
+    'api_class' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/linnworks_api.php',
+    'inventory_item_class' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/inventory_item_class.php'
 );
