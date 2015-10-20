@@ -263,7 +263,12 @@ function add_variation($product) {
         }
     }
     
+    $max_weight = 0;
+    
     foreach ($product->variations as $variation) {
+        if ($variation->details['weight']->value > $max_weight){
+            $max_weight = $variation->details['weight']->value;
+        }
         $intPostagePrices = get_international_shipping($variation->details['weight']->value);
         $variation->details['shipping_fr']->set($intPostagePrices['fr']);
         $variation->details['shipping_de']->set($intPostagePrices['de']);
@@ -272,6 +277,14 @@ function add_variation($product) {
         $variation->details['shipping_aus']->set($intPostagePrices['aus']);
         $variation->details['shipping_row']->set($intPostagePrices['row']);
     }
+    
+    $intPostagePrices = get_international_shipping($max_weight);
+    $product->details['shipping_fr']->set($intPostagePrices['fr']);
+    $product->details['shipping_de']->set($intPostagePrices['de']);
+    $product->details['shipping_eu']->set($intPostagePrices['eu']);
+    $product->details['shipping_usa']->set($intPostagePrices['usa']);
+    $product->details['shipping_aus']->set($intPostagePrices['aus']);
+    $product->details['shipping_row']->set($intPostagePrices['row']);
 }
 
 ?>
