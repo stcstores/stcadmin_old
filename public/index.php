@@ -13,6 +13,7 @@ require_once($CONFIG['header']);
     <ul>
         <li><a href='new_product/new_product_start.php' >Add a new product to Linnworks</a></li>
         <li><a href=getsku.php >Get an unused product SKU</a></li>
+        <li><a href='get_international_shipping.php' >Find international shipping rates for products</a></li>
     </ul>
 </div>
 

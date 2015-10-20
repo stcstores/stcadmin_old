@@ -365,3 +365,14 @@ a.questionmark_link {
 #item_title, #short_description {
     width: 100%;
 }
+
+#shipping_table {
+    background: white;
+    text-align: center;
+    
+}
+
+#shipping_table th, #shipping_table td{
+    padding: 1em;
+    border: solid black 1px;
+}
