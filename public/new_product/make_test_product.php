@@ -47,7 +47,7 @@ $filename = realpath('../images/favicon.png');
 echo $filename;
 $curlFile = curl_file_create($filename, 'image/jpeg', 'image.jpg');
 $image = array('file' => $curlFile);
-$response = $api -> uploadImage($image);
+$response = $api -> upload_image($image);
 print_r($response);
 $guid = $response[0]['FileId'];
 $thumbPath = $response[0]['ThumbnailUrl'];

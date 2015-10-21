@@ -14,7 +14,7 @@ if (isset($_SESSION['new_product'])) {
  ?>
 
         <div id=main>            
-            <form id=uploadImageForm >
+            <form id=upload_imageForm >
                 <!--<input type=button onclick=reload() value='Reload' />-->
             </form>
             <div id=currentImages>

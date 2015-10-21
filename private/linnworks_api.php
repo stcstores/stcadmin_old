@@ -19,7 +19,7 @@ class LinnworksAPI {
             $this -> token = $_SESSION['token'];
             $this -> server = $_SESSION['server'];
         } else {
-            $this -> getToken();
+            $this -> get_token();
         }
     }
     
@@ -35,7 +35,7 @@ class LinnworksAPI {
         return $curl;
     }
     
-    function makeRequest($url, $data) {
+    function make_request($url, $data) {
         $curl = $this -> curl;
         $datastring = http_build_query($data);;
         curl_setopt($curl, CURLOPT_URL, $url . '?token=' . $this->token);
@@ -54,17 +54,17 @@ class LinnworksAPI {
             $data = array();
         }
         //$data['token'] = $this -> token;
-        return $this -> makeRequest($url, $data);
+        return $this -> make_request($url, $data);
     }
     
-    function getToken() {
+    function get_token() {
         $loginURL = 'https://api.linnworks.net/api/Auth/Multilogin';
         $authURL = 'https://api.linnworks.net/api/Auth/Authorize';
         $data = array('userName' => $this -> username, 'password' => $this -> password);
-        $multiLogin = $this -> makeRequest($loginURL, $data);
+        $multiLogin = $this -> make_request($loginURL, $data);
         $this -> userID = $multiLogin[0]['Id'];
         $data['userId'] = $this -> userID;
-        $authorise = $this -> makeRequest($authURL, $data);
+        $authorise = $this -> make_request($authURL, $data);
         $_SESSION['token'] = $authorise['Token'];
         $this -> token = $authorise['Token'];
         $_SESSION['server'] = $authorise['Server'];
@@ -72,7 +72,7 @@ class LinnworksAPI {
         return true;
     }
     
-    function getCategoryInfo() {
+    function get_category_info() {
         $url = $this -> server . '/api/Inventory/GetCategories';
         $response = $this -> request($url);
         $categories = array();
@@ -86,25 +86,25 @@ class LinnworksAPI {
         return $categories;
     }
     
-    function getCategorynames() {
+    function get_category_names() {
         $cateogryNames = array();
-        $categoryInfo = $this -> getCategoryInfo();
+        $categoryInfo = $this -> get_category_info();
         foreach ($categoryInfo as $category){
             $cateogryNames[] = $category['name'];
         }
         return $cateogryNames;
     }
     
-    function getCategoryIDs() {
+    function get_category_ids() {
         $cateogryIDs = array();
-        $categoryInfo = $this -> getCategoryInfo();
+        $categoryInfo = $this -> get_category_info();
         foreach ($categoryInfo as $category){
             $cateogryIDs[] = $category['id'];
         }
         return $cateogryIDs;
     }
     
-    function getPackagingGroupInfo() {
+    function get_packaging_group_info() {
         $url = $this -> server . '/api/Inventory/GetPackageGroups';
         $response = $this -> request($url);
         $packagingGroups = array();
@@ -118,7 +118,15 @@ class LinnworksAPI {
         return $packagingGroups;
     }
     
-    function getShippingMethodInfo() {
+    function get_packaging_group_names() {
+        $packaging_group_names = array();
+        foreach ($this -> get_packaging_group_info() as $group) {
+            $packaging_group_names[] = $group['name'];
+        }
+        return $packaging_group_names;
+    }
+    
+    function get_shipping_method_info() {
         $url = $this -> server . '/api/Orders/GetShippingMethods';
         $response = $this -> request($url);
         $shippingMethods = array();
@@ -136,14 +144,12 @@ class LinnworksAPI {
         return $shippingMethods;
     }
     
-    function getChannels() {
-        $url = $this -> server . '/api/Inventory/GetChannels';
-        $response = $this -> request($url);
-        $channels = array();
-        foreach ($response as $channel) {
-            $channels[] = $channel['Source'] . ' ' . $channel['SubSource'];
+    function get_shipping_method_names() {
+        $shipping_group_names = array();
+        foreach ($this -> get_shipping_method_info() as $group) {
+            $shipping_group_names[] = $group['name'];
         }
-        return $channels;
+        return $shipping_group_names;
     }
     
     function get_location_info() {
@@ -159,82 +165,12 @@ class LinnworksAPI {
         return $locations;
     }
     
-    function getNewSku() {
-        $url = $this -> server . '/api/Stock/GetNewSKU';
-        $response = $this -> request($url);
-        return $response;
-    }
-    
-    function uploadImage($data) {
-        $url = $this -> server . '/api/Uploader/UploadFile?type=Image&expiredInHours=24&token=' . $this -> token;
-        $curl = $this->curl;
-        $headers = array(
-            'Content-Type: multipart/form-data',
-        );
-        
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-        //curl_setopt($curl, CURLOPT_HEADER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($curl);
-        $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-        $header = substr($response, 0, $header_size);
-        $body = substr($response, $header_size);
-        //print_r($header);
-        //echo "<br />";
-        //echo "<br />";
-        //print_r($body);
-        //echo "<br />";
-        //echo "<br />";
-        //echo "<br />";
-        //echo "<br />";
-        $responseJson = json_decode($body, true);
-        return $responseJson;
-    }
-    
-    function assignImages($productGuid, $imageGuidArray) {
-        $url = $this->server . '/api/Inventory/UploadImagesToInventoryItem';
-        $data = array();
-        $data['inventoryItemId'] = $productGuid;
-        $data['imageIds'] = json_encode($imageGuidArray);
-        echo "<br />";
-        //print_r($data);
-        echo "<br />";
-        $response = $this->request($url, $data);
-        return $response;
-    }
-    
-    function setPrimaryImage($productGuid, $imageGuid) {
-        $url = $this->server . '/api/Inventory/SetInventoryItemImageAsMain';
-        $data = array();
-        $data['inventoryItemId'] = $productGuid;
-        $data['mainImageId'] = $imageGuid;
-        $response = $this->request($url, $data);
-        return $response;
-    }
-    
-    function getVariationGroupIdBySKU($sku) {
-        $url = $this -> server . '/api/Stock/SearchVariationGroups';
-        $data = array();
-        $data['searchText'] = $sku;
-        $data['searchType'] = 'ParentSKU';
-        $data['entriesPerPage'] = '100';
-        $data['pageNumber'] = 1;
-        $response = $this -> request($url, $data);
-        return $response['Data'][0]['pkVariationItemId'];
-    }
-    
-    function SKU_Exists($sku) {
-        $url = $this -> server . '/api/Stock/SKUExists';
-        $data = array();
-        $data['SKU'] = $sku;
-        $response = $this->request($url, $data);
-        return $response;
+    function get_location_names() {
+        $locations = array();
+        foreach ($this -> get_location_info() as $location) {
+            $locations[] = $location['name'];
+        }
+        return $locations;
     }
     
     function get_location_ids() {
@@ -243,6 +179,16 @@ class LinnworksAPI {
             $locations[] = $location['id'];
         }
         return $locations;
+    }
+    
+    function get_channels() {
+        $url = $this -> server . '/api/Inventory/GetChannels';
+        $response = $this -> request($url);
+        $channels = array();
+        foreach ($response as $channel) {
+            $channels[] = $channel['Source'] . ' ' . $channel['SubSource'];
+        }
+        return $channels;
     }
     
     function get_inventory_views() {
@@ -254,6 +200,12 @@ class LinnworksAPI {
     
     function get_new_inventory_view() {
         $url = $this -> server . '/api/Inventory/GetNewInventoryView';
+        $response = $this -> request($url);
+        return $response;
+    }
+    
+    function get_inventory_column_types() {
+        $url = $this -> server . '/api/Inventory/GetInventoryColumnTypes';
         $response = $this -> request($url);
         return $response;
     }
@@ -278,23 +230,10 @@ class LinnworksAPI {
         return $response;
     }
     
-    function getInventoryItemIdBySKU($sku) {
-        $view = $this -> get_new_inventory_view();
-        //print_r($view);
-        $view['Columns'] = array();
-        $filter = array();
-        $filter['Value'] = $sku;
-        $filter['Field'] = 'String';
-        $filter['FilterName'] = 'SKU';
-        $filter['FilterNameExact'] = '';
-        $filter['Condition'] = 'Equals';
-        $view['Filters'] = [$filter];
-        echo "<br /><br />";
-        //print_r($view);
-        $response = $this -> get_inventory_items(0, 1, $view=$view);
-        //print_r($response);
-        $stock_id = $response['Items'][0]['Id'];
-        return $stock_id;
+    function get_item_count() {
+        $request = $this -> get_inventory_items($start=0, $count=1, $view=null);
+        $item_count = $request['TotalItems'];
+        return $item_count;
     }
     
     function get_inventory_item_by_id($stock_id, $inventory_item=true) {
@@ -344,12 +283,187 @@ class LinnworksAPI {
         }
     }
     
+    function get_extended_property_names() {
+        $url = $this -> server . '/api/Inventory/GetExtendedPropertyNames';
+        $response = $this -> request($url);
+        return $response;
+    }
+    
     function get_inventory_item_extended_properties($stock_id) {
         $url = $this -> server . '/api/Inventory/GetInventoryItemExtendedProperties';
         $data = array();
         $data['inventoryItemId'] = $stock_id;
         $response = $this -> request($url, $data);
         return $response;
+    }
+    
+    function get_new_sku() {
+        $url = $this -> server . '/api/Stock/GetNewSKU';
+        $response = $this -> request($url);
+        return $response;
+    }
+    
+    function sku_exists($sku) {
+        $url = $this -> server . '/api/Stock/SKUExists';
+        $data = array();
+        $data['SKU'] = $sku;
+        $response = $this->request($url, $data);
+        return $response;
+    }
+    
+    function upload_image($data) {
+        $url = $this -> server . '/api/Uploader/UploadFile?type=Image&expiredInHours=24&token=' . $this -> token;
+        $curl = $this->curl;
+        $headers = array(
+            'Content-Type: multipart/form-data',
+        );
+        
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
+        //curl_setopt($curl, CURLOPT_HEADER, true);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+        $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $header = substr($response, 0, $header_size);
+        $body = substr($response, $header_size);
+        //print_r($header);
+        //echo "<br />";
+        //echo "<br />";
+        //print_r($body);
+        //echo "<br />";
+        //echo "<br />";
+        //echo "<br />";
+        //echo "<br />";
+        $responseJson = json_decode($body, true);
+        return $responseJson;
+    }
+    
+    function assign_images($productGuid, $imageGuidArray) {
+        $url = $this->server . '/api/Inventory/UploadImagesToInventoryItem';
+        $data = array();
+        $data['inventoryItemId'] = $productGuid;
+        $data['imageIds'] = json_encode($imageGuidArray);
+        echo "<br />";
+        //print_r($data);
+        echo "<br />";
+        $response = $this->request($url, $data);
+        return $response;
+    }
+    
+    function create_variation_group($parent_title, $variation_guids, $parent_guid=null, $parent_sku=null) {
+        if ($parent_guid == null) {
+            $parent_guid = createGUID();
+        }
+        if ($parent_sku == null ) {
+            $parent_sku = $this -> get_new_sku();
+        }
+        $url = $this -> server . '/api/Stock/CreateVariationGroup';
+        $template = array();
+        $template['ParentSKU'] = $parent_sku;
+        $template['VariationGroupName'] = $parent_title;
+        $template['ParentStockItemId'] = $parent_guid;
+        $template['VariationItemIds'] = $variation_guids;
+        $data = array();
+        $data['template'] = json_encode($template);
+        $response = $this -> request($url, $data);
+        if ($response == '') {
+            return true;
+        } else {
+            return $response;
+        }
+    }
+    
+    function get_variation_group_id_by_SKU($sku) {
+        $url = $this -> server . '/api/Stock/SearchVariationGroups';
+        $data = array();
+        $data['searchText'] = $sku;
+        $data['searchType'] = 'ParentSKU';
+        $data['entriesPerPage'] = '100';
+        $data['pageNumber'] = 1;
+        $response = $this -> request($url, $data);
+        return $response['Data'][0]['pkVariationItemId'];
+    }
+    
+    function get_variation_group_inventory_item_by_SKU($sku) {
+        $guid = $this -> get_variation_group_id_by_SKU($sku);
+        $item = $this -> get_inventory_item_by_id($guid);
+        return $item;
+    }
+    
+    function get_inventory_item_id_by_SKU($sku) {
+        $view = $this -> get_new_inventory_view();
+        //print_r($view);
+        $view['Columns'] = array();
+        $filter = array();
+        $filter['Value'] = $sku;
+        $filter['Field'] = 'String';
+        $filter['FilterName'] = 'SKU';
+        $filter['FilterNameExact'] = '';
+        $filter['Condition'] = 'Equals';
+        $view['Filters'] = [$filter];
+        echo "<br /><br />";
+        //print_r($view);
+        $response = $this -> get_inventory_items(0, 1, $view=$view);
+        //print_r($response);
+        $stock_id = $response['Items'][0]['Id'];
+        return $stock_id;
+    }
+    
+    function get_inventory_item_by_SKU($sku) {
+        $guid = $this -> get_inventory_item_id_by_SKU($sku);
+        $item = $this -> get_inventory_item_by_id($guid);
+        return $item;
+    }
+    
+    function get_image_urls_by_item_id($item_id) {
+        $url = $this -> server . '/api/Inventory/GetInventoryItemImages';
+        $data = array('inventoryItemId' => $item_id);
+        $response = $this -> request($url, $data);
+        $image_urls = array();
+        foreach ($response as $image) {
+            if ($image['IsMain'] == true) {
+                $image_url = str_replace('tumbnail_', '', $image['Source']);
+                $image_urls[] = $image_url;
+            }
+        }
+        foreach ($response as $image) {
+            if ($image['IsMain'] != true ){
+                $image_url = str_replace('tumbnail_', '', $image['Source']);
+                $image_urls[] = $image_url;
+            }
+        }
+        return $image_urls;
+    }
+    
+    function get_image_urls_by_SKU($sku) {
+        $item_id = $this -> get_inventory_item_id_by_SKU($sku);
+        $image_urls = $this -> get_image_urls_by_item_id($item_id);
+        return $image_urls;
+    }
+    
+    function set_primary_image($productGuid, $imageGuid) {
+        $url = $this->server . '/api/Inventory/SetInventoryItemImageAsMain';
+        $data = array();
+        $data['inventoryItemId'] = $productGuid;
+        $data['mainImageId'] = $imageGuid;
+        $response = $this->request($url, $data);
+        return $response;
+    }
+    
+    function getVariationGroupIdBySKU($sku) {
+        $url = $this -> server . '/api/Stock/SearchVariationGroups';
+        $data = array();
+        $data['searchText'] = $sku;
+        $data['searchType'] = 'ParentSKU';
+        $data['entriesPerPage'] = '100';
+        $data['pageNumber'] = 1;
+        $response = $this -> request($url, $data);
+        return $response['Data'][0]['pkVariationItemId'];
     }
     
     function get_stock_level_by_id($stock_id, $location='Default') {
@@ -364,46 +478,4 @@ class LinnworksAPI {
         }
     }
     
-    function get_category_info() {
-        $url = $this -> server . '/api/Inventory/GetCategories';
-        $response = $this -> request($url);
-        $categories = array();
-        foreach ($response as  $category) {
-            $new_category = array();
-            $new_category['name'] = $category['CategoryName'];
-            $new_category['id'] = $category['CategoryId'];
-            $categories[] = $new_category;
-        }
-        return $categories;
-    }
-    
-    function get_packaging_group_info() {
-        $url = $this -> server . '/api/Inventory/GetPackageGroups';
-        $response = $this -> request($url);
-        $packaging_groups = array();
-        foreach ($response as $group) {
-            $new_group = array();
-            $new_group['id'] = $group['Value'];
-            $new_group['name'] = $group['Key'];
-            $packaging_groups[] = $new_group;
-        }
-        return $packaging_groups;
-    }
-    
-    function get_shipping_method_info() {
-        $url = $this -> server . '/api/Orders/GetShippingMethods';
-        $response = $this -> request($url);
-        $shipping_methods = array();
-        foreach ($response as $service) {
-            foreach ($service['PostalServices'] as $method) {
-                $new_method = array();
-                $new_method['vendor'] = $method['Vendor'];
-                $new_method['id'] = $method['pkPostalServiceId'];
-                $new_method['tracking_required'] = $method['TrackingNumberRequired'];
-                $new_method['name'] = $method['PostalServiceName'];
-                $shipping_methods[] = $new_method;
-            }
-        }
-        return $shipping_methods;
-    }
 }

@@ -42,7 +42,7 @@ function getFormFieldsByPage($page){
 
 function generateSku() {
     $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
-    return $api->getNewSku();
+    return $api->get_new_sku();
 }
 
 function addSkuToDatabase($sku) {
@@ -263,6 +263,7 @@ function get_linn_title($product) {
     } else {
         $item_title = $product->details['var_name']->text;
     }
+    
     $location = $product->details['location']->text;
     $mpn = $product->details['mpn']->text;
     

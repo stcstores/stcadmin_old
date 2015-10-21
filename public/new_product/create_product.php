@@ -26,7 +26,7 @@ function getCreateInventoryItem($product) {
 }
 
 function getCategoryId($api, $categoryName) {
-    $categoryInfo = $api->getCategoryInfo();
+    $categoryInfo = $api->get_category_info();
     foreach ($categoryInfo as $category) {
         if ($category['name'] == $categoryName) {
             return $category['id'];
@@ -37,7 +37,7 @@ function getCategoryId($api, $categoryName) {
 }
 
 function getPackageId($api, $groupName) {
-    $packageInfo = $api->getPackagingGroupInfo();
+    $packageInfo = $api->get_packaging_group_info();
     foreach ($packageInfo as $group) {
         if ($group['name'] == $groupName) {
             return $group['id'];
@@ -48,29 +48,14 @@ function getPackageId($api, $groupName) {
 }
 
 function getServiceId($api) {
-    $serviceInfo = $api->getShippingMethodInfo();
+    $serviceInfo = $api->get_shipping_method_info();
     return $serviceInfo[0]['id'];
 }
 
 function getUpdateInventoryItem($api, $product) {
     $item = array();
     $item['ItemNumber'] = (string)$product->details['sku']->text;
-    if (array_key_exists('item_title', $product->details)) {
-        $item_title = $product->details['item_title']->text;
-    } else {
-        $item_title = $product->details['var_name']->text;
-    }
-    $location = $product->details['location']->text;
-    $mpn = $product->details['mpn']->text;
-    
-    if (strlen($location) > 0) {
-        $item_title = $location . ' ' . $item_title;
-    }
-    
-    if (strlen($mpn) > 0) {
-        $item_title = $mpn . ' ' . $item_title;
-    }
-    $item['ItemTitle'] = $item_title;
+    $item['ItemTitle'] = get_linn_title($product);
     $item['BarcodeNumber'] = (string)$product->details['barcode']->text;
     $purchasePrice = (string)$product->details['purchase_price']->text;
     if ($purchasePrice == "") {
@@ -244,7 +229,7 @@ function getPrimaryImages($products) {
     return $primaryImages;
 }
 
-function assignImages($api, $product) {
+function assign_images($api, $product) {
     $product = $_SESSION['new_product'];
     $products = array($product);
     if ($product->details['var_type']->value == true) {
@@ -260,7 +245,7 @@ function assignImages($api, $product) {
         print_r($imageArray);
         echo "<br />\n";
         echo "<p>Response</p>\n";
-        print_r($api->assignImages($productGuid, $imageArray));
+        print_r($api->assign_images($productGuid, $imageArray));
         echo "<br />\n";
         echo "<hr>\n";
     }
@@ -272,7 +257,7 @@ function assignImages($api, $product) {
         print_r($imageGuid);
         echo "<br />\n";
         echo "<p>Response</p>\n";
-        print_r($api->setPrimaryImage($guid, $imageGuid));
+        print_r($api->set_primary_image($guid, $imageGuid));
         echo "<br />\n";
         echo "<hr>\n";
     }
@@ -459,6 +444,6 @@ if ($product->details['var_type']->value == true) {
 }
 updateItem($api, $product);
 createExtendedProperties($api, $product);
-assignImages($api, $product);
+assign_images($api, $product);
 addTitles($api, $product);
 addDescriptions($api, $product);

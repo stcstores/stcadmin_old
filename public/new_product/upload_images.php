@@ -52,7 +52,7 @@ if (isset($_POST['sku'])){
     $response = array();
     
     foreach ($data as $image){
-        $response = $api -> uploadImage($image);
+        $response = $api -> upload_image($image);
         $guid = $response[0]['FileId'];
         $thumbPath = $response[0]['ThumbnailUrl'];
         $fullPath = $response[0]['ImageUrl'];
@@ -81,7 +81,7 @@ if (isset($_POST['sku'])){
             }
             $response = array();
             foreach ($data as $image){
-                $response = $api -> uploadImage($image);
+                $response = $api -> upload_image($image);
                 $guid = $response[0]['FileId'];
                 $thumbPath = $response[0]['ThumbnailUrl'];
                 $fullPath = $response[0]['ImageUrl'];

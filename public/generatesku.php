@@ -5,6 +5,6 @@ checkLogin();
 
 $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
-echo $api->getNewSKU();
+echo $api->get_new_sku();
 
 ?>

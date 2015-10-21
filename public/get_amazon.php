@@ -21,7 +21,7 @@ require_once($CONFIG['header']);
         
         $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
         
-        $guid = $api -> getInventoryItemIdBySKU($sku);
+        $guid = $api -> get_inventory_item_id_by_SKU($sku);
         
         $item = $api -> get_inventory_item_by_id($guid);
         

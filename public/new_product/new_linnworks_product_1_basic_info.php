@@ -73,7 +73,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                 <td class=form_table_input>
                     <select id=department name=department>
                         <?php
-                            $departments = $api->getCategoryNames();
+                            $departments = $api->get_category_names();
                             foreach ($departments as $dept){
                                 echo "<option value='" . $dept . "' ";
                                     if ($dept == $product->details['department']->text) {
@@ -111,7 +111,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                 <td class=form_table_input>
                     <select id=shipping_method name=shipping_method>
                         <?php
-                            $shippingMethods = $api->getPackagingGroupInfo();
+                            $shippingMethods = $api->get_packaging_group_info();
                             foreach ($shippingMethods as $shippingMethod){
                                 $method = $shippingMethod['name'];
                                 if($method != 'Default') {

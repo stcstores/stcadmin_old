@@ -46,7 +46,7 @@ function createImageBox(product, location) {
     browseButton.sku = sku;
     browseButton.change(function() {
         var buttonsku = this.id.replace('browseButton', '');
-        uploadImages(buttonsku);
+        upload_images(buttonsku);
     });
     
     for (thisImage in product['image_data']) {
@@ -153,7 +153,7 @@ function uploadVariationTypeImages(field, value, valueId) {
     }); 
 }
 
-function uploadImages(sku) {
+function upload_images(sku) {
     var form = new FormData($('#addImage' + sku).get(0));
 
     form.append('sku', sku);

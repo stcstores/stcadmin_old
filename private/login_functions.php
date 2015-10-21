@@ -49,12 +49,12 @@ function getUserId($username, $password) {
     $loginURL = 'https://api.linnworks.net/api/Auth/Multilogin';
     $authURL = 'https://api.linnworks.net/api/Auth/Authorize';
     $data = array('userName' => $username, 'password' => $password);
-    $multiLogin = makeRequest($loginURL, $data);
+    $multiLogin = make_request($loginURL, $data);
     $userID = $multiLogin[0]['Id'];
     return $userID;    
 }
 
-function makeRequest($url, $data) {
+function make_request($url, $data) {
     $curl = curl_init();
     $headers = array(
         'Content-Type: application/json',

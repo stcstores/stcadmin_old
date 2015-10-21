@@ -14,7 +14,7 @@ if (isset($_SESSION['new_product'])) {
     exit();
 }
     $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
-    $product_exists = $api->SKU_Exists($product->details['sku']->text);
+    $product_exists = $api->sku_exists($product->details['sku']->text);
     
     $item_title = get_linn_title($product);
     
