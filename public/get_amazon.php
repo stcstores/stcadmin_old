@@ -47,7 +47,7 @@ function extended_property_value($item, $property) {
         } else {
             $item = $api -> get_inventory_item_by_id($guid);
             
-            if ($has_variations = false) {
+            if ($has_variations == false) {
             ?>
             <table class='item_details'>
                 <tr>
@@ -55,13 +55,31 @@ function extended_property_value($item, $property) {
                     <td><?php echo $item -> barcode; ?></td>
                 </tr>
             </table>
-            <?php } ?>
+            <?php
+            
+            } else {
+                $variations = array();
+                foreach ($api -> get_variation_children($item -> stock_id) as $guid) {
+                    $variations[] = $api -> get_inventory_item_by_id($guid);
+                }
+                ?>
+            <p>Find Product by Barcode: </p>
+            <ul class='item_details'>
+                <?php foreach($variations as $variation) { ?>
+                    <li><?php echo $variation -> barcode; ?></li>
+                <?php } ?>
+            </ul>
+            <?php
+            }
+            ?>
     
             <h2>Vital Info</h2>
             <table class='item_details'>
                 <tr>
                     <td class='align_right'>Title</td>
-                    <td><input value='<?php echo $item -> title; ?>' size='<?php echo strlen($item -> title); ?>' readonly /></td>
+                    <td><input value='<?php
+                    $title = $api -> get_channel_titles($item -> stock_id)['amazon'];
+                    echo $title; ?>' size='<?php echo strlen($title); ?>' readonly /></td>
                 </tr>
                 <tr>
                     <td class='align_right'>Manufacturer</td>
@@ -85,7 +103,7 @@ function extended_property_value($item, $property) {
                 </tr>
                 <tr>
                     <?php
-                    if ($has_variations = true) {
+                    if ($has_variations == true) {
                         ?>
                         <td class='align_right'>Variation Theme</td>
                         <td><input value='<?php
@@ -93,10 +111,12 @@ function extended_property_value($item, $property) {
                         $string = '';
                         
                         $ex_props = array('var_size', 'var_colour', 'var_design', 'var_age', 'var_shape', 'var_style', 'var_material', 'var_texture');
+                        $variation_types = array();
                         foreach ($ex_props as $prop) {
-                            if ($item -> extended_property_value($item, $prop) != '') {
-                                if (strlen(extended_property_value($item, $prop)) > 0) {
+                            if (extended_property_value($variations[0], $prop) != '') {
+                                if (strlen(extended_property_value($variations[0], $prop)) > 0) {
                                     $var_type = str_replace('var_', '', $prop);
+                                    $variation_types[] = $var_type;
                                     $string = $string . $var_type . ' ';
                                 }
                             }
@@ -117,11 +137,28 @@ function extended_property_value($item, $property) {
                 </tr>
             </table>
             <?php
-            if ($has_variations = true) {
+            if ($has_variations == true) {
             ?>
             <h2>Variations</h2>
             <table class='item_details'>
-                
+                <tr>
+                    <?php foreach ($variation_types as $var_type) { ?>
+                        <th><?php echo ucwords($var_type); ?></th>
+                    <?php } ?>
+                    <th>SKU</th>
+                    <th>Price</th>
+                    <th>Barcode</th>
+                </tr>
+                <?php foreach ($variations as $variation) { ?>
+                <tr>
+                    <?php foreach ($variation_types as $var_type) { ?>
+                        <td><input value='<?php echo extended_property_value($variation, 'var_' . $var_type); ?>' readonly /></td>
+                    <?php } ?>
+                    <td><input value='<?php echo $variation -> sku; ?>' readonly /></td>
+                    <td><input value='<?php echo $api -> get_channel_prices($variation -> stock_id)['amazon']; ?>' readonly /></td>
+                    <td><input value='<?php echo $variation -> barcode; ?>' readonly /></td>
+                </tr>
+                <?php } ?>
             </table>
             <?php
             }
@@ -136,6 +173,13 @@ function extended_property_value($item, $property) {
                     <td class='align_right'>Condition</td>
                     <td><input value='New' size='3' readonly /></td>
                 </tr>
+                <?php if ($has_variations == false) { ?>
+                <tr>
+                    <td class='align_right'>Price</td>
+                    <?php $price = $api -> get_channel_prices($item -> stock_id)['amazon']; ?>
+                    <td><input value='<?php echo $price; ?>' size='<?php echo strlen($price); ?>' readonly</td>
+                </tr>
+                <?php } ?>
             </table>
             <h2>Images</h2>
             <table class='item_details'>
@@ -148,17 +192,19 @@ function extended_property_value($item, $property) {
                     ?>
                     <tr>
                         <td>
-                            <input value='<?php echo extended_property_value($item, 'Amazon Bullet ' . $i); ?>' size='<?php echo strlen(extended_property_value($item, 'Amazon Bullet ' . $i)); ?>' readonly />
+                            <input value='<?php echo extended_property_value($item, 'Amazon_Bullet_' . $i); ?>' size='<?php echo strlen(extended_property_value($item, 'Amazon_Bullet_' . $i)); ?>' readonly />
                         </td>
-                    </tr>
-                    
+                    </tr>                    
                     <?php
                 }
                 ?>
             </table>
+            <div class='item_details'>
+                <?php echo $api -> get_channel_descriptions($item -> stock_id)['amazon']; ?>
+            </div>
             <?php
             }
-        }
+    }
         ?>
 </div>
 <?php
