@@ -555,4 +555,15 @@ class LinnworksAPI {
         }
         return $channels;
     }
+    
+    function get_variation_children($parent_guid) {
+        $url = $this -> server . '/api/Stock/GetVariationItems';
+        $data = array('pkVariationItemId' => $parent_guid);
+        $response = $this -> request($url, $data);
+        $variation_children = array();
+        foreach ($response as $child) {
+            $variation_children[] = $child['pkStockItemId'];
+        }
+        return $variation_children;
+    }
 }
