@@ -487,4 +487,72 @@ class LinnworksAPI {
         }
     }
     
+    function get_channel_titles($guid) {
+        $url = $this -> server . '/api/Inventory/GetInventoryItemTitles';
+        $data = array('inventoryItemId' => $guid);
+        $response = $this -> request($url, $data);
+        $channels = [];
+        foreach ($response as $channel) {
+            if ($channel['Source'] == 'AMAZON') {
+                if ($channel['SubSource'] == 'Stc Stores') {
+                    $channels['amazon'] = $channel['Title'];
+                }
+            } elseif ($channel['Source'] == 'EBAY') {
+                if ($channel['SubSource'] == 'EBAY0') {
+                    $channels['ebay'] = $channel['Title'];
+                }
+            } else if ($channel['Source'] == 'SHOPIFY') {
+                if ($channel['SubSource'] == 'stcstores.co.uk (shopify)') {
+                    $channels['shopify'] = $channel['Title'];
+                }
+            }
+        }
+        return $channels;
+    }
+
+    function get_channel_prices($guid) {
+        $url = $this -> server . '/api/Inventory/GetInventoryItemPrices';
+        $data = array('inventoryItemId' => $guid);
+        $response = $this -> request($url, $data);
+        $channels = [];
+        foreach ($response as $channel) {
+            if ($channel['Source'] == 'AMAZON') {
+                if ($channel['SubSource'] == 'Stc Stores') {
+                    $channels['amazon'] = $channel['Price'];
+                }
+            } elseif ($channel['Source'] == 'EBAY') {
+                if ($channel['SubSource'] == 'EBAY0') {
+                    $channels['ebay'] = $channel['Price'];
+                }
+            } else if ($channel['Source'] == 'SHOPIFY') {
+                if ($channel['SubSource'] == 'stcstores.co.uk (shopify)') {
+                    $channels['shopify'] = $channel['Price'];
+                }
+            }
+        }
+        return $channels;
+    }
+
+    function get_channel_descriptions($guid) {
+        $url = $this -> server . '/api/Inventory/GetInventoryItemDescriptions';
+        $data = array('inventoryItemId' => $guid);
+        $response = $this -> request($url, $data);
+        $channels = [];
+        foreach ($response as $channel) {
+            if ($channel['Source'] == 'AMAZON') {
+                if ($channel['SubSource'] == 'Stc Stores') {
+                    $channels['amazon'] = $channel['Description'];
+                }
+            } elseif ($channel['Source'] == 'EBAY') {
+                if ($channel['SubSource'] == 'EBAY0') {
+                    $channels['ebay'] = $channel['Description'];
+                }
+            } else if ($channel['Source'] == 'SHOPIFY') {
+                if ($channel['SubSource'] == 'stcstores.co.uk (shopify)') {
+                    $channels['shopify'] = $channel['Description'];
+                }
+            }
+        }
+        return $channels;
+    }
 }
