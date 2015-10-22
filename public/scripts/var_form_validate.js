@@ -30,7 +30,7 @@ function variations_form_validate() {
     
     if ((!(all_empty('barcode'))) && (!(none_empty('barcode')))) {
         objects = getObjects('barcode');
-        objects.attr('css', 'error');
+        objects.attr('class', 'error');
         add_error('If any variation has a barcode they all must');
     }
     
@@ -38,6 +38,20 @@ function variations_form_validate() {
         if (!(barcodeCheck('Barcode', 'barcode'))) {
             form_valid = false;
         }
+    }
+    
+    var weight_error = false;
+    weights = getObjects('weight');
+    weights.each( function () {
+        if (this.val() === '') {
+            weight_error = true;
+            this.attr('class', 'error');
+        }
+     });
+    
+    if (weight_error) {
+        add_error('Weight is required');
+        form_valid = false;
     }
     
     var keyFieldsUnique = true;
