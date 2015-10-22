@@ -185,6 +185,7 @@ class _ExtendedProperties {
                 return $property;
             }
         }
+        return null;
     }
     
     function append($extended_property) {

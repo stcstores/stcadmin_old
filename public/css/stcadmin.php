@@ -376,3 +376,19 @@ a.questionmark_link {
     padding: 1em;
     border: solid black 1px;
 }
+
+.item_details {
+    background: white;
+    color: black;
+    font-size: medium;
+    font-weight: normal;
+    padding: 1em;
+}
+
+.item_details td{
+    padding-left: 1em;
+}
+
+.align_right {
+    text-align: right;
+}

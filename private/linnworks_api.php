@@ -386,7 +386,12 @@ class LinnworksAPI {
         $data['entriesPerPage'] = '100';
         $data['pageNumber'] = 1;
         $response = $this -> request($url, $data);
-        return $response['Data'][0]['pkVariationItemId'];
+        //print_r($response);
+        if (isset($response['Data'][0])) {
+            return $response['Data'][0]['pkVariationItemId'];
+        } else {
+            return null;
+        }
     }
     
     function get_variation_group_inventory_item_by_SKU($sku) {
@@ -410,8 +415,12 @@ class LinnworksAPI {
         //print_r($view);
         $response = $this -> get_inventory_items(0, 1, $view=$view);
         //print_r($response);
-        $stock_id = $response['Items'][0]['Id'];
-        return $stock_id;
+        if (isset($response['items'][0])) {
+            $stock_id = $response['Items'][0]['Id'];
+            return $stock_id;
+        } else {
+            return null;
+        }
     }
     
     function get_inventory_item_by_SKU($sku) {
