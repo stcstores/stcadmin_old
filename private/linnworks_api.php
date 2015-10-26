@@ -181,6 +181,36 @@ class LinnworksAPI {
         return $locations;
     }
     
+    function get_postage_service_info() {
+        $url = $this -> server . '/api/PostalServices/GetPostalServices';
+        $response = $this -> request($url);
+        $locations = array();
+        foreach ($response as $postage_service) {
+            $newLocation = array();
+            $newLocation['name'] = $postage_service['PostalServiceName'];
+            $newLocation['id'] = $postage_service['pkPostalServiceId'];
+            $locations[] = $newLocation;
+        }
+        return $locations;
+    }
+    
+    function get_postage_service_names() {
+        $postage_services = array();
+        foreach ($this -> get_postage_service_info() as $postage_service) {
+            $postage_services[] = $postage_service['name'];
+        }
+        sort($postage_services);
+        return $postage_services;
+    }
+    
+    function get_postage_service_ids() {
+        $postage_services = array();
+        foreach ($this -> get_postage_service_info() as $postage_service) {
+            $postage_services[] = $postage_service['id'];
+        }
+        return $postage_services;
+    }
+    
     function get_channels() {
         $url = $this -> server . '/api/Inventory/GetChannels';
         $response = $this -> request($url);
