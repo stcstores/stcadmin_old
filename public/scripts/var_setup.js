@@ -1,4 +1,7 @@
-function VariationField(number, field, value='', disable=false) {
+function VariationField(number, field, value, disable) {
+    if (value === undefined) {
+	value = '';
+    }
     this.field = field;
     this.number = number;
     this.name = field['field_name'];

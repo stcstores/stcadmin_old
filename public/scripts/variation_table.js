@@ -1,4 +1,4 @@
-function TableRow(number, fields, values=null) {
+function TableRow(number, fields, value) {
     this.number = number;
     this.fields = fields;
     this.values = values;
