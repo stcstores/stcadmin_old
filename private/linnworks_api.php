@@ -445,7 +445,7 @@ class LinnworksAPI {
         //print_r($view);
         $response = $this -> get_inventory_items(0, 1, $view=$view);
         //print_r($response);
-        if (isset($response['items'][0])) {
+        if (array_key_exists(0, $response['Items'])) {
             $stock_id = $response['Items'][0]['Id'];
             return $stock_id;
         } else {
@@ -473,6 +473,30 @@ class LinnworksAPI {
         foreach ($response as $image) {
             if ($image['IsMain'] != true ){
                 $image_url = str_replace('tumbnail_', '', $image['Source']);
+                $image_urls[] = $image_url;
+            }
+        }
+        return $image_urls;
+    }
+    
+    function get_image_thumbnail_urls_by_item_id($item_id) {
+        $url = $this -> server . '/api/Inventory/GetInventoryItemImages';
+        $data = array('inventoryItemId' => $item_id);
+        $response = $this -> request($url, $data);
+        $image_urls = array();
+        foreach ($response as $image) {
+            if ($image['IsMain'] == true) {
+                $image_url = array();
+                $image_url['full'] = str_replace('tumbnail_', '', $image['Source']);
+                $image_url['thumb'] = $image['Source'];
+                $image_urls[] = $image_url;
+            }
+        }
+        foreach ($response as $image) {
+            if ($image['IsMain'] != true ){
+                $image_url = array();
+                $image_url['full'] = str_replace('tumbnail_', '', $image['Source']);
+                $image_url['thumb'] = $image['Source'];
                 $image_urls[] = $image_url;
             }
         }
