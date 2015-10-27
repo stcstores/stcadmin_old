@@ -17,7 +17,6 @@ VariationField.prototype.getInput = function() {
     if (this.name == 'var_name') {
         var variation_title = product_title;
         var row = '<td><table>';
-        console.log(variations.variationTypes);
         for (variation in variations.variationTypes) {
             if (variations.variationTypes[variation].used) {
                 var variation_type_title = variations.variationTypes[variation].title;
@@ -389,7 +388,6 @@ function set_variation_numbers() {
     var varNumber = 0;
     if (variations.variations.length > 0) {
         for (i=0; i < variations.variations.length; i++) {
-            console.log(i);
             if (variations.variations[i].active === true) {
                 for (detail in variations.variations[i].details) {
                     variations.variations[i].details[detail].number = varNumber;

@@ -50,12 +50,23 @@ Table.prototype.write = function() {
     this.resetRowNumbers();
     
     for (i in this.fields) {
-        
         this.table.append('<tr id=var_setup_row_' + this.fields[i]['field_name'] + ' >');
         
         newRow = $('#var_setup_row_' + this.fields[i]['field_name']);
-        
+        var add_set_all = true;
         if (i > 0) {
+            if (variations.variationTypes.hasOwnProperty([this.fields[i]['field_name']])) {
+                if (variations.variationTypes[this.fields[i]['field_name']].used === true) {
+                    add_set_all = false;
+                } else {
+                    add_set_all = true;
+                }
+            }
+        } else {
+            add_set_all = false;
+        }
+        
+        if (add_set_all === true) {
             if (this.fields[i]['field_type'] == 'checkbox') {
                 var toggleButton = $('<input type=button id=toggle_' + this.fields[i]['field_name'] + ' value="Toggle All" title="Toggles international shipping on or off for all variations."/>');
                 toggleButton.click(toggleButtonGenerator(this.fields[i]['field_name']));
