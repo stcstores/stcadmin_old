@@ -45,9 +45,9 @@ function var_sort($variations) {
     <?php
     
     if (isset($_POST['sku'])) {
-        $sku = $_POST['sku'];
+        $sku = trim($_POST['sku']);
     } else if (isset($_GET['sku'])) {
-        $sku = $_GET['sku'];
+        $sku = trim($_GET['sku']);
     }
     
     if (isset($sku)) {    

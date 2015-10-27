@@ -45,9 +45,9 @@ function var_sort($variations) {
     <?php
     
     if (isset($_POST['sku'])) {
-        $sku = $_POST['sku'];
+        $sku = trim($_POST['sku']);
     } else if (isset($_GET['sku'])) {
-        $sku = $_GET['sku'];
+        $sku = trim($_GET['sku']);
     }
     
     if (isset($sku)) {    
@@ -140,7 +140,7 @@ function var_sort($variations) {
                     ?>
                     <tr>
                         <td><label for='<?php echo $varname; ?>'><?php echo ucwords($varname); ?></label></td>
-                        <td><input value='<?php echo $varstring; ?>' readonly name='<?php echo $varname; ?>' size='<?php echo strlen($varstring); ?>' /></td>
+                        <td><input value='<?php echo $varstring; ?>' name='<?php echo $varname; ?>' size='<?php echo strlen($varstring); ?>' /></td>
                     </tr>
                 <?php
                 }
