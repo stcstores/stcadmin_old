@@ -302,7 +302,7 @@ function var_sort($variations) {
                 ?>
             </table>
             <div class='item_details'>
-                <?php echo $api -> get_channel_descriptions($item -> stock_id)['amazon']; ?>
+                <?php echo nl2br($api -> get_channel_descriptions($item -> stock_id)['amazon']); ?>
             </div>
             <?php
             }
