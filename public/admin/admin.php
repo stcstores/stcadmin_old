@@ -11,7 +11,8 @@ require_once($CONFIG['header']);
     
     <p>From here you Can:</p>
     <ul>
-        <li><a href='/admin/archive.php' >View and download archived new products</a> (A copy will be archived)</li>
+        <li><a href='/admin/news.php' >View Update News</a></li>
+        <li><a href='/admin/archive.php' >View and download archived new products</a></li>
     </ul>
 </div>
 
