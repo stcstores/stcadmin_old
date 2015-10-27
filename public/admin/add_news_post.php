@@ -6,9 +6,10 @@ require_once($CONFIG['header']);
 
 if (isset($_POST['title'])) {
     $title = $_POST['title'];
-    $message = $_POST['message'];
+    $message = str_replace("'", "\'", $_POST['message']);
     $database = new DatabaseConnection();
     $query = "INSERT INTO stcadmin_news (header, message) VALUES ('{$title}', '{$message}');";
+    echo $query;
     $database -> insertQuery($query);
 }
 
@@ -31,3 +32,6 @@ if (isset($_POST['title'])) {
         </table>
     </form>
 </div>
+
+<?php
+require_once($CONFIG['footer']);
