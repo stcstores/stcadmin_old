@@ -168,7 +168,7 @@ function upload_images(sku) {
         cache: false,
         processData:false,
         complete: function(data) {
-            writeErrors(data);
+            //writeErrors(data);
             $('#browseButton').val('');
             reload();
         },
@@ -223,7 +223,7 @@ function setPrimary(sku, guid){
 function writeErrors(errors) {
     console.debug(errors);
     $('#errors').html('');
-    $('#errors').append(errors['responseText']);
+    //$('#errors').append(errors['responseText']);
 }
 
 function disableInputs() {
