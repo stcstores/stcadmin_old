@@ -268,14 +268,14 @@ if (isset($_SESSION['new_product'])) {
             $('#content').html('<div style="margin 0 auto;" ><img class=working src=/images/ajax-loader.gif alt=working /></div>');
             $.ajax({
                 url: 'writeproduct.php',
-                async: false,
+                async: true,
                 dataType: 'json',
                 success: function(data){
                 }
             });
             $.ajax({
                 url: 'archive_new_product_csv.php',
-                async: false,
+                async: true,
                 dataType: 'json',
                 success: function(data){
                     
@@ -283,12 +283,11 @@ if (isset($_SESSION['new_product'])) {
             })
             $.ajax({
                 url: 'create_product.php',
-                async: false,
+                async: true,
                 dataType: 'json',
                 success: function(data){
                 }
             });
-            location.reload();
         });
         
         $(':input').each(function() {
@@ -304,6 +303,12 @@ if (isset($_SESSION['new_product'])) {
         $(document).ready(function(){
             $('.variation_table').doubleScroll();
         });
+        
+        $( document ).ajaxComplete(function( event, xhr, settings ) {
+            if ( settings.url === "create_product.php" ) {
+              location.reload();
+            }
+          });
     
         
     </script>

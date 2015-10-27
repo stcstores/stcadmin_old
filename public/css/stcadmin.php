@@ -392,3 +392,7 @@ a.questionmark_link {
 .align_right {
     text-align: right;
 }
+
+input[type="button"]:disabled {
+    background: black;
+}
