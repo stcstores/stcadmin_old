@@ -14,25 +14,25 @@ class DatabaseConnection{
     
     function insertQuery($query){
         $conn = new mysqli($this->host, $this->user, $this->passwd, $this->database);
-        if (!$conn) {
-            die("Database connection failed: " . mysql_error());
-        }
-        $query_set = $conn->query($query);
-        $this->confirm_query($query_set);
+        if (!($conn->query($query))) {
+	    printf("Errormessage: %s\n",$conn->error);
+	}
     }
     
     function selectQuery($query) {
     	$conn = new mysqli($this->host, $this->user, $this->passwd, $this->database);
     	if (!$conn) {
-    		die("Database connection failed: " . mysql_error());
+    		die("Database connection failed: " . $conn->error());
     	}
-    	$query_set = $conn->query($query);
-    	$this->confirm_query($query_set);
-    	$results = array();
-    	while ($db_result = $query_set->fetch_assoc()) {
+    	if (!($conn->query($query))) {
+	    printf("Errormessage: %s\n",$conn->error);
+	}
+    	$query_result = $conn->query($query) or trigger_error("Database Error: " . $conn->error);
+	$results = array();
+    	while ($db_result = $query_result->fetch_assoc()) {
     		$results[] = $db_result;
-    		//print_r($db_result);
     	}
+	$conn->close();
     	return $results;
     }
     
