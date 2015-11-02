@@ -15,8 +15,10 @@ class DatabaseConnection{
     function insertQuery($query){
         $conn = new mysqli($this->host, $this->user, $this->passwd, $this->database);
         if (!($conn->query($query))) {
-	    printf("Errormessage: %s\n",$conn->error);
+	    trigger_error("Errormessage: ". $conn->error, E_USER_NOTICE);
+	    die();
 	}
+	$conn->close();
     }
     
     function selectQuery($query) {
@@ -25,7 +27,8 @@ class DatabaseConnection{
     		die("Database connection failed: " . $conn->error());
     	}
     	if (!($conn->query($query))) {
-	    printf("Errormessage: %s\n",$conn->error);
+	    trigger_error("Errormessage: ". $conn->error, E_USER_NOTICE);
+	    die();
 	}
     	$query_result = $conn->query($query) or trigger_error("Database Error: " . $conn->error);
 	$results = array();
