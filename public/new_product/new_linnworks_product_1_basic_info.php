@@ -103,7 +103,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                     <label for="brand">Brand</label>
                 </td>
                 <td class=form_table_input>
-                    <input id=brand name=brand type=text value='<?php echo $product->details['brand']->text;?>' size=20  />
+                    <input id=brand name=brand type=text value='<?php echo $product->details['brand']->text;?>' size=20 required />
                 </td>
                 <td class=form_field_table_description >The brand of the product</td>
             </tr>
