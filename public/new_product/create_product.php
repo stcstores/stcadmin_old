@@ -175,11 +175,6 @@ function getExtendedPropertiesArray($product, $product_type) {
         array('Shape', (string)$product->details['shape']->text, 'Attribute'),
         array('Texture', (string)$product->details['texture']->text, 'Attribute'),
         array('Style', (string)$product->details['style']->text, 'Attribute'),
-        array('Amazon_Bullet_1', (string)$product->details['am_bullet_1']->text, 'Attribute'),
-        array('Amazon_Bullet_2', (string)$product->details['am_bullet_2']->text, 'Attribute'),
-        array('Amazon_Bullet_3', (string)$product->details['am_bullet_3']->text, 'Attribute'),
-        array('Amazon_Bullet_4', (string)$product->details['am_bullet_4']->text, 'Attribute'),
-        array('Amazon_Bullet_5', (string)$product->details['am_bullet_5']->text, 'Attribute'),
         array('VAT Free', (string)$product->details['vat_free']->text, 'Attribute'),
         array('Shipping FR', (string)$product->details['shipping_fr']->text, 'Attribute'),
         array('Shipping DE', (string)$product->details['shipping_de']->text, 'Attribute'),
@@ -189,7 +184,7 @@ function getExtendedPropertiesArray($product, $product_type) {
         array('Shipping ROW', (string)$product->details['shipping_row']->text, 'Attribute'),
         array('stcadmin', 'TRUE', 'Attribute')
     );
-    
+
     if ($product_type == 'variation') {
         foreach ($product->product->keyFields as $varType => $varValue) {
             if ($varValue == true) {
@@ -197,7 +192,7 @@ function getExtendedPropertiesArray($product, $product_type) {
             }
         }
     }
-    
+
     foreach ($properties as $prop) {
         $exProp = createExtendedProperty($product, $prop[0], $prop[1], $prop[2]);
         $extendedProperties[] = $exProp;
@@ -214,9 +209,9 @@ function getImageAssignArrays($products) {
             $imageArrays[$guid][] = $image->guid;
         }
     }
-    
+
     return $imageArrays;
-    
+
 }
 
 function getPrimaryImages($products) {
@@ -318,21 +313,21 @@ function getAddTitlesForProduct($product) {
     $ebay['SubSource'] = 'EBAY0';
     $ebay['Title'] = $product->details['ebay_title']->text;
     $ebay['StockItemId'] = $guid;
-    
+
     $amazon = array();
     $amazon['pkRowId'] = createGUID();
     $amazon['Source'] = 'AMAZON';
     $amazon['SubSource'] = 'Stc Stores';
-    $amazon['Title'] = $product->details['am_title']->text;
+    $amazon['Title'] = $product->details['item_title']->text;
     $amazon['StockItemId'] = $guid;
-    
+
     $shopify = array();
     $shopify['pkRowId'] = createGUID();
     $shopify['Source'] = 'SHOPIFY';
     $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
-    $shopify['Title'] = $product->details['shopify_title']->text;
+    $shopify['Title'] = $product->details['item_title']->text;
     $shopify['StockItemId'] = $guid;
-    
+
     return array($ebay, $amazon, $shopify);
 }
 
@@ -358,7 +353,7 @@ function addPrices($api, $product) {
 function getAddPricesForProduct($product) {
     $price = $product->details['retail_price']->value;
     $priceWithShipping = $price +  $product->details['shipping_price']->value;
-    
+
     $guid = $product->details['guid']->text;
     $ebay = array();
     $ebay['pkRowId'] = createGUID();
@@ -366,21 +361,21 @@ function getAddPricesForProduct($product) {
     $ebay['SubSource'] = 'EBAY0';
     $ebay['Price'] = (string)$priceWithShipping;
     $ebay['StockItemId'] = $guid;
-    
+
     $amazon = array();
     $amazon['pkRowId'] = createGUID();
     $amazon['Source'] = 'AMAZON';
     $amazon['SubSource'] = 'Stc Stores';
     $amazon['Price'] = (string)$priceWithShipping;
     $amazon['StockItemId'] = $guid;
-    
+
     $shopify = array();
     $shopify['pkRowId'] = createGUID();
     $shopify['Source'] = 'SHOPIFY';
     $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
     $shopify['Price'] = $price;
     $shopify['StockItemId'] = $guid;
-    
+
     return array($ebay, $amazon, $shopify);
 }
 
@@ -409,23 +404,23 @@ function getAddDescriptionsForProduct($product) {
     $ebay['pkRowId'] = createGUID();
     $ebay['Source'] = 'EBAY';
     $ebay['SubSource'] = 'EBAY0';
-    $ebay['Description'] = to_html($product->details['ebay_description']->text);
+    $ebay['Description'] = to_html($product->details['short_description']->text);
     $ebay['StockItemId'] = $guid;
-    
+
     $amazon = array();
     $amazon['pkRowId'] = createGUID();
     $amazon['Source'] = 'AMAZON';
     $amazon['SubSource'] = 'Stc Stores';
-    $amazon['Description'] = $product->details['am_description']->text;
+    $amazon['Description'] = $product->details['short_description']->text;
     $amazon['StockItemId'] = $guid;
-    
+
     $shopify = array();
     $shopify['pkRowId'] = createGUID();
     $shopify['Source'] = 'SHOPIFY';
     $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
-    $shopify['Description'] = to_html($product->details['shopify_description']->text);
+    $shopify['Description'] = to_html($product->details['short_description']->text);
     $shopify['StockItemId'] = $guid;
-    
+
     return array($ebay, $amazon, $shopify);
 }
 

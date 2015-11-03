@@ -10,19 +10,19 @@ if ( !empty($_POST) ) {
         header('Location: new_linnworks_product_1_basic_info.php');
         exit();
     }
-    
+
     if (true) { // error check
         $_SESSION['new_product'] = $product;
-        
+
         if ($product->details['var_type']->value == true) {
             header('Location: new_linnworks_product_var_setup.php');
             exit();
         }
-        
+
         header('Location: new_linnworks_product_2_extended_properties.php');
         exit();
     }
-    
+
 } else {
     if (isset($_SESSION['new_product'])){
         $product = $_SESSION['new_product'];
@@ -55,6 +55,18 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                 <td class=form_field_table_description >
                     <p>Required. Between 5 and 80 characters. Must not contain <a href="/new_product/specialcharacters.php" tabindex=-1>special characters</a>.</p>
                     <p>This title is for internal identification and should NOT contain search terms or keywords.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class=form_table_field_name >
+                    <label for="ebay_title">eBay Title</label>
+                </td>
+                <td class=form_table_input>
+                    <input id=ebay_title name=ebay_title type=text value='<?php echo $product->details['ebay_title']->text;?>' maxlength=80 />
+                </td>
+                <td class=form_field_table_description >
+                    <p>Required. Between 5 and 80 characters. Must not contain <a href="/new_product/specialcharacters.php" tabindex=-1>special characters</a>.</p>
+                    <p>This title will be used for the eBay listing and should contain any necessary keywords. If left blank the item title will be used.</p>
                 </td>
             </tr>
             <tr>
@@ -120,7 +132,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
                                         echo " selected ";
                                     }
                                     echo ">" . $method . "</option>" . $method . "\n";
-                                    
+
                                 }
                             }
                         ?>
@@ -130,7 +142,7 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
             </tr>
             <tr>
                 <td class=form_table_field_name >
-                    <label for="short_description">Short Description</label>
+                    <label for="short_description">Description</label>
                 </td>
                 <td class=form_table_input>
                     <textarea rows=4 id=short_description name=short_description ><?php echo $product->details['short_description']->text;?></textarea>

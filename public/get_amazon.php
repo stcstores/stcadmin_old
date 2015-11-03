@@ -23,13 +23,13 @@ function var_sort($variations) {
             }
         }
     }
-    
+
     foreach (array_reverse($variation_types) as $var_type) {
         usort($variations, function($a, $b) use ($var_type) {
             return strcmp(extended_property_value($a, $var_type), extended_property_value($b, $var_type));
         });
     }
-    
+
     return $variations;
 }
 
@@ -41,20 +41,20 @@ function var_sort($variations) {
         <input name='sku' value='<?php if (isset($_POST['sku'])) { echo $_POST['sku']; } ?>' />
         <input type=submit value='Get Info' />
     </form>
-    
+
     <?php
-    
+
     if (isset($_POST['sku'])) {
         $sku = trim($_POST['sku']);
     } else if (isset($_GET['sku'])) {
         $sku = trim($_GET['sku']);
     }
-    
-    if (isset($sku)) {    
+
+    if (isset($sku)) {
         $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
-        
+
         $guid = $api -> get_inventory_item_id_by_SKU($sku);
-        
+
         if ($guid == null) {
             $guid = $api -> get_variation_group_id_by_SKU($sku);
             $has_variations = true;
@@ -64,12 +64,12 @@ function var_sort($variations) {
         } else {
             $has_variations = false;
         }
-        
+
         if ($guid == null) {
             echo "<p class='error'>Product Not Found</p>";
         } else {
             $item = $api -> get_inventory_item_by_id($guid);
-            
+
             if ($has_variations == false) {
             ?>
             <table class='item_details'>
@@ -79,13 +79,13 @@ function var_sort($variations) {
                 </tr>
             </table>
             <?php
-            
+
             } else {
                 $variations = array();
                 foreach ($api -> get_variation_children($item -> stock_id) as $guid) {
                     $variations[] = $api -> get_inventory_item_by_id($guid);
                 }
-                
+
                 $variations = var_sort($variations);
                 ?>
             <p>Find Product by Barcode: </p>
@@ -97,7 +97,7 @@ function var_sort($variations) {
             <?php
             }
             ?>
-    
+
             <h2>Vital Info</h2>
             <table class='item_details'>
                 <tr>
@@ -132,9 +132,9 @@ function var_sort($variations) {
                         ?>
                         <td class='align_right'>Variation Theme</td>
                         <td><input value='<?php
-                        
+
                         $string = '';
-                        
+
                         $ex_props = array('var_size', 'var_colour', 'var_design', 'var_age', 'var_shape', 'var_style', 'var_material', 'var_texture');
                         $variation_types = array();
                         foreach ($ex_props as $prop) {
@@ -221,7 +221,7 @@ function var_sort($variations) {
                 </tr>
                 <?php } ?>
             </table>
-            
+
             <?php
             }
             if ($has_variations == false) {
@@ -271,7 +271,7 @@ function var_sort($variations) {
                         }
                         echo "</td>";
                         ?>
-                        
+
                         <?php foreach($images as $image) { ?>
                             <tr>
                                 <td><a href='<?php echo $image['full']; ?>' target="_blank" ><img src='<?php echo $image['thumb']; ?>' /></a></td>
@@ -285,22 +285,9 @@ function var_sort($variations) {
             <?php
                 }
             }
-                
+
                 ?>
             <h2>Description</h2>
-            <table class='item_details'>
-                <?php
-                foreach(array(1,2,3,4,5) as $i) {
-                    ?>
-                    <tr>
-                        <td>
-                            <input value='<?php echo extended_property_value($item, 'Amazon_Bullet_' . $i); ?>' size='<?php echo strlen(extended_property_value($item, 'Amazon_Bullet_' . $i)); ?>' readonly />
-                        </td>
-                    </tr>                    
-                    <?php
-                }
-                ?>
-            </table>
             <div class='item_details'>
                 <?php echo nl2br($api -> get_channel_descriptions($item -> stock_id)['amazon']); ?>
             </div>

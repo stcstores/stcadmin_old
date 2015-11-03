@@ -17,13 +17,13 @@ if ( !empty($_POST) ) {
         exit();
     }
     add_extended_properties($product);
-    
+
     if (true) { // error check
         $_SESSION['new_product'] = $product;
-        header('Location: new_linnworks_product_ebay.php');
+        header('Location: imageupload.php');
         exit();
     }
-}    
+}
 
 require_once($CONFIG['header']);
 

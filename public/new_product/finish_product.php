@@ -15,13 +15,13 @@ if (isset($_SESSION['new_product'])) {
 }
     $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
     $product_exists = $api->sku_exists($product->details['sku']->text);
-    
+
     $item_title = get_linn_title($product);
-    
+
     ?>
-    
+
     <input type=button value='Create Product' id=create_product <?php if ($product_exists) { echo ' disabled '; } ?>/>
-    
+
     <h3>Basic Product Info <a class="editlink" href="new_linnworks_product_1_basic_info.php" >Edit</a></h3>
     <table>
         <tr>
@@ -57,7 +57,7 @@ if (isset($_SESSION['new_product'])) {
             <td><input value="<?php echo $product->details['shipping_method']->text; ?>" size="<?php echo strlen($product->details['shipping_method']->text); ?>" class=disabled readonly /></td>
         </tr>
     </table>
-    
+
     <?php
             if (count($product->variations) > 0) {
                 echo '<h3>Variations<a class="editlink" href="new_linnworks_product_var_setup.php" >Edit</a></h3>';
@@ -65,7 +65,7 @@ if (isset($_SESSION['new_product'])) {
                 echo "<table id=testvar >";
                 echo "<tr>";
                 $fields = getVarSetupFields();
-                
+
                 $ignoreFields = ['var_append'];
                 echo "<th>SKU</th>";
                 foreach ($fields as $field) {
@@ -76,13 +76,13 @@ if (isset($_SESSION['new_product'])) {
                     }
                 }
                 echo "<th>Images</th>";
-                
+
                 $var_names = array();
                 foreach ($product->variations as $variation) {
                     $var_names[] = get_linn_title($variation);
                 }
                 $max_var_name = max(array_map('strlen', $var_names));
-                
+
                 foreach ($product->variations as $variation) {
                     echo "<tr>";
                     echo "<td><input value='" . $variation->details['sku']->text . "' class=disabled readonly size=11 /></td>";
@@ -111,7 +111,7 @@ if (isset($_SESSION['new_product'])) {
                     echo "<td class=image_row>";
                     foreach ($variation->images->images as $image) {
                         echo "<img class=in_table_image src='" . $image->thumbPath . "' />";
-                    }                    
+                    }
                     echo "</td>";
                     echo "</tr>";
                 }
@@ -150,7 +150,7 @@ if (isset($_SESSION['new_product'])) {
             ?>
         </tr>
     </table>
-                
+
     <h3>eBay Details<a class="editlink" href="new_linnworks_product_ebay.php" >Edit</a></h3>
     <table>
         <tr>
@@ -159,48 +159,8 @@ if (isset($_SESSION['new_product'])) {
         </tr>
         <tr>
             <td>eBay Description</td>
-            <td><div class=description ><?php echo to_html($product->details['ebay_description']->text); ?></div></td>
-            <td><textarea rows=15 cols=50 class=disabled readonly ><?php echo to_html($product->details['ebay_description']->text); ?></textarea></td></td>
-        </tr>
-    </table>
-    
-    <h3>Amazon Details<a class="editlink" href="new_linnworks_product_amazon.php" >Edit</a></h3>
-    <table>
-        <tr>
-            <td>Amazon Title</td>
-            <td><input value="<?php echo $product->details['am_title']->text; ?>" size="<?php echo strlen($product->details['am_title']->text); ?>" class=disabled readonly /></td>
-        </tr>
-        <tr>
-            <td>Amazon Description</td>
-            <td>
-                <div class=description >
-                    <ul>
-                        <?php
-                            $i = 1;
-                            while ($i < 6) {
-                                echo "<li>" . $product->details['am_bullet_' . $i]->text . "</li>";
-                                $i ++;
-                            }
-                            
-                        ?>
-                    </ul>
-                    <?php echo to_html($product->details['am_description']->text); ?>
-                </div>
-            </td>
-            <td><td><textarea rows=15 cols=50 class=disabled readonly ><?php echo to_html($product->details['am_description']->text); ?></textarea></td></td>
-        </tr>
-    </table>
-    
-    <h3>stcstores.co.uk Details<a class="editlink" href="new_linnworks_product_shopify.php" >Edit</a></h3>
-    <table>
-        <tr>
-            <td>stcstores.co.uk Title</td>
-            <td><input value="<?php echo $product->details['shopify_title']->text; ?>" size="<?php echo strlen($product->details['shopify_title']->text); ?>" class=disabled readonly /></td>
-        </tr>
-        <tr>
-            <td>stcstores.co.uk Description</td>
-            <td><div class=description ><?php echo to_html($product->details['shopify_description']->text); ?></div></td>
-            <td><textarea rows=15 cols=50 class=disabled readonly ><?php echo to_html($product->details['shopify_description']->text); ?></textarea></td>
+            <td><div class=description ><?php echo to_html($product->details['short_description']->text); ?></div></td>
+            <td><textarea rows=15 cols=50 class=disabled readonly ><?php echo to_html($product->details['short_description']->text); ?></textarea></td></td>
         </tr>
     </table>
     <?php if (count($product->variations) == 0) { ?>
@@ -239,7 +199,7 @@ if (isset($_SESSION['new_product'])) {
             <tr>
             <?php
             foreach ($product->variations as $variation) {
-                ?><td colspan=2 /><?php echo $variation->details['var_name']->text;?></td><?php            
+                ?><td colspan=2 /><?php echo $variation->details['var_name']->text;?></td><?php
             }
             ?>
                 </tr>
@@ -278,7 +238,7 @@ if (isset($_SESSION['new_product'])) {
                 async: true,
                 dataType: 'json',
                 success: function(data){
-                    
+
                 }
             })
             $.ajax({
@@ -289,7 +249,7 @@ if (isset($_SESSION['new_product'])) {
                 }
             });
         });
-        
+
         $(':input').each(function() {
             if ($(this).prop('disabled')) {
                 var valLength = $(this).val().length
@@ -303,16 +263,16 @@ if (isset($_SESSION['new_product'])) {
         $(document).ready(function(){
             $('.variation_table').doubleScroll();
         });
-        
+
         $( document ).ajaxComplete(function( event, xhr, settings ) {
             if ( settings.url === "create_product.php" ) {
               location.reload();
             }
           });
-    
-        
+
+
     </script>
-    
+
     <?php
 
 

@@ -12,18 +12,18 @@ if (isset($_SESSION['new_product'])) {
 }
 
 if ( !empty($_POST) ) {
-    
+
     add_variation($product);
-    
-    if (isset($_POST['previous'])) {        
+
+    if (isset($_POST['previous'])) {
         header('Location: new_linnworks_product_1_basic_info.php');
         exit();
     }
-    
-    
+
+
     if ( true ) { // error check
         $_SESSION['new_product'] = $product;
-        header('Location: new_linnworks_product_ebay.php');
+        header('Location: imageupload.php.php');
         exit();
     }
 }
@@ -47,7 +47,7 @@ $values = getVarSetupValues();
     <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
     <div>
         <table id="add_variation_types" class="form_section">
-            
+
         </table>
     </div>
     <br />
@@ -62,7 +62,7 @@ $values = getVarSetupValues();
     </div>
     <div>
         <table id="list_of_variations" class="form_section">
-            
+
         </table>
     </div>
     <br />
@@ -70,7 +70,7 @@ $values = getVarSetupValues();
     <form method="post" id="var_form" enctype="multipart/form-data">
         <div class="variation_table">
             <table id="var_setup" class="form_section" >
-                
+
             </table>
         </div>
         <table class="form_nav">

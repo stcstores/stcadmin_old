@@ -68,13 +68,13 @@ html, body {
     display: inline-block;
     font-weight: bold;
     margin: 0.25em;
-    padding: 1em;    
+    padding: 1em;
 }
 
 #nav a {
     font-size: 1.5em;
     text-decoration: none;
-    color: <?php $colours->echoColour(1, 4); ?>;        
+    color: <?php $colours->echoColour(1, 4); ?>;
 }
 
 #nav a:hover {
@@ -322,7 +322,7 @@ a.questionmark_link {
 .remove_x {
     color: black;
     cursor: pointer;
-    
+
 }
 
 .variation_box {
@@ -362,14 +362,14 @@ a.questionmark_link {
     width: 100%;
 }
 
-#item_title, #short_description {
+#item_title, #short_description, #ebay_title {
     width: 100%;
 }
 
 #shipping_table {
     background: white;
     text-align: center;
-    
+
 }
 
 #shipping_table th, #shipping_table td{

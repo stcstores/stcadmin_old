@@ -1,20 +1,21 @@
 <?php
 
 class NewProduct{
-    function __construct() {      
+    function __construct() {
         $this->errors = $this->createFieldsArray();
         $this->variations = array();
         $this->details['sku'] = new SKU('sku', $this);
         $this->details['guid'] = new GUID('guid', $this);
-        
+
         //basic info
         $this->details['item_title'] = new ProductDetail('item_title', $this);
+        $this->details['ebay_title'] = new ProductDetail('ebay_title', $this);
         $this->details['var_type'] = new ProductDetail('var_type', $this);
         $this->details['department'] = new ProductDetail('deparmtent', $this);
         $this->details['brand'] = new ProductDetail('brand', $this);
         $this->details['manufacturer'] = new ProductDetail('manufacturer', $this);
         $this->details['short_description'] = new ProductDetail('short_description', $this);
-        
+
         //extended properties
         $this->details['mpn'] = new ProductDetail('mpn', $this);
         $this->details['location'] = new ProductDetail('location', $this);
@@ -39,7 +40,7 @@ class NewProduct{
         $this->details['texture'] = new ProductDetail('texture', $this);
         $this->details['style'] = new ProductDetail('style', $this);
         $this->details['quantity'] = new NumericDetail('quantity', $this);
-        
+
         //international shipping
         $this->details['shipping_fr'] = new ProductDetail('shipping_fr', $this);
         $this->details['shipping_de'] = new ProductDetail('shipping_de', $this);
@@ -47,38 +48,21 @@ class NewProduct{
         $this->details['shipping_usa'] = new ProductDetail('shipping_usa', $this);
         $this->details['shipping_aus'] = new ProductDetail('shipping_aus', $this);
         $this->details['shipping_row'] = new ProductDetail('shipping_row', $this);
-        
-        //chn_ebay
-        $this->details['ebay_title'] = new ProductDetail('ebay_title', $this);
-        $this->details['ebay_description'] = new ProductDetail('ebay_description', $this);
-        
-        //ech_amazon
-        $this->details['am_title'] = new ProductDetail('am_title', $this);
-        $this->details['am_bullet_1'] = new ProductDetail('am_bullet_1', $this);
-        $this->details['am_bullet_2'] = new ProductDetail('am_bullet_2', $this);
-        $this->details['am_bullet_3'] = new ProductDetail('am_bullet_3', $this);
-        $this->details['am_bullet_4'] = new ProductDetail('am_bullet_4', $this);
-        $this->details['am_bullet_5'] = new ProductDetail('am_bullet_5', $this);
-        $this->details['am_description'] = new ProductDetail('am_description', $this);
-        
-        //chn_shopify
-        $this->details['shopify_title'] = new ProductDetail('shopify_title', $this);
-        $this->details['shopify_description'] = new ProductDetail('shopify_description', $this);
-        
+
         $this->keyFields = array();
         foreach (getKeyFields() as $keyField) {
             $this->keyFields[$keyField['field_name']] = false;
         }
-        
+
         $this -> images = new Images();
-        
+
     }
-    
+
     function setTitle($title) {
         $this->item_title = $title;
         $this->values['item_title'] = $title;
     }
-    
+
     function createFieldsArray() {
         $array = array();
         $fields = getDatabaseColumn('new_product_form_field', 'field_name');
@@ -96,7 +80,7 @@ class NewVariation  extends NewProduct {
         $this->details['sku'] = new SKU('sku', $this);
         $this->details['guid'] = new GUID('guid', $this);
         $this->details['var_append'] = new ProductDetail('var_append', $this);
-        
+
         //basic info
         $this->details['var_name'] = new ProductDetail('item_title', $this);
         $this->details['department'] = new ProductDetail('deparmtent', $this);
@@ -107,7 +91,7 @@ class NewVariation  extends NewProduct {
         $this->details['manufacturer']->set($product->details['manufacturer']->value);
         $this->details['short_description'] = new ProductDetail('short_description', $this);
         $this->details['short_description']->set($product->details['short_description']->value);
-        
+
         //extended properties
         $this->details['mpn'] = new ProductDetail('mpn', $this);
         $this->details['location'] = new ProductDetail('location', $this);
@@ -133,7 +117,7 @@ class NewVariation  extends NewProduct {
         $this->details['texture'] = new ProductDetail('texture', $this);
         $this->details['style'] = new ProductDetail('style', $this);
         $this->details['quantity'] = new NumericDetail('quantity', $this);
-        
+
         //international shipping
         $this->details['shipping_fr'] = new ProductDetail('shipping_fr', $this);
         $this->details['shipping_de'] = new ProductDetail('shipping_de', $this);
@@ -141,13 +125,13 @@ class NewVariation  extends NewProduct {
         $this->details['shipping_usa'] = new ProductDetail('shipping_usa', $this);
         $this->details['shipping_aus'] = new ProductDetail('shipping_aus', $this);
         $this->details['shipping_row'] = new ProductDetail('shipping_row', $this);
-        
+
         //chn_ebay
         $this->details['ebay_title'] = new ProductDetail('ebay_title', $this);
         $this->details['ebay_title']->set($product->details['ebay_title']->value);
         $this->details['ebay_description'] = new ProductDetail('ebay_description', $this);
         $this->details['ebay_description']->set($product->details['ebay_description']->value);
-        
+
         //ech_amazon
         $this->details['am_title'] = new ProductDetail('am_title', $this);
         $this->details['am_title']->set($product->details['am_title']->value);
@@ -163,20 +147,20 @@ class NewVariation  extends NewProduct {
         $this->details['am_bullet_5']->set($product->details['am_bullet_5']->value);
         $this->details['am_description'] = new ProductDetail('am_description', $this);
         $this->details['am_description']->set($product->details['am_description']->value);
-        
+
         //chn_shopify
         $this->details['shopify_title'] = new ProductDetail('shopify_title', $this);
         $this->details['shopify_title']->set($product->details['shopify_title']->value);
         $this->details['shopify_description'] = new ProductDetail('shopify_description', $this);
         $this->details['shopify_description']->set($product->details['shopify_description']->value);
-        
+
         $this->keyFields = array();
         foreach (getKeyFields() as $keyField) {
             $this->keyFields[$keyField['field_name']] = false;
         }
-        
+
         $this -> images = new Images();
-        
+
         $this -> images = new Images();
     }
 }
@@ -188,7 +172,7 @@ class ProductDetail {
         $this->value = null;
         $this->text = '';
     }
-    
+
     function set($value) {
         $this->value = $value;
         $this->text = (string)$value;
@@ -202,7 +186,7 @@ class NumericDetail extends ProductDetail {
         $this->value = null;
         $this->text = '0';
     }
-    
+
     function set($value) {
         $this->value = $value;
         if ($value > 0) {
@@ -246,7 +230,7 @@ class Has_Variations extends ProductDetail {
         $this->value = array();
         $this->text = 'unset';
     }
-    
+
     function set($value) {
         if ($value == true){
             $this->value = true;
@@ -263,7 +247,7 @@ class Images {
         $this -> images = array();
         $this -> primary = 0;
     }
-    
+
     function setPrimary($guid) {
         $i = 0;
         foreach ($this->images as $image) {
@@ -276,11 +260,11 @@ class Images {
         unset($this->images[$newPrimeId]);
         array_unshift($this->images, $newPrimeImage);
     }
-    
+
     function addImage($guid, $thumbPath, $fullPath) {
         $this -> images[] = new Image($guid, $thumbPath, $fullPath);
     }
-    
+
     function removeImage($guid) {
         $i = 0;
         foreach ($this->images as $image) {
@@ -289,7 +273,7 @@ class Images {
             }
             $i++;
         }
-        
+
         array_splice($this->images, $idToRemove, 1);
     }
 }
