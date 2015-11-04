@@ -23,7 +23,7 @@ if ( !empty($_POST) ) {
 
     if ( true ) { // error check
         $_SESSION['new_product'] = $product;
-        header('Location: imageupload.php.php');
+        header('Location: imageupload.php');
         exit();
     }
 }
