@@ -2,42 +2,50 @@
 
 require_once($CONFIG['inventory_item_class']);
 
-set_time_limit ( 15000 );
+set_time_limit(15000);
 
-class LinnworksAPI {
-    
-    
-    function __construct($username, $password) {
+class LinnworksAPI
+{
+
+
+    public function __construct($username, $password)
+    {
         $this -> username = $username;
         $this -> password = $password;
         $this -> userID = null;
         $this -> server = null;
-        
+
         $this -> curl = $this -> curlSetup();
-        
-        if (isset($_SESSION['token'])){
+
+        if (isset($_SESSION['token'])) {
             $this -> token = $_SESSION['token'];
             $this -> server = $_SESSION['server'];
         } else {
             $this -> get_token();
         }
     }
-    
-    function curlSetup() {
+
+    private function curlSetup()
+    {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($curl, CURLOPT_CAINFO, dirname($_SERVER['DOCUMENT_ROOT']) . '/private/certificates/thawtePrimaryRootCA.crt');
+        curl_setopt(
+            $curl,
+            CURLOPT_CAINFO,
+            dirname($_SERVER['DOCUMENT_ROOT']) . '/private/certificates/thawtePrimaryRootCA.crt'
+        );
         curl_setopt($curl, CURLOPT_VERBOSE, true);
         curl_setopt($curl, CURLOPT_HEADER, true);
         return $curl;
     }
-    
-    function make_request($url, $data) {
-        $curl = $this -> curl;
-        $datastring = http_build_query($data);;
+
+    private function make_request($url, $data)
+    {
+        $curl = $this->curl;
+        $datastring = http_build_query($data);
         curl_setopt($curl, CURLOPT_URL, $url . '?token=' . $this->token);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $datastring);
         $information = curl_getinfo($curl);
@@ -48,16 +56,18 @@ class LinnworksAPI {
         $responseJson = json_decode($body, true);
         return $responseJson;
     }
-    
-    function request($url, $data=null) {
+
+    public function request($url, $data = null)
+    {
         if ($data == null) {
             $data = array();
         }
         //$data['token'] = $this -> token;
         return $this -> make_request($url, $data);
     }
-    
-    function get_token() {
+
+    public function get_token()
+    {
         $loginURL = 'https://api.linnworks.net/api/Auth/Multilogin';
         $authURL = 'https://api.linnworks.net/api/Auth/Authorize';
         $data = array('userName' => $this -> username, 'password' => $this -> password);
@@ -71,8 +81,9 @@ class LinnworksAPI {
         $this -> server = $authorise['Server'];
         return true;
     }
-    
-    function get_category_info() {
+
+    public function get_category_info()
+    {
         $url = $this -> server . '/api/Inventory/GetCategories';
         $response = $this -> request($url);
         $categories = array();
@@ -82,29 +93,32 @@ class LinnworksAPI {
             $newCategory['id'] = $category['CategoryId'];
             $categories[] = $newCategory;
         }
-        
+
         return $categories;
     }
-    
-    function get_category_names() {
+
+    public function get_category_names()
+    {
         $cateogryNames = array();
         $categoryInfo = $this -> get_category_info();
-        foreach ($categoryInfo as $category){
+        foreach ($categoryInfo as $category) {
             $cateogryNames[] = $category['name'];
         }
         return $cateogryNames;
     }
-    
-    function get_category_ids() {
+
+    public function get_category_ids()
+    {
         $cateogryIDs = array();
         $categoryInfo = $this -> get_category_info();
-        foreach ($categoryInfo as $category){
+        foreach ($categoryInfo as $category) {
             $cateogryIDs[] = $category['id'];
         }
         return $cateogryIDs;
     }
-    
-    function get_packaging_group_info() {
+
+    public function get_packaging_group_info()
+    {
         $url = $this -> server . '/api/Inventory/GetPackageGroups';
         $response = $this -> request($url);
         $packagingGroups = array();
@@ -114,24 +128,26 @@ class LinnworksAPI {
             $newGroup['id'] = $group['Value'];
             $packagingGroups[] = $newGroup;
         }
-        
+
         return $packagingGroups;
     }
-    
-    function get_packaging_group_names() {
+
+    public function get_packaging_group_names()
+    {
         $packaging_group_names = array();
         foreach ($this -> get_packaging_group_info() as $group) {
             $packaging_group_names[] = $group['name'];
         }
         return $packaging_group_names;
     }
-    
-    function get_shipping_method_info() {
+
+    public function get_shipping_method_info()
+    {
         $url = $this -> server . '/api/Orders/GetShippingMethods';
         $response = $this -> request($url);
         $shippingMethods = array();
         foreach ($response as $service) {
-            foreach ($service['PostalServices'] as $method){
+            foreach ($service['PostalServices'] as $method) {
                 $newMethod = array();
                 $newMethod['vendor'] = $method['Vendor'];
                 $newMethod['id'] = $method['pkPostalServiceId'];
@@ -140,19 +156,21 @@ class LinnworksAPI {
                 $shippingMethods[] = $newMethod;
             }
         }
-        
+
         return $shippingMethods;
     }
-    
-    function get_shipping_method_names() {
+
+    public function get_shipping_method_names()
+    {
         $shipping_group_names = array();
         foreach ($this -> get_shipping_method_info() as $group) {
             $shipping_group_names[] = $group['name'];
         }
         return $shipping_group_names;
     }
-    
-    function get_location_info() {
+
+    public function get_location_info()
+    {
         $url = $this -> server . '/api/Inventory/GetStockLocations';
         $response = $this -> request($url);
         $locations = array();
@@ -164,24 +182,27 @@ class LinnworksAPI {
         }
         return $locations;
     }
-    
-    function get_location_names() {
+
+    public function get_location_names()
+    {
         $locations = array();
         foreach ($this -> get_location_info() as $location) {
             $locations[] = $location['name'];
         }
         return $locations;
     }
-    
-    function get_location_ids() {
+
+    public function get_location_ids()
+    {
         $locations = array();
         foreach ($this -> get_location_info() as $location) {
             $locations[] = $location['id'];
         }
         return $locations;
     }
-    
-    function get_postage_service_info() {
+
+    public function get_postage_service_info()
+    {
         $url = $this -> server . '/api/PostalServices/GetPostalServices';
         $response = $this -> request($url);
         $locations = array();
@@ -193,8 +214,9 @@ class LinnworksAPI {
         }
         return $locations;
     }
-    
-    function get_postage_service_names() {
+
+    public function get_postage_service_names()
+    {
         $postage_services = array();
         foreach ($this -> get_postage_service_info() as $postage_service) {
             $postage_services[] = $postage_service['name'];
@@ -202,16 +224,18 @@ class LinnworksAPI {
         sort($postage_services);
         return $postage_services;
     }
-    
-    function get_postage_service_ids() {
+
+    public function get_postage_service_ids()
+    {
         $postage_services = array();
         foreach ($this -> get_postage_service_info() as $postage_service) {
             $postage_services[] = $postage_service['id'];
         }
         return $postage_services;
     }
-    
-    function get_channels() {
+
+    public function get_channels()
+    {
         $url = $this -> server . '/api/Inventory/GetChannels';
         $response = $this -> request($url);
         $channels = array();
@@ -220,31 +244,35 @@ class LinnworksAPI {
         }
         return $channels;
     }
-    
-    function get_inventory_views() {
+
+    public function get_inventory_views()
+    {
         $url = $this -> server . '/api/Inventory/GetInventoryViews';
         $response = $this -> request($url);
         $response_json = json_decode($response);
         return $response_json;
     }
-    
-    function get_new_inventory_view() {
+
+    public function get_new_inventory_view()
+    {
         $url = $this -> server . '/api/Inventory/GetNewInventoryView';
         $response = $this -> request($url);
         return $response;
     }
-    
-    function get_inventory_column_types() {
+
+    public function get_inventory_column_types()
+    {
         $url = $this -> server . '/api/Inventory/GetInventoryColumnTypes';
         $response = $this -> request($url);
         return $response;
     }
-    
-    function get_inventory_items($start=0, $count=1, $view=null) {
+
+    public function get_inventory_items($start = 0, $count = 1, $view = null)
+    {
         if ($view == null) {
             $view = $this -> get_new_inventory_view();
         }
-        
+
         $url = $this -> server . '/api/Inventory/GetInventoryItems';
         $view_json = json_encode($view);
         $locations = json_encode($this -> get_location_ids());
@@ -259,14 +287,16 @@ class LinnworksAPI {
         $response = $this -> request($url, $data);
         return $response;
     }
-    
-    function get_item_count() {
-        $request = $this -> get_inventory_items($start=0, $count=1, $view=null);
+
+    public function get_item_count()
+    {
+        $request = $this -> get_inventory_items($start = 0, $count = 1, $view = null);
         $item_count = $request['TotalItems'];
         return $item_count;
     }
-    
-    function get_inventory_item_by_id($stock_id, $inventory_item=true) {
+
+    public function get_inventory_item_by_id($stock_id, $inventory_item = true)
+    {
         $url = $this -> server . '/api/Inventory/GetInventoryItemById';
         $data = array();
         $data['id'] = $stock_id;
@@ -291,19 +321,19 @@ class LinnworksAPI {
             $item -> width = $response['Width'];
             $item -> meta_data = $response['MetaData'];
             $item -> quantity = $this -> get_stock_level_by_id($stock_id);
-            
+
             foreach ($this -> get_category_info() as $category) {
                 if ($category['id'] == $item -> category_id) {
                     $item -> category = $category['name'];
                 }
             }
-            
+
             foreach ($this -> get_packaging_group_info() as $package_group) {
                 if ($package_group['id'] == $item -> package_group_id) {
                     $item -> package_group = $package_group['name'];
                 }
             }
-            
+
             foreach ($this -> get_shipping_method_info() as $postage_service) {
                 if ($postage_service['id'] == $item -> postage_service) {
                     $item -> postage_service = $postage_service['name'];
@@ -312,44 +342,49 @@ class LinnworksAPI {
             return $item;
         }
     }
-    
-    function get_extended_property_names() {
+
+    public function get_extended_property_names()
+    {
         $url = $this -> server . '/api/Inventory/GetExtendedPropertyNames';
         $response = $this -> request($url);
         return $response;
     }
-    
-    function get_inventory_item_extended_properties($stock_id) {
+
+    public function get_inventory_item_extended_properties($stock_id)
+    {
         $url = $this -> server . '/api/Inventory/GetInventoryItemExtendedProperties';
         $data = array();
         $data['inventoryItemId'] = $stock_id;
         $response = $this -> request($url, $data);
         return $response;
     }
-    
-    function get_new_sku() {
+
+    public function get_new_sku()
+    {
         $url = $this -> server . '/api/Stock/GetNewSKU';
         $response = $this -> request($url);
         return $response;
     }
-    
-    function sku_exists($sku) {
+
+    public function sku_exists($sku)
+    {
         $url = $this -> server . '/api/Stock/SKUExists';
         $data = array();
         $data['SKU'] = $sku;
         $response = $this->request($url, $data);
         return $response;
     }
-    
-    function upload_image($data) {
+
+    public function upload_image($data)
+    {
         $url = $this -> server . '/api/Uploader/UploadFile?type=Image&expiredInHours=24&token=' . $this -> token;
         $curl = $this->curl;
         $headers = array(
             'Content-Type: multipart/form-data',
         );
-        
+
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        
+
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLINFO_HEADER_OUT, true);
         //curl_setopt($curl, CURLOPT_HEADER, true);
@@ -372,8 +407,9 @@ class LinnworksAPI {
         $responseJson = json_decode($body, true);
         return $responseJson;
     }
-    
-    function assign_images($productGuid, $imageGuidArray) {
+
+    public function assign_images($productGuid, $imageGuidArray)
+    {
         $url = $this->server . '/api/Inventory/UploadImagesToInventoryItem';
         $data = array();
         $data['inventoryItemId'] = $productGuid;
@@ -384,12 +420,13 @@ class LinnworksAPI {
         $response = $this->request($url, $data);
         return $response;
     }
-    
-    function create_variation_group($parent_title, $variation_guids, $parent_guid=null, $parent_sku=null) {
+
+    public function create_variation_group($parent_title, $variation_guids, $parent_guid = null, $parent_sku = null)
+    {
         if ($parent_guid == null) {
             $parent_guid = createGUID();
         }
-        if ($parent_sku == null ) {
+        if ($parent_sku == null) {
             $parent_sku = $this -> get_new_sku();
         }
         $url = $this -> server . '/api/Stock/CreateVariationGroup';
@@ -407,8 +444,9 @@ class LinnworksAPI {
             return $response;
         }
     }
-    
-    function get_variation_group_id_by_SKU($sku) {
+
+    public function get_variation_group_id_by_SKU($sku)
+    {
         $url = $this -> server . '/api/Stock/SearchVariationGroups';
         $data = array();
         $data['searchText'] = $sku;
@@ -423,14 +461,16 @@ class LinnworksAPI {
             return null;
         }
     }
-    
-    function get_variation_group_inventory_item_by_SKU($sku) {
+
+    public function get_variation_group_inventory_item_by_SKU($sku)
+    {
         $guid = $this -> get_variation_group_id_by_SKU($sku);
         $item = $this -> get_inventory_item_by_id($guid);
         return $item;
     }
-    
-    function get_inventory_item_id_by_SKU($sku) {
+
+    public function get_inventory_item_id_by_SKU($sku)
+    {
         $view = $this -> get_new_inventory_view();
         //print_r($view);
         $view['Columns'] = array();
@@ -443,7 +483,7 @@ class LinnworksAPI {
         $view['Filters'] = [$filter];
         echo "<br /><br />";
         //print_r($view);
-        $response = $this -> get_inventory_items(0, 1, $view=$view);
+        $response = $this -> get_inventory_items(0, 1, $view = $view);
         //print_r($response);
         if (array_key_exists(0, $response['Items'])) {
             $stock_id = $response['Items'][0]['Id'];
@@ -452,14 +492,16 @@ class LinnworksAPI {
             return null;
         }
     }
-    
-    function get_inventory_item_by_SKU($sku) {
+
+    public function get_inventory_item_by_SKU($sku)
+    {
         $guid = $this -> get_inventory_item_id_by_SKU($sku);
         $item = $this -> get_inventory_item_by_id($guid);
         return $item;
     }
-    
-    function get_image_urls_by_item_id($item_id) {
+
+    public function get_image_urls_by_item_id($item_id)
+    {
         $url = $this -> server . '/api/Inventory/GetInventoryItemImages';
         $data = array('inventoryItemId' => $item_id);
         $response = $this -> request($url, $data);
@@ -471,15 +513,16 @@ class LinnworksAPI {
             }
         }
         foreach ($response as $image) {
-            if ($image['IsMain'] != true ){
+            if ($image['IsMain'] != true) {
                 $image_url = str_replace('tumbnail_', '', $image['Source']);
                 $image_urls[] = $image_url;
             }
         }
         return $image_urls;
     }
-    
-    function get_image_thumbnail_urls_by_item_id($item_id) {
+
+    public function get_image_thumbnail_urls_by_item_id($item_id)
+    {
         $url = $this -> server . '/api/Inventory/GetInventoryItemImages';
         $data = array('inventoryItemId' => $item_id);
         $response = $this -> request($url, $data);
@@ -493,7 +536,7 @@ class LinnworksAPI {
             }
         }
         foreach ($response as $image) {
-            if ($image['IsMain'] != true ){
+            if ($image['IsMain'] != true) {
                 $image_url = array();
                 $image_url['full'] = str_replace('tumbnail_', '', $image['Source']);
                 $image_url['thumb'] = $image['Source'];
@@ -502,14 +545,16 @@ class LinnworksAPI {
         }
         return $image_urls;
     }
-    
-    function get_image_urls_by_SKU($sku) {
+
+    public function get_image_urls_by_SKU($sku)
+    {
         $item_id = $this -> get_inventory_item_id_by_SKU($sku);
         $image_urls = $this -> get_image_urls_by_item_id($item_id);
         return $image_urls;
     }
-    
-    function set_primary_image($productGuid, $imageGuid) {
+
+    public function set_primary_image($productGuid, $imageGuid)
+    {
         $url = $this->server . '/api/Inventory/SetInventoryItemImageAsMain';
         $data = array();
         $data['inventoryItemId'] = $productGuid;
@@ -517,8 +562,9 @@ class LinnworksAPI {
         $response = $this->request($url, $data);
         return $response;
     }
-    
-    function getVariationGroupIdBySKU($sku) {
+
+    public function getVariationGroupIdBySKU($sku)
+    {
         $url = $this -> server . '/api/Stock/SearchVariationGroups';
         $data = array();
         $data['searchText'] = $sku;
@@ -528,8 +574,9 @@ class LinnworksAPI {
         $response = $this -> request($url, $data);
         return $response['Data'][0]['pkVariationItemId'];
     }
-    
-    function get_stock_level_by_id($stock_id, $location='Default') {
+
+    public function get_stock_level_by_id($stock_id, $location = 'Default')
+    {
         $url = $this -> server . '/api/Stock/GetStockLevel';
         $data = array();
         $data['stockItemId'] = $stock_id;
@@ -540,8 +587,9 @@ class LinnworksAPI {
             }
         }
     }
-    
-    function get_channel_titles($guid) {
+
+    public function get_channel_titles($guid)
+    {
         $url = $this -> server . '/api/Inventory/GetInventoryItemTitles';
         $data = array('inventoryItemId' => $guid);
         $response = $this -> request($url, $data);
@@ -555,7 +603,7 @@ class LinnworksAPI {
                 if ($channel['SubSource'] == 'EBAY0') {
                     $channels['ebay'] = $channel['Title'];
                 }
-            } else if ($channel['Source'] == 'SHOPIFY') {
+            } elseif ($channel['Source'] == 'SHOPIFY') {
                 if ($channel['SubSource'] == 'stcstores.co.uk (shopify)') {
                     $channels['shopify'] = $channel['Title'];
                 }
@@ -564,7 +612,8 @@ class LinnworksAPI {
         return $channels;
     }
 
-    function get_channel_prices($guid) {
+    public function get_channel_prices($guid)
+    {
         $url = $this -> server . '/api/Inventory/GetInventoryItemPrices';
         $data = array('inventoryItemId' => $guid);
         $response = $this -> request($url, $data);
@@ -578,7 +627,7 @@ class LinnworksAPI {
                 if ($channel['SubSource'] == 'EBAY0') {
                     $channels['ebay'] = $channel['Price'];
                 }
-            } else if ($channel['Source'] == 'SHOPIFY') {
+            } elseif ($channel['Source'] == 'SHOPIFY') {
                 if ($channel['SubSource'] == 'stcstores.co.uk (shopify)') {
                     $channels['shopify'] = $channel['Price'];
                 }
@@ -587,7 +636,8 @@ class LinnworksAPI {
         return $channels;
     }
 
-    function get_channel_descriptions($guid) {
+    public function get_channel_descriptions($guid)
+    {
         $url = $this -> server . '/api/Inventory/GetInventoryItemDescriptions';
         $data = array('inventoryItemId' => $guid);
         $response = $this -> request($url, $data);
@@ -601,7 +651,7 @@ class LinnworksAPI {
                 if ($channel['SubSource'] == 'EBAY0') {
                     $channels['ebay'] = $channel['Description'];
                 }
-            } else if ($channel['Source'] == 'SHOPIFY') {
+            } elseif ($channel['Source'] == 'SHOPIFY') {
                 if ($channel['SubSource'] == 'stcstores.co.uk (shopify)') {
                     $channels['shopify'] = $channel['Description'];
                 }
@@ -609,8 +659,9 @@ class LinnworksAPI {
         }
         return $channels;
     }
-    
-    function get_variation_children($parent_guid) {
+
+    public function get_variation_children($parent_guid)
+    {
         $url = $this -> server . '/api/Stock/GetVariationItems';
         $data = array('pkVariationItemId' => $parent_guid);
         $response = $this -> request($url, $data);
