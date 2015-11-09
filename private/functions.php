@@ -9,7 +9,7 @@ function getValuesFromDatabase($table, $column){
     $results = $database -> selectQuery($query);
     foreach ($results as $result) {
         $resultArray[] = $result[$column];
-    }    
+    }
     return $resultArray;
 }
 
@@ -20,7 +20,7 @@ function getDatabaseColumn($table, $column){
     $results = $database -> selectQuery($query);
     foreach ($results as $result) {
         $resultArray[] = $result[$column];
-    }    
+    }
     return $resultArray;
 }
 
@@ -84,7 +84,7 @@ function getVarSetupFields() {
     foreach ($extendedProperties as $property) {
         $fields[] = $property;
     }
-    
+
     return $fields;
 }
 
@@ -185,7 +185,7 @@ function list_pending_products() {
     $addVarCsv = new AddToVarGroupFile();
     $addVar = $addVarCsv->read();
     $pending_products = array();
-    
+
     $i = 0;
     foreach ($newVar['VariationSKU'] as $row) {
         $pending_product = array();
@@ -194,9 +194,9 @@ function list_pending_products() {
         $pending_products[] = $pending_product;
         $i++;
     }
-    
+
     $varSKUs = $addVar['SKU'];
-    
+
     $i = 0;
     foreach($basicInfo['SKU'] as $SKU) {
         if (!(in_array($SKU, $varSKUs))) {
@@ -207,8 +207,8 @@ function list_pending_products() {
         }
         $i++;
     }
-    
-    return $pending_products;       
+
+    return $pending_products;
 }
 
 function createGUID() {
@@ -235,17 +235,17 @@ function get_international_shipping($weight) {
     $csv = new InternationalShippingLookup();
 
     $table = $csv->read();
-    
+
     $i = 1;
-    
+
     if ($weight > $table['weight'][1]) {
         while ($table['weight'][$i] < $weight) {
             $i++;
         }
-        
+
         $i --;
     }
-    
+
     $weights = array();
     $weights['fr'] = $table['fr'][$i];
     $weights['de'] = $table['de'][$i];
@@ -253,27 +253,48 @@ function get_international_shipping($weight) {
     $weights['usa'] = $table['usa'][$i];
     $weights['aus'] = $table['aus'][$i];
     $weights['row'] = $table['row'][$i];
-    
+
     return $weights;
 }
 
-function get_linn_title($product) {
-    if (array_key_exists('item_title', $product->details)){
+function get_linn_title($product)
+{
+    if (array_key_exists('item_title', $product->details)) {
         $item_title = $product->details['item_title']->text;
+        if (count($product->variations) > 0) {
+            $has_variations = true;
+        } else {
+            $has_variations = false;
+        }
     } else {
         $item_title = $product->details['var_name']->text;
+        $has_variations = false;
     }
-    
-    $location = $product->details['location']->text;
-    $mpn = $product->details['mpn']->text;
-    
-    if (strlen($mpn) > 0) {
-        $item_title = $mpn . ' ' . $item_title;
+
+    if ($has_variations) {
+        $mpn_match = true;
+        $mpn = $product->variations[0]->details['mpn']->text;
+        foreach ($product->variations as $variation) {
+            $this_mpn = $variation->details['mpn']->text;
+            if ($this_mpn == '' || $this_mpn != $mpn) {
+                $mpn_match = false;
+            }
+        }
+        if ($mpn_match) {
+            $item_title = $mpn . $item_title;
+        }
+    } else {
+        $location = $product->details['location']->text;
+        $mpn = $product->details['mpn']->text;
+
+        if (strlen($mpn) > 0) {
+            $item_title = $mpn . ' ' . $item_title;
+        }
+
+        if (strlen($location) > 0) {
+            $item_title = $location . ' ' . $item_title;
+        }
     }
-    
-    if (strlen($location) > 0) {
-        $item_title = $location . ' ' . $item_title;
-    }
-    
+
     return $item_title;
 }
