@@ -3,7 +3,7 @@
     require_once($CONFIG['include']);
     checkLogin();
     require_once($CONFIG['header']);
-    
+
 if (isset($_SESSION['new_product'])) {
     $product = $_SESSION['new_product'];
 } else {
@@ -13,7 +13,7 @@ if (isset($_SESSION['new_product'])) {
 
  ?>
 
-        <div id=main>            
+        <div id=main>
             <form id=upload_imageForm >
                 <!--<input type=button onclick=reload() value='Reload' />-->
             </form>
@@ -33,6 +33,7 @@ if (isset($_SESSION['new_product'])) {
             </table>
         </div>
         <script src=/scripts/image_upload.js ></script>
+        <script src=/scripts/formstyle.js ></script>
 
 <?php
 

@@ -272,6 +272,7 @@ if (isset($_SESSION['new_product'])) {
 
 
     </script>
+    <script src=/scripts/formstyle.js ></script>
 
     <?php
 
