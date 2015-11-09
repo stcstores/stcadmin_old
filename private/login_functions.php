@@ -51,7 +51,7 @@ function getUserId($username, $password) {
     $data = array('userName' => $username, 'password' => $password);
     $multiLogin = make_request($loginURL, $data);
     $userID = $multiLogin[0]['Id'];
-    return $userID;    
+    return $userID;
 }
 
 function make_request($url, $data) {
