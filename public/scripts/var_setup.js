@@ -1,3 +1,4 @@
+
 function VariationField(number, field, value, disable) {
     if (value === undefined) {
 	value = '';
@@ -5,6 +6,7 @@ function VariationField(number, field, value, disable) {
     this.field = field;
     this.number = number;
     this.name = field['field_name'];
+    this.title = field['field_title'];
     this.id = this.name + this.number;
     this.type = field['field_type'];
     this.size = field['size'];
@@ -27,7 +29,7 @@ VariationField.prototype.getInput = function() {
                         var var_title_append = variations.variations[variant].details['var_append'].value;
                     }
                 }
-                
+
                 row = row + '<tr><td>' + variation_type_title + ': </td><td>' + variation_value + '</td></tr>';
                 variation_title = variation_title + ' {' + variation_value + '}';
             }
@@ -36,7 +38,7 @@ VariationField.prototype.getInput = function() {
         variation_title = variation_title + ' ' + var_title_append;
         $('#var_setup').append('<tr class="hidden" ><td><input class="" name="' + this.id + '" value="' + variation_title + '" /></td></tr>');
     } else {
-        var row = '<td><input name=' + this.id + ' id=' + this.id + ' type=' + this.type + ' size=35 class="' + this.name + '"value="'
+        var row = '<td><input name=' + this.id + ' id=' + this.id + ' type=' + this.type + ' size=35 placeholder="' + this.title + '" class="' + this.name + '"value="'
         row = row + this.value + '"';
         if (this.disabled === true) {
             row = row + '" disabled';
@@ -53,7 +55,7 @@ VariationField.prototype.getInput = function() {
 
 VariationField.prototype.updateValue = function() {
     var input = $('#' + this.id);
-    
+
     if (this.type == 'checkbox') {
         if (input.is(':checked')) {
             this.value = true;
@@ -72,20 +74,20 @@ function Variation(attributes) {
     this.details = {};
     for (afield in fields) {
         var field = fields[afield];
-        
+
         if (field.field_name === 'var_name'){
             var name = productName;
             for (attr in this.attributes) {
                 name = name + ' {' + this.attributes[attr] + '}';
             }
             this.details['var_name'] = new VariationField(this.number, field, name, true);
-            
+
         } else if (field.field_name === 'int_shipping') {
             this.details[field.field_name] = new VariationField(this.number, field, 1, false);
-            
+
         } else if (this.attributes[field.field_title] !== undefined) {
             this.details[field.field_name] = new VariationField(this.number, field, this.attributes[field.field_title], true);
-            
+
         } else {
             this.details[field.field_name] = new VariationField(this.number, field);
         }
@@ -101,13 +103,13 @@ Variation.prototype.updateTitle = function() {
     var title_append = this.details['var_append'].value;
     if (title_append != null) {
         var name = productName;
-        
+
         for (attr in this.attributes) {
             name = name + ' {' + this.attributes[attr] + '}';
         }
-        
+
         name = name + ' ' + title_append;
-        
+
         this.details['var_name'].value = name;
     }
 }
@@ -125,7 +127,7 @@ function Variations() {
         var fieldName = keyFields[field]['field_name'];
         this.variationTypes[fieldName] = new VariationType(keyFields[field]['field_name'], keyFields[field]['field_title']);
     }
-    
+
     this.variations = [];
 }
 
@@ -142,18 +144,18 @@ Variations.prototype.variation_exists = function(variation_dictionary) {
 Variations.prototype.get_variations = function() {
     var varlists = [];
     var vartypes = [];
-    
+
     for (field in variations.variationTypes) {
         if (variations.variationTypes[field].used === true) {
             varlists.push(variations.variationTypes[field].variations);
             vartypes.push(variations.variationTypes[field].title)
         }
     }
-    
+
     var all_variations = get_valid_combinations(varlists);
-    
+
     var all_variation_dicts = [];
-    
+
     for (varlist in all_variations){
         var newVarDict = {};
         for (i = 0; i < vartypes.length; i++) {
@@ -161,7 +163,7 @@ Variations.prototype.get_variations = function() {
         }
         all_variation_dicts.push(newVarDict);
     }
-    
+
     return all_variation_dicts;
 }
 
@@ -178,7 +180,7 @@ Variations.prototype.update_variations = function() {
             this.variations.splice(variation, 1);
         }
     }
-    
+
     for (new_var in new_variations) {
         var var_exisits = false;
         for (variation in this.variations){
@@ -194,7 +196,7 @@ Variations.prototype.update_variations = function() {
 
 function variation_var_dict_compare(variation, var_dict) {
     var match = true;
-    
+
     for (attr in variation.attributes) {
         if (!(var_dict[attr])) {
             match = false;
@@ -204,7 +206,7 @@ function variation_var_dict_compare(variation, var_dict) {
             }
         }
     }
-    
+
     for (attr in var_dict) {
         if (!(variation.attributes[attr])) {
             match = false;
@@ -227,7 +229,7 @@ function get_valid_combinations(arg) {
             } else helper(a, i + 1);
         }
     }
-    
+
     if (arg.length > 0) {
         var r = [],
             //arg = arguments,
@@ -245,16 +247,16 @@ function addAddVariationTypes(){
         if (varType.used === false){
             var id = 'add_var_type_' + varType.name;
             var name = varType.title;
-            
+
             $('#add_variation_types').append('<tr>');
             var newRow = $('#add_variation_types tr:last');
             newRow.append('<td class="add_to_label"><label for=' + id + '>' + name + '</label></td>');
             newRow.append('<td class="add_to_button"><input type=button value="Add Variation Type" id=add_' + field + '_button /></td>');
-            
+
             $('#add_' + field + '_button').click(toggle_variation_type_used_generator(varType));
         }
     }
-    
+
     add_instructions('add_variation_types', 'Click "Add Variation Type" to add variation types to the product.');
 }
 
@@ -264,31 +266,31 @@ function addAddVariations(){
         if (varType.used === true){
             var id = 'add_to_' + varType.name;
             var name = varType.title + 's';
-            
+
             $('#add_variations').append('<tr>');
             var newRow = $('#add_variations tr:last');
             newRow.append('<td class="add_to_label"><label for=' + id + '>Add ' + name + ': </label></td>');
             newRow.append('<td class="add_to_input"><input style="width: 100%;" name=' + id + ' id=' + id + ' /></td>');
             newRow.append('<td class="add_variations_to_button"><input type=button value=Add id=add_variations_to_' + field + '_button /></td>');
             newRow.append('<td class=remove_variation_type ><input type=button value=Remove id=remove_variation_type_' + field + ' </td>');
-            
+
             $('#add_variations').append('<tr><td colspan=4 >');
             $('#add_variations tr:last td').append('<table id=list_of_variants_' + field + ' >');
             for (variant in varType.variations){
                 $('#list_of_variants_' + field).append('<td><div class=variation_box ><span id=variation_no_' + variant + ' class=variation_of_' + field + ' >' + varType.variations[variant] + ' </span><span class=remove_x id=remove_variation_no_' + variant + '_from_' + field + ' >x</span></div>');
                 $('#remove_variation_no_' + variant + '_from_' + field).click(removeVariationGenerator(varType, variant));
-                
+
                 variant += 1;
             }
-            
+
             $('#add_variations_to_' + field + '_button').click(addVariationGenerator(field));
-            
+
             $('#add_to_' + field).blur(addVariationGenerator(field));
-            
+
             $('#remove_variation_type_' + field).click(toggle_variation_type_used_generator(varType));
         }
     }
-    
+
     add_instructions('add_variations', '<p>List all variations for each variation type, separated by commas. More can be added later if required.</p><p>For example: Green, Red, Blue.</p><p>Click "Add" to add the variations or click "Remove" to remove the variation type.</p>');
 }
 
@@ -304,9 +306,9 @@ function addVariationList() {
     }
     header = header + '<th></th>';
     $('#list_of_variations').append($(header));
-    
+
     var new_row;
-    
+
     for (variation in variations.variations) {
         if (variations.variations[variation].active) {
             new_row = '<tr>';
@@ -320,21 +322,21 @@ function addVariationList() {
                 new_row = new_row + '<td>' + attributes[variationType] + '</td>'
             }
         }
-        
+
         new_row = new_row + '<td>';
-        
+
         $('#list_of_variations').append($(new_row));
-        
+
         var button = $('<input type=button>');
-        
+
         if (variations.variations[variation].active) {
             button.val('Remove');
         } else {
             button.val('Re-Add');
         }
-        
+
         button.click(remove_varient_generator(variations.variations[variation]));
-        
+
         $('#list_of_variations tr:last td:last').append(button);
     }
 }
@@ -369,7 +371,7 @@ function addVariationGenerator(field) {
 function removeVariationGenerator(varType, variation){
     return function(event){
         varType.variations.splice(variation, 1);
-        write();  
+        write();
     };
 }
 
@@ -404,11 +406,11 @@ function write() {
     $('#list_of_variables tr').remove();
     $('#list_of_variations tr').remove();
     $('#var_setup tr').remove();
-    
+
     addAddVariationTypes();
     addAddVariations();
     addVariationList();
-    
+
     if (variations.variations.length > 1) {
         set_variation_numbers();
         table = new Table(fields, values);

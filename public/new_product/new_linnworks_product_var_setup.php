@@ -68,11 +68,9 @@ $values = getVarSetupValues();
     <br />
     <div id="var_error" class="hidden" ></div>
     <form method="post" id="var_form" enctype="multipart/form-data">
-        <div class="variation_table">
-            <table id="var_setup" class="form_section" >
+        <table id="var_setup" class="form_section" >
 
-            </table>
-        </div>
+        </table>
         <table class="form_nav">
             <tr>
                 <td>
