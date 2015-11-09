@@ -1,5 +1,4 @@
 <?php
-
     require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
     require_once($CONFIG['include']);
     checkLogin();
@@ -11,21 +10,8 @@ if (isset($_SESSION['new_product'])) {
     exit();
 }
 
-if ( !empty($_POST) ) {
-
-    add_variation($product);
-
-    if (isset($_POST['previous'])) {
-        header('Location: new_linnworks_product_1_basic_info.php');
-        exit();
-    }
-
-
-    if ( true ) { // error check
-        $_SESSION['new_product'] = $product;
-        header('Location: imageupload.php');
-        exit();
-    }
+if (!empty($_POST)) {
+    print_r($_POST);
 }
 
 require_once($CONFIG['header']);
@@ -60,6 +46,7 @@ $values = getVarSetupValues();
             <col width=45% />
         </table>
     </div>
+
     <div>
         <table id="list_of_variations" class="form_section">
 
@@ -68,9 +55,6 @@ $values = getVarSetupValues();
     <br />
     <div id="var_error" class="hidden" ></div>
     <form method="post" id="var_form" enctype="multipart/form-data">
-        <table id="var_setup" class="form_section" >
-
-        </table>
         <table class="form_nav">
             <tr>
                 <td>
@@ -83,7 +67,6 @@ $values = getVarSetupValues();
 </div>
 
 <script src="/scripts/var_form_validate.js"></script>
-<script src="/scripts/variation_table.js"></script>
 
 <?php
     $_SESSION['new_product'] = $product;

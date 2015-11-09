@@ -410,14 +410,14 @@ function write() {
     addAddVariationTypes();
     addAddVariations();
     addVariationList();
-
-    if (variations.variations.length > 1) {
-        set_variation_numbers();
-        table = new Table(fields, values);
-    } else {
-        table = undefined;
-    }
 }
+
+$('#var_form').submit(function() {
+    var $hidden = $("<input type='hidden' name='myData'/>");
+    $hidden.val(JSON.stringify(variations));
+    $(this).append($hidden);
+    return true;
+})
 
 $(document).ready(function() {
     variations = new Variations();
