@@ -12,9 +12,9 @@ function VariationType(name, title){
 
 function Variations() {
     this.variationTypes = {};
-    for (field in keyFields){
-        var fieldName = keyFields[field]['field_name'];
-        this.variationTypes[fieldName] = new VariationType(keyFields[field]['field_name'], keyFields[field]['field_title']);
+    for (var field in keyFields){
+        var fieldName = keyFields[field].field_name;
+        this.variationTypes[fieldName] = new VariationType(keyFields[field].field_name, keyFields[field].field_title);
     }
 
     this.variations = [];
@@ -23,43 +23,43 @@ function Variations() {
 Variations.prototype.getVariationTypes = function() {
     var variationTypes = [];
     for (i = 0;i < keyFields.length;i++) {
-        var field = keyFields[i]['field_name'];
+        var field = keyFields[i].field_name;
         if (this.variationTypes[field].used) {
             variationTypes.push(field);
         }
     }
     return variationTypes;
-}
+};
 
 Variations.prototype.getVariationList = function() {
     var variationList = [];
     for (i=0; i < this.variations.length; i++) {
-        var variation = this.variations[i]
+        var variation = this.variations[i];
         if (variation.active) {
             variationList.push(variation.attributes);
         }
     }
     return variationList;
-}
+};
 
 Variations.prototype.variation_exists = function(variation_dictionary) {
     var var_exists = true;
-    for (varType in variation_dictionary) {
+    for (var varType in variation_dictionary) {
         if (!($.inArray(variation_dictionary[varType], this.variationTypes[varType].variations))) {
             var_exists = false;
         }
     }
     return var_exists;
-}
+};
 
 Variations.prototype.get_variations = function() {
     var varlists = [];
     var vartypes = [];
 
-    for (field in variations.variationTypes) {
+    for (var field in variations.variationTypes) {
         if (variations.variationTypes[field].used === true) {
             varlists.push(variations.variationTypes[field].variations);
-            vartypes.push(variations.variationTypes[field].name)
+            vartypes.push(variations.variationTypes[field].name);
         }
     }
 
@@ -67,7 +67,7 @@ Variations.prototype.get_variations = function() {
 
     var all_variation_dicts = [];
 
-    for (varlist in all_variations){
+    for (var varlist in all_variations){
         var newVarDict = {};
         for (i = 0; i < vartypes.length; i++) {
             newVarDict[vartypes[i]] = all_variations[varlist][i];
@@ -76,13 +76,13 @@ Variations.prototype.get_variations = function() {
     }
 
     return all_variation_dicts;
-}
+};
 
 Variations.prototype.update_variations = function() {
     new_variations = this.get_variations();
-    for (variation in this.variations) {
+    for (var variation in this.variations) {
         var var_exisits = false;
-        for (new_var in new_variations) {
+        for (var new_var in new_variations) {
             if (variation_var_dict_compare(this.variations[variation], new_variations[new_var])) {
                 var_exisits = true;
             }
@@ -92,27 +92,27 @@ Variations.prototype.update_variations = function() {
         }
     }
 
-    for (new_var in new_variations) {
-        var var_exisits = false;
+    for (var new_variation in new_variations) {
+        var variation_exsits = false;
         for (variation in this.variations){
-            if (variation_var_dict_compare(this.variations[variation], new_variations[new_var])) {
-                var_exisits = true;
+            if (variation_var_dict_compare(this.variations[variation], new_variations[new_variation])) {
+                variation_exsits = true;
             }
         }
-        if (!(var_exisits)) {
-            this.variations.push(new Variation(new_variations[new_var]));
+        if (!(variation_exsits)) {
+            this.variations.push(new Variation(new_variations[new_variation]));
         }
     }
-}
+};
 
 function variation_var_dict_compare(variation, var_dict) {
     var match = true;
 
-    for (attr in variation.attributes) {
+    for (var attr in variation.attributes) {
         if (!(var_dict[attr])) {
             match = false;
         } else {
-            if (!(variation.attributes[attr]) === var_dict[attr]) {
+            if (variation.attributes[attr] !== var_dict[attr]) {
                 match = false;
             }
         }
@@ -122,7 +122,7 @@ function variation_var_dict_compare(variation, var_dict) {
         if (!(variation.attributes[attr])) {
             match = false;
         } else {
-            if (!(var_dict[attr] === variation.attributes[attr])) {
+            if (var_dict[attr] !== variation.attributes[attr]) {
                 match = false;
             }
         }
@@ -134,7 +134,7 @@ function get_valid_combinations(arg) {
     function helper(arr, i) {
         for (var j = 0, l = arg[i].length; j < l; j++) {
             var a = arr.slice(0); // clone arr
-            a.push(arg[i][j])
+            a.push(arg[i][j]);
             if (i == max) {
                 r.push(a);
             } else helper(a, i + 1);
@@ -153,7 +153,7 @@ function get_valid_combinations(arg) {
 }
 
 function addAddVariationTypes(){
-    for (field in variations.variationTypes){
+    for (var field in variations.variationTypes){
         var varType = variations.variationTypes[field];
         if (varType.used === false){
             var id = 'add_var_type_' + varType.name;
@@ -172,7 +172,7 @@ function addAddVariationTypes(){
 }
 
 function addAddVariations(){
-    for (field in variations.variationTypes){
+    for (var field in variations.variationTypes){
         var varType = variations.variationTypes[field];
         if (varType.used === true){
             var id = 'add_to_' + varType.name;
@@ -187,7 +187,7 @@ function addAddVariations(){
 
             $('#add_variations').append('<tr><td colspan=4 >');
             $('#add_variations tr:last td').append('<table id=list_of_variants_' + field + ' >');
-            for (variant in varType.variations){
+            for (var variant in varType.variations){
                 $('#list_of_variants_' + field).append('<td><div class=variation_box ><span id=variation_no_' + variant + ' class=variation_of_' + field + ' >' + varType.variations[variant] + ' </span><span class=remove_x id=remove_variation_no_' + variant + '_from_' + field + ' >x</span></div>');
                 $('#remove_variation_no_' + variant + '_from_' + field).click(removeVariationGenerator(varType, variant));
 
@@ -208,8 +208,8 @@ function addAddVariations(){
 function addVariationList() {
     variations.update_variations();
     set_variation_numbers();
-    var header = '<tr>'
-    for (varType in variations.variationTypes) {
+    var header = '<tr>';
+    for (var varType in variations.variationTypes) {
         if (variations.variationTypes[varType].used) {
             var type = variations.variationTypes[varType].title;
             header = header + '<th>' + type + '</th>';
@@ -220,17 +220,17 @@ function addVariationList() {
 
     var new_row;
 
-    for (variation in variations.variations) {
+    for (var variation in variations.variations) {
         if (variations.variations[variation].active) {
             new_row = '<tr>';
         } else {
-            new_row = '<tr class="varient_disabled">'
+            new_row = '<tr class="varient_disabled">';
         }
         for (varType in variations.variationTypes) {
             if (variations.variationTypes[varType].used) {
                 var variationType = variations.variationTypes[varType].name;
                 var attributes = variations.variations[variation].attributes;
-                new_row = new_row + '<td>' + attributes[variationType] + '</td>'
+                new_row = new_row + '<td>' + attributes[variationType] + '</td>';
             }
         }
 
@@ -271,7 +271,7 @@ function addVariationGenerator(field) {
         if (rawInput) {
             rawInput = rawInput.replace(', ', ',');
             var variations = rawInput.split(',');
-            for (i in variations) {
+            for (i=0; i<variations.length; i++) {
                 addVariation(field, variations[i].trim());
             }
             write();
@@ -290,7 +290,7 @@ function remove_varient_generator(variation) {
     return function(event){
         variation.active = !variation.active;
         write();
-    }
+    };
 }
 
 function add_instructions(table, text){
@@ -302,7 +302,7 @@ function set_variation_numbers() {
     if (variations.variations.length > 0) {
         for (i=0; i < variations.variations.length; i++) {
             if (variations.variations[i].active === true) {
-                for (detail in variations.variations[i].details) {
+                for (var detail in variations.variations[i].details) {
                     variations.variations[i].details[detail].number = varNumber;
                 }
                 varNumber ++;
@@ -331,7 +331,7 @@ $('#var_form').submit(function() {
     $(this).append($hidden);
     $(this).append($hidden2);
     return true;
-})
+});
 
 $(document).ready(function() {
     variations = new Variations();
