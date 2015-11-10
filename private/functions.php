@@ -171,7 +171,7 @@ function getSpecialCharacters() {
 }
 
 function getKeyFields() {
-    $selectQuery = "SELECT * FROM new_product_form_field WHERE `can_be_key` = TRUE ORDER BY position;";
+    $selectQuery = "SELECT field_name, field_title FROM new_product_form_field WHERE `can_be_key` = TRUE ORDER BY position;";
     $database = new DatabaseConnection();
     $results = $database->selectQuery($selectQuery);
     return $results;

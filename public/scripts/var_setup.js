@@ -1,117 +1,6 @@
-
-function VariationField(number, field, value, disable) {
-    if (value === undefined) {
-	value = '';
-    }
-    this.field = field;
-    this.number = number;
-    this.name = field['field_name'];
-    this.title = field['field_title'];
-    this.id = this.name + this.number;
-    this.type = field['field_type'];
-    this.size = field['size'];
-    this.value = value;
-    this.disabled = disable;
-}
-
-VariationField.prototype.getInput = function() {
-    this.id = this.name + this.number;
-    if (this.name == 'var_name') {
-        var variation_title = product_title;
-        var row = '<td><table>';
-        for (variation in variations.variationTypes) {
-            if (variations.variationTypes[variation].used) {
-                var variation_type_title = variations.variationTypes[variation].title;
-                var variation_type_name = variations.variationTypes[variation].name;
-                for (variant in variations.variations) {
-                    if (variations.variations[variant].details['var_name'].value == this.value) {
-                        var variation_value = variations.variations[variant].details[variation_type_name].value;
-                        var var_title_append = variations.variations[variant].details['var_append'].value;
-                    }
-                }
-
-                row = row + '<tr><td>' + variation_type_title + ': </td><td>' + variation_value + '</td></tr>';
-                variation_title = variation_title + ' {' + variation_value + '}';
-            }
-        }
-        row = row + '</td></table>';
-        variation_title = variation_title + ' ' + var_title_append;
-        $('#var_setup').append('<tr class="hidden" ><td><input class="" name="' + this.id + '" value="' + variation_title + '" /></td></tr>');
-    } else {
-        var row = '<td><input name=' + this.id + ' id=' + this.id + ' type=' + this.type + ' size=35 placeholder="' + this.title + '" class="' + this.name + '"value="'
-        row = row + this.value + '"';
-        if (this.disabled === true) {
-            row = row + '" disabled';
-        }
-        if (this.type == 'checkbox') {
-            if (this.value == true) {
-                row = row + ' checked ';
-            }
-        }
-        row = row + ' /></td>';
-    }
-    return row;
-}
-
-VariationField.prototype.updateValue = function() {
-    var input = $('#' + this.id);
-
-    if (this.type == 'checkbox') {
-        if (input.is(':checked')) {
-            this.value = true;
-        } else {
-            this.value = false;
-        }
-    } else if (input.val() != null) {
-        this.value = input.val();
-    }
-}
-
 function Variation(attributes) {
-    this.number = 0;
     this.attributes = attributes;
     this.active = true;
-    this.details = {};
-    for (afield in fields) {
-        var field = fields[afield];
-
-        if (field.field_name === 'var_name'){
-            var name = productName;
-            for (attr in this.attributes) {
-                name = name + ' {' + this.attributes[attr] + '}';
-            }
-            this.details['var_name'] = new VariationField(this.number, field, name, true);
-
-        } else if (field.field_name === 'int_shipping') {
-            this.details[field.field_name] = new VariationField(this.number, field, 1, false);
-
-        } else if (this.attributes[field.field_title] !== undefined) {
-            this.details[field.field_name] = new VariationField(this.number, field, this.attributes[field.field_title], true);
-
-        } else {
-            this.details[field.field_name] = new VariationField(this.number, field);
-        }
-    }
-    this.details['shipping_price'].value = shippingPrice;
-}
-
-Variation.prototype.setNumber = function(number){
-    this.number = number;
-}
-
-Variation.prototype.updateTitle = function() {
-    var title_append = this.details['var_append'].value;
-    if (title_append != null) {
-        var name = productName;
-
-        for (attr in this.attributes) {
-            name = name + ' {' + this.attributes[attr] + '}';
-        }
-
-        name = name + ' ' + title_append;
-
-        this.details['var_name'].value = name;
-    }
 }
 
 function VariationType(name, title){
@@ -131,6 +20,28 @@ function Variations() {
     this.variations = [];
 }
 
+Variations.prototype.getVariationTypes = function() {
+    var variationTypes = [];
+    for (i = 0;i < keyFields.length;i++) {
+        var field = keyFields[i]['field_name'];
+        if (this.variationTypes[field].used) {
+            variationTypes.push(field);
+        }
+    }
+    return variationTypes;
+}
+
+Variations.prototype.getVariationList = function() {
+    var variationList = [];
+    for (i=0; i < this.variations.length; i++) {
+        var variation = this.variations[i]
+        if (variation.active) {
+            variationList.push(variation.attributes);
+        }
+    }
+    return variationList;
+}
+
 Variations.prototype.variation_exists = function(variation_dictionary) {
     var var_exists = true;
     for (varType in variation_dictionary) {
@@ -148,7 +59,7 @@ Variations.prototype.get_variations = function() {
     for (field in variations.variationTypes) {
         if (variations.variationTypes[field].used === true) {
             varlists.push(variations.variationTypes[field].variations);
-            vartypes.push(variations.variationTypes[field].title)
+            vartypes.push(variations.variationTypes[field].name)
         }
     }
 
@@ -317,7 +228,7 @@ function addVariationList() {
         }
         for (varType in variations.variationTypes) {
             if (variations.variationTypes[varType].used) {
-                var variationType = variations.variationTypes[varType].title;
+                var variationType = variations.variationTypes[varType].name;
                 var attributes = variations.variations[variation].attributes;
                 new_row = new_row + '<td>' + attributes[variationType] + '</td>'
             }
@@ -413,9 +324,12 @@ function write() {
 }
 
 $('#var_form').submit(function() {
-    var $hidden = $("<input type='hidden' name='myData'/>");
-    $hidden.val(JSON.stringify(variations));
+    var $hidden = $("<input type='hidden' name='variation_types'/>");
+    var $hidden2 = $("<input type='hidden' name='variations'/>");
+    $hidden.val(JSON.stringify(variations.getVariationTypes()));
+    $hidden2.val(JSON.stringify(variations.getVariationList()));
     $(this).append($hidden);
+    $(this).append($hidden2);
     return true;
 })
 

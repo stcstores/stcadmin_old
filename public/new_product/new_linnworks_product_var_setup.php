@@ -10,24 +10,44 @@ if (isset($_SESSION['new_product'])) {
     exit();
 }
 
-if (!empty($_POST)) {
-    print_r($_POST);
+print_r($_POST);
+
+if (isset($_POST['variation_types']) && isset($_POST['variations'])) {
+    $variationTypes = json_decode($_POST['variation_types']);
+    $variationList = json_decode($_POST['variations'], true);
+    print_r($variationTypes);
+    print_r($variationList);
+    $product -> variations = array();
+    foreach ($product -> keyFields as $keyField => $keyValue) {
+        $product -> keyFields[$keyField] = false;
+        foreach ($variationTypes as $variationType) {
+            if ($keyField == $variationType) {
+                $product -> keyFields = true;
+            }
+        }
+    }
+    foreach ($variationList as $variation) {
+        $new_variation = new NewVariation($product);
+        print_r($variation);
+        foreach ($variation as $key => $value) {
+            $new_variation -> details[$key] -> set($value);
+        }
+        $product -> variations[] = $new_variation;
+    }
+
+    $_SESSION['new_product'] = $product;
+
+    if (isset($_POST['Previous'])) {
+        header('Location: new_linnworks_product_1_basic_info.php');
+        exit();
+    } else {
+        header('Location: new_linnworks_product_var_table.php');
+        exit();
+    }
 }
 
 require_once($CONFIG['header']);
-
-$fields = getVarSetupFields();
-$values = getVarSetupValues();
 ?>
-
-<script>
-    productName = '<?php echo $product->details['item_title']->text; ?>';
-    var fields = <?php echo json_encode($fields); ?>;
-    var values = <?php echo json_encode($values); ?>;
-    keyFields = <?php echo json_encode($product->keyFields); ?>;
-</script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-<script src="/scripts/jquery.doubleScroll.js"></script>
 
 <div class="">
     <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
@@ -46,7 +66,7 @@ $values = getVarSetupValues();
             <col width=45% />
         </table>
     </div>
-
+    <br />
     <div>
         <table id="list_of_variations" class="form_section">
 
@@ -74,15 +94,9 @@ $values = getVarSetupValues();
 <script>
     keyFields = <?php echo json_encode(getKeyFields()); ?>;
 </script>
-<script>
-    shippingPrice = <?php echo $product->details['shipping_price']->value; ?>;
-</script>
 <script src=/scripts/var_setup.js ></script>
 <script src=/scripts/formstyle.js ></script>
 <script src=/scripts/validation.js ></script>
-<script>product_title = '<?php echo $product->details['item_title']->text;?>'</script>
-<script>product_price = '<?php echo $product->details['retail_price']->text;?>'</script>
-<script>product_description = <?php echo json_encode($product->details['short_description']->text);?></script>
 
 <?php
 
