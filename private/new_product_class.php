@@ -96,12 +96,13 @@ class NewVariation  extends NewProduct {
         $this->details['mpn'] = new ProductDetail('mpn', $this);
         $this->details['location'] = new ProductDetail('location', $this);
         $this->details['weight'] = new NumericDetail('weight', $this);
-        $this->details['int_shipping'] = new internationalShipping('int_shipping', $this);
+        $this->details['int_shipping'] = new BooleanDetail('int_shipping', $this);
         $this->details['int_shipping'] -> set('TRUE');
-        $this->details['vat_free'] = new ProductDetail('vat_free', $this);
+        $this->details['vat_free'] = new BooleanDetail('vat_free', $this);
         $this->details['retail_price'] = new ProductDetail('retail_price', $this);
         $this->details['purchase_price'] = new ProductDetail('purchase_price', $this);
         $this->details['shipping_price'] = new ProductDetail('shipping_price', $this);
+        $this->details['shipping_price']->set($product->details['shipping_price']->value);
         $this->details['shipping_method'] = new ProductDetail('shipping_method', $this);
         $this->details['shipping_method']->set($product->details['shipping_method']->value);
         $this->details['barcode'] = new ProductDetail('barcode', $this);
@@ -152,6 +153,19 @@ class ProductDetail {
     function set($value) {
         $this->value = $value;
         $this->text = (string)$value;
+    }
+}
+
+class BooleanDetail extends ProductDetail {
+    public function set($value)
+    {
+        if (($value == true) || (ucwords($value) == 'TRUE')) {
+            $this->value = true;
+            $this->text = 'TRUE';
+        } elseif (($value == false) || (ucwords($value) == 'FALSE')) {
+            $this->value = false;
+            $this->text = 'FALSE';
+        }
     }
 }
 
