@@ -41,54 +41,50 @@ $values = getVarSetupValues();
 <form method="post" id="var_form" enctype="multipart/form-data">
     <div>
         <table id="var_setup" class="form_section">
-            <tr>
-                <th><p style="width:150px;"></p></th>
-                <?php
-                foreach ($product -> variations as $variation) {
-                    ?>
-                    <th>
-                        <table class="nospace">
-                            <?php
-                            foreach ($product -> keyFields as $keyField => $val) {
-                                if ($product -> keyFields[$keyField]) {
-                                    echo "<tr class='nospace'>\n";
-                                    echo "<td class='nospace'>" . ucwords($keyField) . ": </td>\n";
-                                    echo "<td class='nospace'>" . $variation->details[$keyField]->text . "</td>\n";
-                                    echo "</tr>\n";
-                                }
-                            }
-                                ?>
-                        </table>
-                    </th>
-                <?php
-                }
-                ?>
-            </tr>
             <?php
-            foreach ($fields as $field) {
-                ?>
-                <tr>
-                    <td><?php echo $field['field_title']; ?></td>
-                    <?php
-                    $variation_number = 0;
+            foreach ($product -> keyFields as $keyField => $val) {
+                if ($product -> keyFields[$keyField]) {
+                    echo "<tr>\n";
+                    echo "<th></th>\n";
+                    echo "<th></th>\n";
                     foreach ($product -> variations as $variation) {
-                        $name = $field['field_name'];
-                        $title = $field['field_title'];
-                        $type = $field['field_type'];
-                        $value = $variation->details[$name]->text;
-                        $id = $name . '-' . $variation_number;
-                        echo "<td>\n";
-                        echo "<input id='{$id}' class='{$name}' type='{$type}' value='{$value}' placeholder='{$title}' ";
-                        if (array_key_exists($name, $product->keyFields) && $product->keyFields[$name]) {
-                            echo "disabled ";
-                        }
-                        echo "/>\n";
-                        echo "</td>\n";
-                        $variation_number ++;
+                        echo "<th>{$variation->details[$keyField]->text}</th>\n";
                     }
-                    ?>
-                </tr>
-                <?php
+                    echo "</tr>";
+                }
+            }
+            foreach ($fields as $field) {
+                $name = $field['field_name'];
+                $title = $field['field_title'];
+                $type = $field['field_type'];
+                echo "<tr>\n";
+                echo "<td>{$field['field_title']}</td>\n";
+                echo "<td>";
+                if (!(array_key_exists($name, $product->keyFields)) || ($product->keyFields[$name] == false)) {
+                    if ($field['field_type'] == 'checkbox') {
+                        $value = 'Toggle All';
+                        $class = 'toggle_all';
+                    } else {
+                        $value = 'Set All';
+                        $class = 'set_all';
+                    }
+                    echo "<input class='{$class}' id='set_all-{$name}' type=button value='{$value}' />";
+                }
+                echo "</td>\n";
+                $variation_number = 0;
+                foreach ($product -> variations as $variation) {
+                    $value = $variation->details[$name]->text;
+                    $id = $name . '-' . $variation_number;
+                    echo "<td>\n";
+                    echo "<input id='{$id}' class='{$name}' type='{$type}' value='{$value}' placeholder='{$title}' ";
+                    if (array_key_exists($name, $product->keyFields) && $product->keyFields[$name]) {
+                        echo "disabled ";
+                    }
+                    echo "/>\n";
+                    echo "</td>\n";
+                    $variation_number ++;
+                }
+                echo "</tr>\n";
             }
             ?>
         </table>
@@ -102,51 +98,8 @@ $values = getVarSetupValues();
         </tr>
     </table>
 </form>
-
-<script>
-    function table_adjust(variation_count) {
-        var fields = <?php echo json_encode($fields); ?>;
-        var inputs = $('#var_setup input');
-        var sizes = [];
-        for (i=0; i<variation_count; i++) {
-            sizes.push(12);
-        }
-        $.each(fields, function(index, field){
-            sizes[field.field_name] = field.size;
-        });
-        inputs.each(function () {
-            var id = $(this).attr('id');
-            var id_array = id.split('-');
-            var field = id_array[0];
-            var number = id_array[1];
-            var input = $(this).val();
-            if(typeof input !== "undefined") {
-                if (input.length > sizes[number]){
-                    sizes[number] = input.length;
-                }
-            }
-            //$(this).css('background', 'red');
-        });
-        inputs.each(function () {
-            var id = $(this).attr('id');
-            var id_array = id.split('-');
-            var field = id_array[0];
-            var number = id_array[1];
-            $(this).attr('size', sizes[number]);
-        });
-    }
-
-    $(document).ready(function() {
-        table_adjust();
-    });
-
-    $('input').blur(function() {
-        table_adjust(<?php echo $variation_number; ?>);
-    });
-</script>
-
 <?php
-
+echo "<script>fields = ". json_encode($fields) . "</script>";
+echo "<script>variation_count = {$variation_number};</script>\n";
+echo "<script src='/scripts/variation_table.js' charset='utf-8'></script>\n";
 include($CONFIG['footer']);
-
-?>

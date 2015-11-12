@@ -191,7 +191,7 @@ input[type="text"], input[type="password"], textarea, select, checkbox {
     text-align: center;
 }
 
-.small_button {
+.small_button, .toggle_all, .set_all {
     font-size: 0.75em;
     padding: 0;
     margin: 0;
