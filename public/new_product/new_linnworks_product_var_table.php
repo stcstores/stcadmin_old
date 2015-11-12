@@ -12,16 +12,8 @@ if (isset($_SESSION['new_product'])) {
 }
 
 if (!empty($_POST)) {
-    add_variation($product);
-    if (isset($_POST['previous'])) {
-        header('Location: new_linnworks_product_1_basic_info.php');
-        exit();
-    }
-    if (true) { // error check
-        $_SESSION['new_product'] = $product;
-        header('Location: imageupload.php');
-        exit();
-    }
+    //add_variation($product);
+    print_r($_POST);
 }
 
 require_once($CONFIG['header']);
@@ -42,13 +34,16 @@ $values = getVarSetupValues();
     <div>
         <table id="var_setup" class="form_section">
             <?php
+            $variation_strings = array();
             foreach ($product -> keyFields as $keyField => $val) {
                 if ($product -> keyFields[$keyField]) {
                     echo "<tr>\n";
                     echo "<th></th>\n";
                     echo "<th></th>\n";
                     foreach ($product -> variations as $variation) {
-                        echo "<th>{$variation->details[$keyField]->text}</th>\n";
+                        $variation_string = $variation->details[$keyField]->text;
+                        echo "<th>{$variation_string}</th>\n";
+                        $variation_strings[] = $variation_string;
                     }
                     echo "</tr>";
                 }
@@ -104,6 +99,8 @@ $values = getVarSetupValues();
     </table>
 </form>
 <?php
+$max_variation_string_length = max(array_map('strlen', $variation_strings));
+echo "<script>default_col_size = ". $max_variation_string_length . "</script>";
 echo "<script>fields = ". json_encode($fields) . "</script>";
 echo "<script>variation_count = {$variation_number};</script>\n";
 echo "<script src='/scripts/variation_table.js' charset='utf-8'></script>\n";
