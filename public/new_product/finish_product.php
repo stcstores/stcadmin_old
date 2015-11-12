@@ -13,48 +13,79 @@ if (isset($_SESSION['new_product'])) {
     header('Location: new_product_start.php');
     exit();
 }
-    $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
-    $product_exists = $api->sku_exists($product->details['sku']->text);
+$api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+$product_exists = $api->sku_exists($product->details['sku']->text);
+$item_title = get_linn_title($product);
 
-    $item_title = get_linn_title($product);
-
-    ?>
-
-    <input type=button value='Create Product' id=create_product <?php if ($product_exists) { echo ' disabled '; } ?>/>
-
+echo "<input type=button value='Create Product' id=create_product ";
+if ($product_exists) {
+    echo ' disabled ';
+}
+    echo "/>\n";
+?>
     <h3>Basic Product Info <a class="editlink" href="new_linnworks_product_1_basic_info.php" >Edit</a></h3>
     <table>
         <tr>
             <td>Product ID</td>
-            <td><input value="<?php echo $product->details['guid']->text; ?>" size="<?php echo strlen($product->details['guid']->text) + 2; ?>" class=disabled readonly size=38 /></td>
+            <?php
+            $guid = $product->details['guid']->text;
+            $size = strlen($product->details['guid']->text) + 2;
+            ?>
+            <td><input value="<?php echo $guid ?>" size="<?php echo $size ?>" class=disabled readonly size=38 /></td>
         </tr>
         <tr>
             <td>Product SKU</td>
-            <td><input value="<?php echo $product->details['sku']->text; ?>" size="<?php echo strlen($product->details['sku']->text); ?>" class=disabled readonly /></td>
+            <?php
+            $sku = $product->details['sku']->text;
+            $size = strlen($product->details['sku']->text) + 2;
+            ?>
+            <td><input value="<?php echo $sku; ?>" size="<?php echo $size; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Product Title</td>
-            <td><input value="<?php echo $item_title; ?>" class=disabled size="<?php echo strlen($item_title); ?>" readonly /></td>
+            <?php
+            $size = strlen($item_title);
+            ?>
+            <td><input value="<?php echo $item_title; ?>" class=disabled size="<?php echo $size; ?>" readonly /></td>
         </tr>
         <tr>
             <td>Description</td>
-            <td><textarea rows=8 cols=75 class=disabled readonly ><?php echo $product->details['short_description']->text; ?></textarea></td>
+            <?php
+            $description = $product->details['short_description']->text;
+            ?>
+            <td><textarea rows=8 cols=75 class=disabled readonly ><?php echo $description; ?></textarea></td>
         </tr>
         <tr>
             <td>Department</td>
-            <td><input value="<?php echo $product->details['department']->text; ?>" size="<?php echo strlen($product->details['department']->text); ?>" class=disabled readonly /></td>
+            <?php
+            $department = $product->details['department']->text;
+             $size = strlen($product->details['department']->text) + 2;
+            ?>
+            <td><input value="<?php echo $department; ?>" size="<?php echo $size; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Brand</td>
-            <td><input value="<?php echo $product->details['brand']->text; ?>" size="<?php echo strlen($product->details['brand']->text); ?>" class=disabled readonly /></td>
+            <?php
+            $brand = $product->details['brand']->text;
+            $size = strlen($product->details['brand']->text) + 2;
+            ?>
+            <td><input value="<?php echo $brand; ?>" size="<?php echo $size ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Manufacturer</td>
-            <td><input value="<?php echo $product->details['manufacturer']->text; ?>" size="<?php echo strlen($product->details['manufacturer']->text); ?>" class=disabled readonly /></td>
+            <?php
+            $manu = $product->details['manufacturer']->text;
+            $size = strlen($product->details['manufacturer']->text) + 2;
+            ?>
+            <td><input value="<?php echo $manu; ?>" size="<?php echo $size; ?>" class=disabled readonly /></td>
         </tr>
         <tr>
             <td>Shipping Method</td>
-            <td><input value="<?php echo $product->details['shipping_method']->text; ?>" size="<?php echo strlen($product->details['shipping_method']->text); ?>" class=disabled readonly /></td>
+            <?php
+            $method = $product->details['shipping_method']->text;
+            $size = strlen($product->details['shipping_method']->text) + 2;
+            ?>
+            <td><input value="<?php echo $method; ?>" size="<?php echo $size; ?>" class=disabled readonly /></td>
         </tr>
     </table>
 

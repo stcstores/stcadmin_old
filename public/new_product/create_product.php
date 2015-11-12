@@ -12,7 +12,8 @@ if (isset($_SESSION['new_product'])) {
 
 $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
-function getCreateInventoryItem($product) {
+function getCreateInventoryItem($product)
+{
     $item = array();
     $item['ItemNumber'] = (string)$product->details['sku']->text;
     $item['ItemTitle'] = get_linn_title($product);
@@ -25,7 +26,8 @@ function getCreateInventoryItem($product) {
     return $item;
 }
 
-function getCategoryId($api, $categoryName) {
+function getCategoryId($api, $categoryName)
+{
     $categoryInfo = $api->get_category_info();
     foreach ($categoryInfo as $category) {
         if ($category['name'] == $categoryName) {
@@ -36,7 +38,8 @@ function getCategoryId($api, $categoryName) {
     exit;
 }
 
-function getPackageId($api, $groupName) {
+function getPackageId($api, $groupName)
+{
     $packageInfo = $api->get_packaging_group_info();
     foreach ($packageInfo as $group) {
         if ($group['name'] == $groupName) {
@@ -47,12 +50,14 @@ function getPackageId($api, $groupName) {
     exit;
 }
 
-function getServiceId($api) {
+function getServiceId($api)
+{
     $serviceInfo = $api->get_shipping_method_info();
     return $serviceInfo[0]['id'];
 }
 
-function getUpdateInventoryItem($api, $product) {
+function getUpdateInventoryItem($api, $product)
+{
     $item = array();
     $item['ItemNumber'] = (string)$product->details['sku']->text;
     $item['ItemTitle'] = get_linn_title($product);
@@ -82,7 +87,8 @@ function getUpdateInventoryItem($api, $product) {
     return $item;
 }
 
-function createItem($api, $product) {
+function createItem($api, $product)
+{
     $url = $api -> server . '/api/Inventory/AddInventoryItem';
     $dataArray = getCreateInventoryItem($product);
     $dataJson = json_encode($dataArray);
@@ -99,7 +105,8 @@ function createItem($api, $product) {
     echo "<hr>\n";
 }
 
-function updateItem($api, $product) {
+function updateItem($api, $product)
+{
     $url = $api -> server . '/api/Inventory/UpdateInventoryItem';
     $dataArray = getUpdateInventoryItem($api, $product);
     $dataJson = json_encode($dataArray);
@@ -116,7 +123,8 @@ function updateItem($api, $product) {
     echo "<hr>\n";
 }
 
-function createExtendedProperties($api, $product) {
+function createExtendedProperties($api, $product)
+{
     if ($product->details['var_type']->value == false) {
         requestExtendedProperties($api, $product, 'single');
     } else {
@@ -127,7 +135,8 @@ function createExtendedProperties($api, $product) {
     }
 }
 
-function requestExtendedProperties($api, $product, $product_type) {
+function requestExtendedProperties($api, $product, $product_type)
+{
     $url = $api -> server . '/api/Inventory/CreateInventoryItemExtendedProperties';
     $dataArray = getExtendedPropertiesArray($product, $product_type);
     print_r($dataArray);
@@ -150,7 +159,8 @@ function requestExtendedProperties($api, $product, $product_type) {
     echo "<hr>\n";
 }
 
-function createExtendedProperty($product, $name, $value, $type) {
+function createExtendedProperty($product, $name, $value, $type)
+{
     $exProp = array();
     $exProp['pkRowId'] = createGUID();
     $exProp['fkStockItemId'] = (string)$product->details['guid']->text;
@@ -160,7 +170,8 @@ function createExtendedProperty($product, $name, $value, $type) {
     return $exProp;
 }
 
-function getExtendedPropertiesArray($product, $product_type) {
+function getExtendedPropertiesArray($product, $product_type)
+{
     $extendedProperties = array();
     $properties = array(
         array('Manufacturer', (string)$product->details['manufacturer']->text, 'Attribute'),
@@ -200,7 +211,8 @@ function getExtendedPropertiesArray($product, $product_type) {
     return $extendedProperties;
 }
 
-function getImageAssignArrays($products) {
+function getImageAssignArrays($products)
+{
     $imageArrays = array();
     foreach ($products as $item) {
         $guid = $item->details['guid']->text;
@@ -214,7 +226,8 @@ function getImageAssignArrays($products) {
 
 }
 
-function getPrimaryImages($products) {
+function getPrimaryImages($products)
+{
     $primaryImages = array();
     foreach ($products as $item) {
         $guid = $item->details['guid']->text;
@@ -224,11 +237,12 @@ function getPrimaryImages($products) {
     return $primaryImages;
 }
 
-function assign_images($api, $product) {
+function assign_images($api, $product)
+{
     $product = $_SESSION['new_product'];
     $products = array($product);
     if ($product->details['var_type']->value == true) {
-        foreach ($product->variations as $variation){
+        foreach ($product->variations as $variation) {
             $products[] = $variation;
         }
     }
@@ -258,7 +272,8 @@ function assign_images($api, $product) {
     }
 }
 
-function getCreateVariationGroupTemplate($product) {
+function getCreateVariationGroupTemplate($product)
+{
     $template = array();
     $template['ParentSKU'] = $product->details['sku']->text;
     $template['VariationGroupName'] = $product->details['item_title']->text;
@@ -271,7 +286,8 @@ function getCreateVariationGroupTemplate($product) {
     return json_encode($template);
 }
 
-function createVariationGroup($api, $product) {
+function createVariationGroup($api, $product)
+{
     $url = $api->server . '/api/Stock/CreateVariationGroup';
     $data = array();
     $data['template'] = getCreateVariationGroupTemplate($product);
@@ -286,7 +302,8 @@ function createVariationGroup($api, $product) {
     echo "<hr>\n";
 }
 
-function addTitles($api, $product) {
+function addTitles($api, $product)
+{
     $url = $api->server . '/api/Inventory/CreateInventoryItemTitles';
     $inventoryItemTitles = array();
     foreach (getAddTitlesForProduct($product) as $channel) {
@@ -305,7 +322,8 @@ function addTitles($api, $product) {
     echo "<hr>\n";
 }
 
-function getAddTitlesForProduct($product) {
+function getAddTitlesForProduct($product)
+{
     $guid = $product->details['guid']->text;
     $ebay = array();
     $ebay['pkRowId'] = createGUID();
@@ -331,7 +349,8 @@ function getAddTitlesForProduct($product) {
     return array($ebay, $amazon, $shopify);
 }
 
-function addPrices($api, $product) {
+function addPrices($api, $product)
+{
     $url = $api->server . '/api/Inventory/CreateInventoryItemPrices';
     $inventoryItemPrices = array();
     foreach (getAddPricesForProduct($product) as $channel) {
@@ -350,7 +369,8 @@ function addPrices($api, $product) {
     echo "<hr>\n";
 }
 
-function getAddPricesForProduct($product) {
+function getAddPricesForProduct($product)
+{
     $price = $product->details['retail_price']->value;
     $priceWithShipping = $price +  $product->details['shipping_price']->value;
 
@@ -379,7 +399,8 @@ function getAddPricesForProduct($product) {
     return array($ebay, $amazon, $shopify);
 }
 
-function addDescriptions($api, $product) {
+function addDescriptions($api, $product)
+{
     $url = $api->server . '/api/Inventory/CreateInventoryItemDescriptions';
     $inventoryItemDescriptions = array();
     foreach (getAddDescriptionsForProduct($product) as $channel) {
@@ -398,7 +419,8 @@ function addDescriptions($api, $product) {
     echo "<hr>\n";
 }
 
-function getAddDescriptionsForProduct($product) {
+function getAddDescriptionsForProduct($product)
+{
     $guid = $product->details['guid']->text;
     $ebay = array();
     $ebay['pkRowId'] = createGUID();
