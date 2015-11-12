@@ -39,21 +39,14 @@ $values = getVarSetupValues();
 <script src="/scripts/jquery.doubleScroll.js"></script>
 <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
 <form method="post" id="var_form" enctype="multipart/form-data">
-    <div class="var_table_container">
+    <div>
         <table id="var_setup" class="form_section">
             <tr>
                 <th><p style="width:150px;"></p></th>
                 <?php
-                foreach ($fields as $field) {
-                    echo "<th>" . $field['field_title'] . "</th>\n";
-                }
-                ?>
-            </tr>
-            <?php
-            foreach ($product -> variations as $variation) {
-                ?>
-                <tr>
-                    <td class="headcol">
+                foreach ($product -> variations as $variation) {
+                    ?>
+                    <th>
                         <table class="nospace">
                             <?php
                             foreach ($product -> keyFields as $keyField => $val) {
@@ -66,20 +59,32 @@ $values = getVarSetupValues();
                             }
                                 ?>
                         </table>
-                    </td>
+                    </th>
+                <?php
+                }
+                ?>
+            </tr>
+            <?php
+            foreach ($fields as $field) {
+                ?>
+                <tr>
+                    <td><?php echo $field['field_title']; ?></td>
                     <?php
-                    foreach ($fields as $field) {
+                    $variation_number = 0;
+                    foreach ($product -> variations as $variation) {
                         $name = $field['field_name'];
                         $title = $field['field_title'];
                         $type = $field['field_type'];
                         $value = $variation->details[$name]->text;
+                        $id = $name . '-' . $variation_number;
                         echo "<td>\n";
-                        echo "<input class='{$name}' type='{$type}' value='{$value}' placeholder='{$title}' ";
+                        echo "<input id='{$id}' class='{$name}' type='{$type}' value='{$value}' placeholder='{$title}' ";
                         if (array_key_exists($name, $product->keyFields) && $product->keyFields[$name]) {
                             echo "disabled ";
                         }
                         echo "/>\n";
                         echo "</td>\n";
+                        $variation_number ++;
                     }
                     ?>
                 </tr>
@@ -99,29 +104,36 @@ $values = getVarSetupValues();
 </form>
 
 <script>
-    function table_adjust() {
+    function table_adjust(variation_count) {
         var fields = <?php echo json_encode($fields); ?>;
-        var lock_cols = [];
-        var cols_to_adjust = [];
-        for (i=0; i<fields.length; i++) {
-            if (lock_cols.indexOf(fields[i].field_name) === -1) {
-                console.log('hello');
-                cols_to_adjust.push(fields[i]);
-            }
+        var inputs = $('#var_setup input');
+        var sizes = [];
+        for (i=0; i<variation_count; i++) {
+            sizes.push(12);
         }
-        for (i=0; i<cols_to_adjust.length; i++) {
-            var col = cols_to_adjust[i].field_name;
-            col_size = cols_to_adjust[i].size;
-            $('.' + col).each(function(){
-                var current_size = $(this).val().length;
-                if (current_size > col_size) {
-                    col_size = current_size;
+        $.each(fields, function(index, field){
+            sizes[field.field_name] = field.size;
+        });
+        inputs.each(function () {
+            var id = $(this).attr('id');
+            var id_array = id.split('-');
+            var field = id_array[0];
+            var number = id_array[1];
+            var input = $(this).val();
+            if(typeof input !== "undefined") {
+                if (input.length > sizes[number]){
+                    sizes[number] = input.length;
                 }
-            });
-            $('.' + col).each(function(){
-                $(this).attr('size', col_size)
-            });
-        }
+            }
+            //$(this).css('background', 'red');
+        });
+        inputs.each(function () {
+            var id = $(this).attr('id');
+            var id_array = id.split('-');
+            var field = id_array[0];
+            var number = id_array[1];
+            $(this).attr('size', sizes[number]);
+        });
     }
 
     $(document).ready(function() {
@@ -129,7 +141,7 @@ $values = getVarSetupValues();
     });
 
     $('input').blur(function() {
-        table_adjust();
+        table_adjust(<?php echo $variation_number; ?>);
     });
 </script>
 
