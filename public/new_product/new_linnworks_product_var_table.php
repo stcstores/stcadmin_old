@@ -80,6 +80,11 @@ $values = getVarSetupValues();
                     if (array_key_exists($name, $product->keyFields) && $product->keyFields[$name]) {
                         echo "disabled ";
                     }
+                    if ($type == 'checkbox') {
+                        if ($value == 'TRUE') {
+                            echo "checked ";
+                        }
+                    }
                     echo "/>\n";
                     echo "</td>\n";
                     $variation_number ++;
