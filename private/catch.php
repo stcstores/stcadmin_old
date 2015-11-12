@@ -1,6 +1,7 @@
 <?php
 
-function add_basic_info() {
+function add_basic_info()
+{
     $product = $_SESSION['new_product'];
 
     if (isset($_POST['item_title'])) {
@@ -9,7 +10,7 @@ function add_basic_info() {
 
     if (isset($_POST['ebay_title'])) {
         $ebay_title = $_POST['ebay_title'];
-        if (strlen($ebay_title) > 0){
+        if (strlen($ebay_title) > 0) {
             $product->details['ebay_title']->set($_POST['ebay_title']);
         } else {
             $product->details['ebay_title']->set($_POST['item_title']);
@@ -54,7 +55,8 @@ function add_basic_info() {
     return $product;
 }
 
-function add_extended_properties($product) {
+function add_extended_properties($product)
+{
     if (isset($_POST['weight'])) {
         $product->details['weight']->set($_POST['weight']);
     }
@@ -152,7 +154,8 @@ function add_extended_properties($product) {
     $product->details['shipping_row']->set($intPostagePrices['row']);
 }
 
-function add_chn_ebay($product) {
+function add_chn_ebay($product)
+{
     if (isset($_POST['ebay_title'])) {
         $product->details['ebay_title']->set($_POST['ebay_title']);
     }
@@ -162,7 +165,8 @@ function add_chn_ebay($product) {
     }
 }
 
-function add_chn_amazon($product) {
+function add_chn_amazon($product)
+{
     if (isset($_POST['am_title'])) {
         $product->details['am_title']->set($_POST['am_title']);
     }
@@ -192,7 +196,8 @@ function add_chn_amazon($product) {
     }
 }
 
-function add_chn_shopify($product) {
+function add_chn_shopify($product)
+{
     if (isset($_POST['shopify_title'])) {
         $product->details['shopify_title']->set($_POST['shopify_title']);
     }
@@ -202,80 +207,18 @@ function add_chn_shopify($product) {
     }
 }
 
-function add_variation($product) {
-    $i = 0;
-    $variations = array();
-
-
-    foreach (range(0, getNumberOfVariationsInPost()) as $x) {
-        if (array_key_exists($i, $product->variations)) {
-            $variation = $product->variations[$i];
-        } else {
-            $variation = new NewVariation($product);
-        }
-
-        $filled = false;
-
-        foreach ($variation->details as $detail=>$value) {
-
-            if (isset($_POST[$detail . $i])) {
-                $variation->details[$detail]->set($_POST[$detail . $i]);
-                if ($_POST[$detail . $i] != ''){
-                    $filled = true;
-                }
-            }
-
-            if (isset($_POST['int_shipping' . $i])) {
-                $variation->details['int_shipping']->set('TRUE');
-            } else {
-                $variation->details['int_shipping']->set('FALSE');
-            }
-
-            if (isset($_POST['vat_free' . $i])) {
-                $variation->details['vat_free']->set('TRUE');
-            } else {
-                $variation->details['vat_free']->set('FALSE');
-            }
-
-        }
-
-        if ($filled == true) {
-            $variations[] = $variation;
-        }
-
-        $i++;
-    }
-
-
-    $product->variations = array();
-    $product->variations = $variations;
-
-
-    foreach ($product->keyFields as $varType => $varValue){
-        if($_POST['var_' . $varType] == 'true') {
-            $product->keyFields[$varType] = true;
-        } else {
-            $product->keyFields[$varType] = false;
-        }
-    }
-
-    foreach(getExtendedProperties() as $extendedProperty) {
-        $match = true;
-        $value = $product->variations[0]->details[$extendedProperty['field_name']]->value;
-        foreach($product->variations as $variation) {
-            if ($variation->details[$extendedProperty['field_name']]->value != $value) {
-                $match = false;
-            }
-        }
-        if ($match == true) {
-            $product->details[$extendedProperty['field_name']]->set($product->variations[0]->details[$extendedProperty['field_name']]->value);
+function add_variation($product, $variationDetails)
+{
+    foreach ($product->variations as $variationNumber => $variation) {
+        foreach ($variationDetails[$variationNumber] as $detail => $value) {
+            $variation->details[$detail]->set($value);
         }
     }
 
     $max_weight = 0;
 
     foreach ($product->variations as $variation) {
-        if ($variation->details['weight']->value > $max_weight){
+        if ($variation->details['weight']->value > $max_weight) {
             $max_weight = $variation->details['weight']->value;
         }
         $intPostagePrices = get_international_shipping($variation->details['weight']->value);
@@ -295,5 +238,3 @@ function add_variation($product) {
     $product->details['shipping_aus']->set($intPostagePrices['aus']);
     $product->details['shipping_row']->set($intPostagePrices['row']);
 }
-
-?>

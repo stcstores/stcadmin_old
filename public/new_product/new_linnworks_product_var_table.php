@@ -11,9 +11,11 @@ if (isset($_SESSION['new_product'])) {
     exit();
 }
 
-if (!empty($_POST)) {
-    //add_variation($product);
-    print_r($_POST);
+if (isset($_POST['variation_details'])) {
+    $variationDetails = json_decode($_POST['variation_details'], true);
+    print_r($variationDetails);
+    add_variation($product, $variationDetails);
+    //print_r($_POST);
 }
 
 require_once($CONFIG['header']);
