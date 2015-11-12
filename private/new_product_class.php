@@ -1,7 +1,8 @@
 <?php
 
 class NewProduct{
-    function __construct() {
+    public function __construct()
+    {
         $this->errors = $this->createFieldsArray();
         $this->variations = array();
         $this->details['sku'] = new SKU('sku', $this);
@@ -58,12 +59,14 @@ class NewProduct{
 
     }
 
-    function setTitle($title) {
+    public function setTitle($title)
+    {
         $this->item_title = $title;
         $this->values['item_title'] = $title;
     }
 
-    function createFieldsArray() {
+    private function createFieldsArray()
+    {
         $array = array();
         $fields = getDatabaseColumn('new_product_form_field', 'field_name');
         foreach ($fields as $field) {
@@ -74,7 +77,8 @@ class NewProduct{
 }
 
 class NewVariation  extends NewProduct {
-    function __construct($product) {
+    public function __construct($product)
+    {
         $this->product = $product;
         $this->errors = $this->createFieldsArray();
         $this->details['sku'] = new SKU('sku', $this);
@@ -143,14 +147,16 @@ class NewVariation  extends NewProduct {
 }
 
 class ProductDetail {
-    function __construct($name, $product) {
+    public function __construct($name, $product)
+    {
         $this->name = $name;
         $this->product = $product;
         $this->value = null;
         $this->text = '';
     }
 
-    function set($value) {
+    public function set($value)
+    {
         $this->value = $value;
         $this->text = (string)$value;
     }
@@ -170,14 +176,16 @@ class BooleanDetail extends ProductDetail {
 }
 
 class NumericDetail extends ProductDetail {
-    function __construct($name, $product) {
+    public function __construct($name, $product)
+    {
         $this->name = $name;
         $this->product = $product;
         $this->value = null;
         $this->text = '0';
     }
 
-    function set($value) {
+    public function set($value)
+    {
         $this->value = $value;
         if ($value > 0) {
             $this->text = (string)$value;
@@ -188,41 +196,32 @@ class NumericDetail extends ProductDetail {
 }
 
 class SKU extends ProductDetail {
-    function __construct($name, $product) {
+    public function __construct($name, $product)
+    {
         parent::__construct($name, $product);
         $this->set(generateSku());
     }
 }
 
 class GUID extends ProductDetail {
-    function __construct($name, $product) {
+    public function __construct($name, $product)
+    {
         parent::__construct($name, $product);
         $this->set(createGUID());
     }
 }
 
-class internationalShipping extends ProductDetail {
-    function set($value) {
-        if ($value == 'TRUE') {
-            $this->text = 'TRUE';
-            $this->value = true;
-        }
-        else if ($value == 'FALSE') {
-            $this->text = 'FALSE';
-            $this->value = false;
-        }
-    }
-}
-
 class Has_Variations extends ProductDetail {
-    function __construct($name, $product) {
+    public function __construct($name, $product)
+    {
         parent::__construct($name, $product);
         $this->value = array();
         $this->text = 'unset';
     }
 
-    function set($value) {
-        if ($value == true){
+    public function set($value)
+    {
+        if ($value == true) {
             $this->value = true;
             $this->text = 'true';
         } elseif ($value == false) {
@@ -233,12 +232,14 @@ class Has_Variations extends ProductDetail {
 }
 
 class Images {
-    function __construct() {
+    public function __construct()
+    {
         $this -> images = array();
         $this -> primary = 0;
     }
 
-    function setPrimary($guid) {
+    public function setPrimary($guid)
+    {
         $i = 0;
         foreach ($this->images as $image) {
             if ($image->guid == $guid) {
@@ -251,11 +252,13 @@ class Images {
         array_unshift($this->images, $newPrimeImage);
     }
 
-    function addImage($guid, $thumbPath, $fullPath) {
+    public function addImage($guid, $thumbPath, $fullPath)
+    {
         $this -> images[] = new Image($guid, $thumbPath, $fullPath);
     }
 
-    function removeImage($guid) {
+    public function removeImage($guid)
+    {
         $i = 0;
         foreach ($this->images as $image) {
             if ($image->guid == $guid) {
@@ -269,7 +272,8 @@ class Images {
 }
 
 class Image {
-    function __construct($guid, $thumbPath, $fullPath) {
+    public function __construct($guid, $thumbPath, $fullPath)
+    {
         $this -> guid = $guid;
         $this -> thumbPath = $thumbPath;
         $this -> fullPath = $fullPath;
