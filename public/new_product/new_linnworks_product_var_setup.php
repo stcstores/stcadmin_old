@@ -10,32 +10,25 @@ if (isset($_SESSION['new_product'])) {
     exit();
 }
 
-print_r($_POST);
-
 if (isset($_POST['variation_types']) && isset($_POST['variations'])) {
-    $variationTypes = json_decode($_POST['variation_types']);
+    $variationTypes = json_decode($_POST['variation_types'], true);
     $variationList = json_decode($_POST['variations'], true);
-    print_r($variationTypes);
-    print_r($variationList);
     $product -> variations = array();
-    foreach ($product -> keyFields as $keyField => $keyValue) {
-        $product -> keyFields[$keyField] = false;
+    foreach ($product->keyFields as $keyField => $val) {
+        $product->keyFields[$keyField] = false;
         foreach ($variationTypes as $variationType) {
             if ($keyField == $variationType) {
-                $product -> keyFields = true;
+                $product->keyFields[$keyField] = true;
             }
         }
     }
     foreach ($variationList as $variation) {
         $new_variation = new NewVariation($product);
-        print_r($variation);
         foreach ($variation as $key => $value) {
             $new_variation -> details[$key] -> set($value);
         }
         $product -> variations[] = $new_variation;
     }
-
-    $_SESSION['new_product'] = $product;
 
     if (isset($_POST['Previous'])) {
         header('Location: new_linnworks_product_1_basic_info.php');

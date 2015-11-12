@@ -11,17 +11,13 @@ if (isset($_SESSION['new_product'])) {
     exit();
 }
 
-if ( !empty($_POST) ) {
-
+if (!empty($_POST)) {
     add_variation($product);
-
     if (isset($_POST['previous'])) {
         header('Location: new_linnworks_product_1_basic_info.php');
         exit();
     }
-
-
-    if ( true ) { // error check
+    if (true) { // error check
         $_SESSION['new_product'] = $product;
         header('Location: imageupload.php');
         exit();
@@ -30,54 +26,112 @@ if ( !empty($_POST) ) {
 
 require_once($CONFIG['header']);
 
-$fields = getVarSetupFields();
+$fields = array();
+foreach (getVarSetupFields() as $field) {
+    if (!(in_array($field['field_name'], array('var_name')))) {
+        $fields[] = $field;
+    }
+}
 $values = getVarSetupValues();
 ?>
 
-<script>
-    productName = '<?php echo $product->details['item_title']->text; ?>';
-    var fields = <?php echo json_encode($fields); ?>;
-    var values = <?php echo json_encode($values); ?>;
-    keyFields = <?php echo json_encode($product->keyFields); ?>;
-</script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <script src="/scripts/jquery.doubleScroll.js"></script>
-
-<div class="">
-    <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
-    <div id="var_error" class="hidden" ></div>
-    <form method="post" id="var_form" enctype="multipart/form-data">
-        <table id="var_setup" class="form_section" >
-
-        </table>
-        <table class="form_nav">
+<h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
+<form method="post" id="var_form" enctype="multipart/form-data">
+    <div class="var_table_container">
+        <table id="var_setup" class="form_section">
             <tr>
-                <td>
-                    <input value="<< Previous" type="submit" name="previous" />
-                    <input value="Next >>" type="submit" name="next" />
-                </td>
+                <th><p style="width:150px;"></p></th>
+                <?php
+                foreach ($fields as $field) {
+                    echo "<th>" . $field['field_title'] . "</th>\n";
+                }
+                ?>
             </tr>
+            <?php
+            foreach ($product -> variations as $variation) {
+                ?>
+                <tr>
+                    <td class="headcol">
+                        <table class="nospace">
+                            <?php
+                            foreach ($product -> keyFields as $keyField => $val) {
+                                if ($product -> keyFields[$keyField]) {
+                                    echo "<tr class='nospace'>\n";
+                                    echo "<td class='nospace'>" . ucwords($keyField) . ": </td>\n";
+                                    echo "<td class='nospace'>" . $variation->details[$keyField]->text . "</td>\n";
+                                    echo "</tr>\n";
+                                }
+                            }
+                                ?>
+                        </table>
+                    </td>
+                    <?php
+                    foreach ($fields as $field) {
+                        $name = $field['field_name'];
+                        $title = $field['field_title'];
+                        $type = $field['field_type'];
+                        $value = $variation->details[$name]->text;
+                        echo "<td>\n";
+                        echo "<input class='{$name}' type='{$type}' value='{$value}' placeholder='{$title}' ";
+                        if (array_key_exists($name, $product->keyFields) && $product->keyFields[$name]) {
+                            echo "disabled ";
+                        }
+                        echo "/>\n";
+                        echo "</td>\n";
+                    }
+                    ?>
+                </tr>
+                <?php
+            }
+            ?>
         </table>
-    </form>
-</div>
+    </div>
+    <table class="form_nav">
+        <tr>
+            <td>
+                <input value="<< Previous" type="submit" name="previous" />
+                <input value="Next >>" type="submit" name="next" />
+            </td>
+        </tr>
+    </table>
+</form>
 
-<script src="/scripts/var_form_validate.js"></script>
-<script src="/scripts/variation_table.js"></script>
+<script>
+    function table_adjust() {
+        var fields = <?php echo json_encode($fields); ?>;
+        var lock_cols = [];
+        var cols_to_adjust = [];
+        for (i=0; i<fields.length; i++) {
+            if (lock_cols.indexOf(fields[i].field_name) === -1) {
+                console.log('hello');
+                cols_to_adjust.push(fields[i]);
+            }
+        }
+        for (i=0; i<cols_to_adjust.length; i++) {
+            var col = cols_to_adjust[i].field_name;
+            col_size = cols_to_adjust[i].size;
+            $('.' + col).each(function(){
+                var current_size = $(this).val().length;
+                if (current_size > col_size) {
+                    col_size = current_size;
+                }
+            });
+            $('.' + col).each(function(){
+                $(this).attr('size', col_size)
+            });
+        }
+    }
 
-<?php
-    $_SESSION['new_product'] = $product;
-?>
-<script>
-    keyFields = <?php echo json_encode(getKeyFields()); ?>;
+    $(document).ready(function() {
+        table_adjust();
+    });
+
+    $('input').blur(function() {
+        table_adjust();
+    });
 </script>
-<script>
-    shippingPrice = <?php echo $product->details['shipping_price']->value; ?>;
-</script>
-<script src=/scripts/formstyle.js ></script>
-<script src=/scripts/validation.js ></script>
-<script>product_title = '<?php echo $product->details['item_title']->text;?>'</script>
-<script>product_price = '<?php echo $product->details['retail_price']->text;?>'</script>
-<script>product_description = <?php echo json_encode($product->details['short_description']->text);?></script>
 
 <?php
 

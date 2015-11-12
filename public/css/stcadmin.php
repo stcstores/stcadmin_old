@@ -8,7 +8,7 @@ $colours = new ColourScheme('colours.txt');
 
 @font-face {
     font-family: bretan;
-    src: url(Bretan.otf);
+    src: url('Bretan.otf') format('opentype');
 }
 
 html, body {
@@ -395,4 +395,33 @@ a.questionmark_link {
 
 input[type="button"]:disabled {
     background: black;
+}
+
+.nospace {
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    line-height: 0;
+}
+
+.var_table_container {
+    width: 95%;
+    overflow-x: scroll;
+    margin-left:5em;
+    overflow-y:visible;
+    padding-bottom:1px;
+}
+
+.headcol {
+    position:absolute;
+    width:150px;
+    left:0;
+    top:auto;
+    border-right: 0px none black;
+    border-top-width:3px; /*only relevant for first row*/
+    margin-top:-3px; /*compensate for top border*/
+    background: <?php $colours->echoColour(3, 2); ?>;
+    z-index: 10;
 }
