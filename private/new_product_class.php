@@ -275,12 +275,3 @@ class Image {
         $this -> fullPath = $fullPath;
     }
 }
-
-function error_check_basic_info($product) {
-    $errors = false;
-        foreach ($product->errors as $field) {
-            if (count($field) > 0) {
-                return true;
-            }
-        }
-}
