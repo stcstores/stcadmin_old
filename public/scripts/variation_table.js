@@ -115,7 +115,9 @@ function getVariationDetails() {
     }
     inputs.each(function () {
         var inputDetails = getInputDetails(this);
-        var value = inputDetails.val;
+        var value = inputDetails.val,
+            field = inputDetails.field,
+            number = inputDetails.number;
         if (typeof value == "undefined") {
             value = '';
         } else if ($(this).attr('type') == 'checkbox') {
