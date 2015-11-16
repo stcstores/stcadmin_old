@@ -105,5 +105,6 @@ $max_variation_string_length = max(array_map('strlen', $variation_strings));
 echo "<script>default_col_size = ". $max_variation_string_length . "</script>";
 echo "<script>fields = ". json_encode($fields) . "</script>";
 echo "<script>variation_count = {$variation_number};</script>\n";
+echo "<script src='/scripts/formstyle.js' charset='utf-8'></script>\n";
 echo "<script src='/scripts/variation_table.js' charset='utf-8'></script>\n";
 include($CONFIG['footer']);

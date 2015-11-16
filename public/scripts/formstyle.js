@@ -3,6 +3,10 @@ function setFormStyle(){
     $('input').focus(function() {
         $(this).css('border-color', '#729292');
     });
+    
+    $("input:checkbox").focus(function() {
+        $(this).css('outline', '3px solid #729292');
+    });
 
     $('input').blur(function() {
         $(this).removeAttr('style');
