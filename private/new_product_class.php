@@ -65,7 +65,7 @@ class NewProduct{
         $this->values['item_title'] = $title;
     }
 
-    private function createFieldsArray()
+    public function createFieldsArray()
     {
         $array = array();
         $fields = getDatabaseColumn('new_product_form_field', 'field_name');
