@@ -1,202 +1,147 @@
-function variations_form_validate() {
-    var form_valid = true;
-    
-    $('#var_error').attr('class', 'hidden');
-    $('#var_error').empty();
-    $('.error').attr('class', '');
-    
-    if (!(check_unique('var_name'))) {
-        add_error('Variation titles must be unique. Check your key fields.');
-        form_valid = false;
+function validateFormData(formData) {
+    //console.log('Validating');
+    inputs.attr('class', '');
+    $('#errors').html('');
+    noneEmpty(formData, 'weight');
+    noneEmpty(formData, 'retail_price');
+    noneEmpty(formData, 'purchase_price');
+    isPrice(formData, 'retail_price');
+    isPrice(formData, 'purchase_price');
+    for (i=0; i<errors.length; i++) {
+        $('#errors').append('<p class="error">' + errors[i]);
     }
-    
-    if (!(priceCheck('Purchase Price', 'purchase_price'))) {
-        form_valid = false;
-    }
-    
-    if (!(priceCheck('Retail Price', 'retail_price'))) {
-        form_valid = false;
-    }
-    
-    if (!(priceCheck('Shipping Price', 'shipping_price'))) {
-        form_valid = false;
-    }
-    
-    if (!(all_empty('var_append'))) {
-        if (!(check_unique('Title Appendix', 'var_append'))) {
-            form_valid = false;
-        }
-    }
-    
-    if ((!(all_empty('barcode'))) && (!(none_empty('barcode')))) {
-        objects = getObjects('barcode');
-        objects.attr('class', 'error');
-        add_error('If any variation has a barcode they all must');
-    }
-    
-    if (!(all_empty('barcode'))) {
-        if (!(barcodeCheck('Barcode', 'barcode'))) {
-            form_valid = false;
-        }
-    }
-    
-    var weight_error = false;
-    weights = getObjects('weight');
-    weights.each( function () {
-        if (this.val() === '') {
-            weight_error = true;
-            this.attr('class', 'error');
-        }
-     });
-    
-    if (weight_error) {
-        add_error('Weight is required');
-        form_valid = false;
-    }
-    
-    var keyFieldsUnique = true;
-    var keyFieldsComplete = true;
-    
-    for (field in keyFields) {
-        
-        if (keyFields[field] === true) {
-            if (!(none_empty(field))) {
-                keyFieldsComplete = false;
-            }
-            if (!(check_unique(field))) {
-                keyFieldsUnique = false;
-            }
-        }
-    }
-    
-    if (!(keyFieldsComplete)) {
-        add_error('All key fields must be filled.');
-        form_valid = false;
-    }
-    
-    if (!(keyFieldsUnique)) {
-        add_error('All key fields must be unique.');
-        form_valid = false;
-    }
-    
-    console.log(form_valid);
-    return form_valid;
-}
-
-function check_unique(field){
-    objects = getObjects(field);
-    var values = objects.map(function(){
-        var value = $(this).val()
-        return value;
-    }).get();
-    
-    values = values.sort()
-    
-    for (var i = 0; i < values.length - 1; i++) {
-        if (values[i + 1] == values[i]) {
-            objects.each(function() {
-                this.attr('class', 'error')
-            });
-            
-            return false;
-        }
-    }
-    return true;
-}
-
-function none_empty(field) {
-    objects = getObjects(field);
-    var values = objects.map(function(){
-        var value = $(this).val()
-        return value;
-    }).get();
-    
-    var emptyFields = false;
-    
-    for (index in values) {
-        if (values[index] === '') {
-            emptyFields = true;
-        }
-    }
-    
-    if (emptyFields) {
-        return false
-    }
-    return true;
-}
-
-function priceCheck(name, field){
-    objects = getObjects(field);
-    var values = objects.map(function(){
-        var value = $(this).val()
-        return value;
-    }).get();
-    
-    var validPrices = true;
-    
-    for (value in values) {
-        if (!(priceRegEx.test(values[value]))) {
-            $('#' + field + value).attr('class', 'error');
-            validPrices = false;
-        }
-    }
-    
-    if (!(validPrices)) {
-        add_error(name + ' must be a valid price');
+    //console.log(errors.length + ' errors');
+    if (errors.length === 0){
+        console.log('Form Send');
+        return true;
+    } else {
+        errors = [];
         return false;
     }
-    return true;
 }
 
-function barcodeCheck(name, field){
-    objects = getObjects(field);
-    var values = objects.map(function(){
-        var value = $(this).val()
-        return value;
-    }).get();
-    
-    var validBarcodes = true;
-    
-    for (value in values) {
-        if (!(barcodeRegEx.test(values[value]))) {
-            $('#' + field + value).attr('class', 'error');
-            validBarcodes = false;
+function getFieldValues(formData, field) {
+    var values = [];
+    for (var i=0; i<variation_count; i++) {
+        values.push(formData[i][field]);
+    }
+    return values;
+}
+
+function isPrice(formData, field) {
+    //console.log('Testing ' + field + ' is a price');
+    var data = getFieldValues(formData, field);
+    var priceRegEx = /^([0-9]*((.)[0-9]{0,2}))$/;
+    var error = true;
+    for (var i=0; i<data.length; i++) {
+        if (!(priceRegEx.test(data[i]))) {
+            error = false;
+            var input = getInput(field, i);
+            addError(input, getFieldTitle(field) + " must be valid price");
         }
     }
-    
-    if (!(validBarcodes)) {
-        add_error(name + ' must be a valid Barcode');
-        return false;
-    }
-    return true;
+    return error;
 }
 
-function add_error(errorText) {
-    $('#var_error').attr('class', 'pagebox');
-    $('#var_error').width(1000);
-    $('#var_error').css('margin-bottom', '10px');
-    $('#var_error').append('<p class=error >' + errorText);
-}
+//priceRegEx = /^([0-9]*((.)[0-9]{0,2}))$/;
+//barcodeRegEx = /^\d{12,13}$/;
 
-function all_empty(field){
-    objects = getObjects(field);
-    var values = objects.map(function(){
-        var value = $(this).val()
-        return value;
-    }).get();
-    
-    for (index in values) {
-        if (!(values[index] === '')) {
-            return false;
+function noneEmpty(formData, field) {
+    //console.log('Testing None Empty: ' + field);
+    var error = true;
+    var data = getFieldValues(formData, field);
+    for (var i=0; i<data.length; i++) {
+        if (isEmpty(data[i])) {
+            var input = getInput(field, i);
+            error = false;
+            addError(input, "All variations require " + getFieldTitle(field));
         }
     }
-    return true;
+    return error;
 }
 
-function getObjects(field_name){
-    var objects = []
-    for(i=0; i < table.varCount(); i++) {
-        objects.push(($('#' + field_name + i)));
+function unique_required(formData, field) {
+    var i;
+    var data = getFieldValues(formData, field);
+    var error = true;
+    var input;
+    for (i=0; i<variation_count; i++) {
+        if (isEmpty(data[i])) {
+            error = false;
+            input = getInput(field, i);
+            addError(input, field + ' is required');
+        }
     }
-    return $(objects);
+    if (data.length !== arrayUnique(data).length) {
+        for (i=0; i<variation_count; i++) {
+            input = getInput(field, i);
+            addError(input, 'All ' + getFieldTitle(field) + ' values must be unique');
+        }
+        error = false;
+    }
+    return error;
+}
+
+function unique_unRequired(formData, field) {
+    var i;
+    var input;
+    var data = getFieldValues(formData, field);
+    if (!(isEmpty(data[0]))) {
+        if (data.length === arrayUnique(data).length) {
+            return true;
+        } else {
+            for (i=0; i<variation_count; i++) {
+                input = getInput(field, i);
+                addError(input, 'All ' + getFieldTitle(field) + ' values must be unique');
+            }
+        }
+    } else {
+        var error = false;
+        for (i=0; i<variation_count; i++) {
+            if (!(isEmpty(data[i]))) {
+                error = true;
+                input = getInput(field, i);
+                addError(input, 'If any ' + getFieldTitle(field) + ' are filled they all must be');
+            }
+        }
+    }
+}
+
+var arrayUnique = function(a) {
+    return a.reduce(function(p, c) {
+        if (p.indexOf(c) < 0) p.push(c);
+        return p;
+    }, []);
+};
+
+function addError(input, message) {
+    console.log(message);
+    $(input).attr('class', 'error');
+    if (errors.indexOf(message) == -1) {
+        //console.log('Error: ' + message);
+        errors.push(message);
+    }
+}
+
+function isEmpty(value) {
+    if (value === undefined) {
+        return true;
+    } else if (value === '') {
+        return true;
+    } else if (value === 0) {
+        return true;
+    } else if (value === '0') {
+        return true;
+    }
+    return false;
+}
+
+function getFieldTitle(fieldName) {
+    var fieldTitle;
+    for (var i=0; i<fields.length; i++) {
+        if (fields[i].field_name == fieldName) {
+            fieldTitle = fields[i].field_title;
+        }
+    }
+    return fieldTitle;
 }

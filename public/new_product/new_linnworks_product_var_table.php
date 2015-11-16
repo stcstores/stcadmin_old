@@ -32,65 +32,64 @@ $values = getVarSetupValues();
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <script src="/scripts/jquery.doubleScroll.js"></script>
 <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
+<div id="errors"></div>
 <form method="post" id="var_form" enctype="multipart/form-data">
-    <div>
-        <table id="var_setup" class="form_section">
-            <?php
-            $variation_strings = array();
-            foreach ($product -> keyFields as $keyField => $val) {
-                if ($product -> keyFields[$keyField]) {
-                    echo "<tr>\n";
-                    echo "<th></th>\n";
-                    echo "<th></th>\n";
-                    foreach ($product -> variations as $variation) {
-                        $variation_string = $variation->details[$keyField]->text;
-                        echo "<th>{$variation_string}</th>\n";
-                        $variation_strings[] = $variation_string;
-                    }
-                    echo "</tr>";
-                }
-            }
-            foreach ($fields as $field) {
-                $name = $field['field_name'];
-                $title = $field['field_title'];
-                $type = $field['field_type'];
+    <table id="var_setup" class="form_section">
+        <?php
+        $variation_strings = array();
+        foreach ($product -> keyFields as $keyField => $val) {
+            if ($product -> keyFields[$keyField]) {
                 echo "<tr>\n";
-                echo "<td>{$field['field_title']}</td>\n";
-                echo "<td>";
-                if (!(array_key_exists($name, $product->keyFields)) || ($product->keyFields[$name] == false)) {
-                    if ($field['field_type'] == 'checkbox') {
-                        $value = 'Toggle All';
-                        $class = 'toggle_all';
-                    } else {
-                        $value = 'Set All';
-                        $class = 'set_all';
-                    }
-                    echo "<input class='{$class}' id='set_all-{$name}' type=button value='{$value}' />";
-                }
-                echo "</td>\n";
-                $variation_number = 0;
+                echo "<th></th>\n";
+                echo "<th></th>\n";
                 foreach ($product -> variations as $variation) {
-                    $value = $variation->details[$name]->text;
-                    $id = $name . '-' . $variation_number;
-                    echo "<td>\n";
-                    echo "<input id='{$id}' class='{$name}' type='{$type}' value='{$value}' placeholder='{$title}' ";
-                    if (array_key_exists($name, $product->keyFields) && $product->keyFields[$name]) {
-                        echo "disabled ";
-                    }
-                    if ($type == 'checkbox') {
-                        if ($value == 'TRUE') {
-                            echo "checked ";
-                        }
-                    }
-                    echo "/>\n";
-                    echo "</td>\n";
-                    $variation_number ++;
+                    $variation_string = $variation->details[$keyField]->text;
+                    echo "<th>{$variation_string}</th>\n";
+                    $variation_strings[] = $variation_string;
                 }
-                echo "</tr>\n";
+                echo "</tr>";
             }
-            ?>
-        </table>
-    </div>
+        }
+        foreach ($fields as $field) {
+            $name = $field['field_name'];
+            $title = $field['field_title'];
+            $type = $field['field_type'];
+            echo "<tr>\n";
+            echo "<td>{$field['field_title']}</td>\n";
+            echo "<td>";
+            if (!(array_key_exists($name, $product->keyFields)) || ($product->keyFields[$name] == false)) {
+                if ($field['field_type'] == 'checkbox') {
+                    $value = 'Toggle All';
+                    $class = 'toggle_all';
+                } else {
+                    $value = 'Set All';
+                    $class = 'set_all';
+                }
+                echo "<input class='{$class}' id='set_all-{$name}' type=button value='{$value}' />";
+            }
+            echo "</td>\n";
+            $variation_number = 0;
+            foreach ($product -> variations as $variation) {
+                $value = $variation->details[$name]->text;
+                $id = $name . '-' . $variation_number;
+                echo "<td>\n";
+                echo "<input id='{$id}' class='{$name}' type='{$type}' value='{$value}' placeholder='{$title}' ";
+                if (array_key_exists($name, $product->keyFields) && $product->keyFields[$name]) {
+                    echo "disabled ";
+                }
+                if ($type == 'checkbox') {
+                    if ($value == 'TRUE') {
+                        echo "checked ";
+                    }
+                }
+                echo "/>\n";
+                echo "</td>\n";
+                $variation_number ++;
+            }
+            echo "</tr>\n";
+        }
+        ?>
+    </table>
     <table class="form_nav">
         <tr>
             <td>
@@ -102,9 +101,21 @@ $values = getVarSetupValues();
 </form>
 <?php
 $max_variation_string_length = max(array_map('strlen', $variation_strings));
-echo "<script>default_col_size = ". $max_variation_string_length . "</script>";
-echo "<script>fields = ". json_encode($fields) . "</script>";
-echo "<script>variation_count = {$variation_number};</script>\n";
+
+$numericFields = array();
+foreach ($product->variations[0]->details as $key => $detail) {
+    if ($detail instanceof NumericDetail) {
+        $numericFields[] = $key;
+    }
+}
+
+echo "<script>\n";
+echo "\tdefault_col_size = ". $max_variation_string_length . ";\n";
+echo "\tfields = ". json_encode($fields) . ";\n";
+echo "\tvariation_count = {$variation_number};\n";
+echo "\tnumericFields = " . json_encode($numericFields) . ";\n";
+echo "</script>";
 echo "<script src='/scripts/formstyle.js' charset='utf-8'></script>\n";
 echo "<script src='/scripts/variation_table.js' charset='utf-8'></script>\n";
+echo "<script src='/scripts/var_form_validate.js' charset='utf-8'></script>\n";
 include($CONFIG['footer']);

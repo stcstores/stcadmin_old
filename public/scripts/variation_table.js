@@ -1,4 +1,5 @@
 inputs = $('#var_setup input').not(':input[type=button]');
+errors = [];
 
 $(document).ready(function() {
     resetColumns();
@@ -6,6 +7,7 @@ $(document).ready(function() {
     setToggleAll();
     setInputFocus();
     setArrowKeyNav();
+    inputs.blur();
 });
 
 function setArrowKeyNav() {
@@ -30,7 +32,7 @@ function arrowKeyNavigate(input, direction) {
     var new_field, new_number;
     var inputDetails = getInputDetails(input);
     var number = inputDetails.number;
-    for (i=0; i<fields.length; i++) {
+    for (var i=0; i<fields.length; i++) {
         if (fields[i].field_name == inputDetails.field) {
             field_number = i;
             break;
@@ -91,25 +93,28 @@ function setInputFocus() {
     inputs.each(function () {
         var inputDetails = getInputDetails(this);
         $(this).focus(inputFocusGenerator(inputDetails.number));
+        $(this).blur(inputBlurGenerator());
     });
 }
 
-$('#var_form').submit(function() {
+$('#var_form').submit(function(e) {
     var $hidden = $("<input type='hidden' name='variation_details'/>");
-    $hidden.val(JSON.stringify(getVariationDetails()));
-    $(this).append($hidden);
-    return true;
-});
-
-$('input').blur(function() {
-    resetColumns();
+    var formData = getVariationDetails();
+    if (validateFormData(formData)) {
+        $hidden.val(JSON.stringify(getVariationDetails()));
+        $(this).append($hidden);
+        return true;
+    } else {
+        e.preventDefault();
+        return false;
+    }
 });
 
 function getVariationDetails() {
-    variationDetails = {};
-    for (i=0;i<variation_count;i++) {
+    variationDetails = [];
+    for (var i=0;i<variation_count;i++) {
         variationDetails[i] = {};
-        for (x=0; x<fields.length; x++) {
+        for (var x=0; x<fields.length; x++) {
             variationDetails[i][fields[x].field_name] = '';
         }
     }
@@ -154,6 +159,18 @@ function inputFocusGenerator(variation_number) {
     };
 }
 
+function inputBlurGenerator() {
+    return function(event) {
+        var inputDetails = getInputDetails($(this));
+        if (numericFields.indexOf(inputDetails.field) != -1) {
+            if (inputDetails.val == '0') {
+                $(this).val('');
+            }
+        }
+        resetColumns();
+    };
+}
+
 function resizeColumn(variationNumber, size) {
     var inputs = $('#var_setup input').not(':input[type=button]');
     inputs.each(function () {
@@ -165,7 +182,7 @@ function resizeColumn(variationNumber, size) {
 }
 
 function resetColumns() {
-    for (i=0;i<variation_count;i++) {
+    for (var i=0;i<variation_count;i++) {
         resizeColumn(i, default_col_size);
     }
 }
@@ -213,7 +230,6 @@ function toggle_all_generator(field) {
                 }
             }
         });
-        table_adjust();
     };
 }
 
