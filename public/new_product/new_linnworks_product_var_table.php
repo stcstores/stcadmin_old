@@ -13,9 +13,15 @@ if (isset($_SESSION['new_product'])) {
 
 if (isset($_POST['variation_details'])) {
     $variationDetails = json_decode($_POST['variation_details'], true);
-    print_r($variationDetails);
     add_variation($product, $variationDetails);
-    //print_r($_POST);
+
+    if (isset($_POST['next'])) {
+        header('Location: imageupload.php');
+        exit();
+    } else {
+        header('Location: new_linnworks_product_1_basic_info.php');
+        exit();
+    }
 }
 
 require_once($CONFIG['header']);

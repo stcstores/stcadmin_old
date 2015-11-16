@@ -15,8 +15,13 @@ if ( !empty($_POST) ) {
         $_SESSION['new_product'] = $product;
 
         if ($product->details['var_type']->value == true) {
-            header('Location: new_linnworks_product_var_setup.php');
-            exit();
+            if (count($product->variations) > 0) {
+                header('Location: new_linnworks_product_var_table.php');
+                exit();
+            } else {
+                header('Location: new_linnworks_product_var_setup.php');
+                exit();
+            }
         }
 
         header('Location: new_linnworks_product_2_extended_properties.php');
