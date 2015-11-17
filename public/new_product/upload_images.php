@@ -8,13 +8,12 @@ print_r($_FILES);
 $product = $_SESSION['new_product'];
 $products = array($product);
 if ($product->details['var_type']->value == true) {
-    foreach ($product->variations as $variation){
+    foreach ($product->variations as $variation) {
         $products[] = $variation;
     }
 }
 
-if (isset($_POST['sku'])){
-    
+if (isset($_POST['sku'])) {
     if (is_array($_FILES)) {
         $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
         $i=0;
@@ -30,7 +29,7 @@ if (isset($_POST['sku'])){
         if (isset($_FILES[$sku]['tmp_name'])) {
             $data = array();
             foreach ($_FILES[$sku]['tmp_name'] as $file) {
-                if(is_uploaded_file($file)) {
+                if (is_uploaded_file($file)) {
                     $filename = $_FILES[$sku]['name'][$i];
                     $curlFile = curl_file_create(realpath($file), 'image/jpeg', $filename);
                     $image = array('file' => $curlFile);
@@ -38,20 +37,20 @@ if (isset($_POST['sku'])){
                 } else {
                     $errors[] = "not uploaded file";
                 }
-            $i++;
+                $i++;
             }
         }
-        if (count($errors) == 0){
+        if (count($errors) == 0) {
             $errors[] = 'No Errors';
         }
-        foreach($errors as $err) {
+        foreach ($errors as $err) {
             //echo "<p class=error >{$err}</p>";
         }
     }
-    
+
     $response = array();
-    
-    foreach ($data as $image){
+
+    foreach ($data as $image) {
         $response = $api -> upload_image($image);
         $guid = $response[0]['FileId'];
         $thumbPath = $response[0]['ThumbnailUrl'];
@@ -69,7 +68,7 @@ if (isset($_POST['sku'])){
         if (isset($_FILES['var_type']['tmp_name'])) {
             $data = array();
             foreach ($_FILES['var_type']['tmp_name'] as $file) {
-                if(is_uploaded_file($file)) {
+                if (is_uploaded_file($file)) {
                     $filename = $_FILES['var_type']['name'][$i];
                     $curlFile = curl_file_create(realpath($file), 'image/jpeg', $filename);
                     $image = array('file' => $curlFile);
@@ -80,13 +79,14 @@ if (isset($_POST['sku'])){
                 $i++;
             }
             $response = array();
-            foreach ($data as $image){
-                $response = $api -> upload_image($image);
-                $guid = $response[0]['FileId'];
-                $thumbPath = $response[0]['ThumbnailUrl'];
-                $fullPath = $response[0]['ImageUrl'];
+            foreach ($data as $image) {
                 foreach ($product->variations as $variation) {
                     if ($variation->details[$field]->text == $value) {
+                        $response = array();
+                        $response = $api -> upload_image($image);
+                        $guid = $response[0]['FileId'];
+                        $thumbPath = $response[0]['ThumbnailUrl'];
+                        $fullPath = $response[0]['ImageUrl'];
                         $variation->images->addImage($guid, $thumbPath, $fullPath);
                     }
                 }
