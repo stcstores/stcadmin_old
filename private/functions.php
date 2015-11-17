@@ -257,44 +257,76 @@ function get_international_shipping($weight) {
     return $weights;
 }
 
+function get_linn_title_single_item($product)
+{
+    $item_title = $product->details['item_title']->text;
+    $location = $product->details['location']->text;
+    $mpn = $product->details['mpn']->text;
+    if (strlen($mpn) > 0) {
+        $item_title = $mpn . ' ' . $item_title;
+    }
+
+    if (strlen($location) > 0) {
+        $item_title = $location . ' ' . $item_title;
+    }
+    return $item_title;
+}
+
+function get_linn_title_var_parent($product)
+{
+    $item_title = $product->details['item_title']->text;
+    $mpn_match = true;
+    $mpn = $product->variations[0]->details['mpn']->text;
+    foreach ($product->variations as $variation) {
+        $this_mpn = $variation->details['mpn']->text;
+        if ($this_mpn == '' || $this_mpn != $mpn) {
+            $mpn_match = false;
+        }
+    }
+    if ($mpn_match) {
+        $item_title = $mpn . ' ' . $item_title;
+    }
+    return $item_title;
+}
+
+function get_linn_title_variation($variation)
+{
+    $product_title = $variation->product->details['item_title']->text;
+    $location = $variation->details['location']->text;
+    $mpn = $variation->details['mpn']->text;
+    $var_append = $variation->details['var_append']->text;
+    $item_title = '';
+    if (strlen($location) > 0) {
+        $item_title = $item_title . $location . ' ';
+    }
+    if (strlen($mpn) > 0) {
+        $item_title = $item_title . $mpn . ' ';
+    }
+    $item_title = $item_title . $product_title . ' ';
+    $keyFields = $variation->product->keyFields;
+    foreach ($keyFields as $field => $isKey) {
+        if ($isKey) {
+            $item_title = $item_title . '{ ';
+            $item_title = $item_title . $variation->details[$field]->text;
+            $item_title = $item_title . ' } ';
+        }
+    }
+    if ($var_append != '') {
+        $item_title += $var_append;
+    }
+    return trim($item_title);
+}
+
 function get_linn_title($product)
 {
-    if (array_key_exists('item_title', $product->details)) {
-        $item_title = $product->details['item_title']->text;
+    if ($product instanceof NewVariation) {
+        $item_title = get_linn_title_variation($product);
+    } else {
         if (count($product->variations) > 0) {
-            $has_variations = true;
+            $item_title = get_linn_title_var_parent($product);
         } else {
-            $has_variations = false;
-        }
-    } else {
-        $item_title = $product->details['var_name']->text;
-        $has_variations = false;
-    }
-
-    if ($has_variations) {
-        $mpn_match = true;
-        $mpn = $product->variations[0]->details['mpn']->text;
-        foreach ($product->variations as $variation) {
-            $this_mpn = $variation->details['mpn']->text;
-            if ($this_mpn == '' || $this_mpn != $mpn) {
-                $mpn_match = false;
-            }
-        }
-        if ($mpn_match) {
-            $item_title = $mpn . ' ' . $item_title;
-        }
-    } else {
-        $location = $product->details['location']->text;
-        $mpn = $product->details['mpn']->text;
-
-        if (strlen($mpn) > 0) {
-            $item_title = $mpn . ' ' . $item_title;
-        }
-
-        if (strlen($location) > 0) {
-            $item_title = $location . ' ' . $item_title;
+            $item_title = get_linn_title_single_item($product);
         }
     }
-
     return $item_title;
 }
