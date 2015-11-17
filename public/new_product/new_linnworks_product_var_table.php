@@ -38,7 +38,7 @@ $values = getVarSetupValues();
 <script src="/scripts/jquery.doubleScroll.js"></script>
 <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
 <?php
-if (producExists($product)) {
+if (!(producExists($product))) {
     echo "<p><input id='reset_variations' type=button value='Reset Variations' /> <span class=error>Warning: This will delete any existing variations</span></p>";
 }
 ?>
