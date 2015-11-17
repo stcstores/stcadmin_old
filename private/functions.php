@@ -281,7 +281,7 @@ function get_linn_title($product)
             }
         }
         if ($mpn_match) {
-            $item_title = $mpn . $item_title;
+            $item_title = $mpn . ' ' . $item_title;
         }
     } else {
         $location = $product->details['location']->text;
