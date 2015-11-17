@@ -203,53 +203,52 @@ if ($product_exists) {
             </tr>
             <tr>
                 <td>Germany</td>
-                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_de']->value);?>' size=5 /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f", $product->details['shipping_de']->value);?>' size=5 /></td>
             </tr>
             <tr>
                 <td>Europe</td>
-                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_eu']->value);?>' size=5 /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f", $product->details['shipping_eu']->value);?>' size=5 /></td>
             </tr>
             <tr>
                 <td>United States</td>
-                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_usa']->value);?>' size=5 /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f", $product->details['shipping_usa']->value);?>' size=5 /></td>
             </tr>
             <tr>
                 <td>Australia</td>
-                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_aus']->value);?>' size=5 /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f", $product->details['shipping_aus']->value);?>' size=5 /></td>
             </tr>
             <tr>
                 <td>Rest of World</td>
-                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$product->details['shipping_row']->value);?>' size=5 /></td>
+                <td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f", $product->details['shipping_row']->value);?>' size=5 /></td>
             </tr>
         </table>
     <?php
-    } else {
-        ?>
-        <div class=variation_table>
-            <table>
-            <tr>
-            <?php
+} else {
+    echo "<div class=variation_table>\n";
+    echo "<table id=international_shipping_table>\n";
+    foreach ($product->keyFields as $field => $isKey) {
+        if ($isKey) {
+            echo "<tr>\n";
             foreach ($product->variations as $variation) {
-                ?><td colspan=2 /><?php echo $variation->details['var_name']->text;?></td><?php
+                echo "<th colspan=2 style='text-align: center;'>\n";
+                echo $variation->details[$field]->text;
+                echo "</th>\n";
             }
-            ?>
-                </tr>
-                <?php
-                foreach ([['France', 'fr'], ['Germany', 'de'], ['Europe', 'eu'], ['United States', 'usa'], ['Australia', 'aus'],['Rest of World', 'row']] as $country){
-                ?>
-                    <tr>
-                        <?php foreach($product->variations as $variation) {
-                            ?>
-                                <td><?php echo $country[0]; ?></td><td><input class=disabled readonly value='&pound;<?php echo sprintf("%0.2f",$variation->details['shipping_' . $country[1]]->value);?>' size=5 /></td>
-                            <?php
-                        }
-                        ?>
-                    </tr>
-                <?php } ?>
-            </table>
-        </div>
-        <?php
+            echo "</tr>\n";
+        }
     }
+    foreach ([['France', 'fr'], ['Germany', 'de'], ['Europe', 'eu'], ['United States', 'usa'], ['Australia', 'aus'],['Rest of World', 'row']] as $country) {
+        echo "<tr>\n";
+        foreach ($product->variations as $variation) {
+            echo "<td>" . $country[0] . "</td><td><input class=disabled readonly value='&pound;";
+            echo sprintf("%0.2f", $variation->details['shipping_' . $country[1]]->value);
+            echo "' size=5 /></td>\n";
+        }
+        echo "</tr>\n";
+    }
+    echo "</table>\n";
+    echo "</div>\n";
+}
     ?>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
     <script  src="/scripts/jquery.doubleScroll.js"></script>
@@ -306,6 +305,5 @@ if ($product_exists) {
     <script src=/scripts/formstyle.js ></script>
 
     <?php
-
 
 require_once($CONFIG['footer']);

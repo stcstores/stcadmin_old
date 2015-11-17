@@ -425,3 +425,16 @@ input[type="button"]:disabled {
     background: <?php $colours->echoColour(3, 2); ?>;
     z-index: 10;
 }
+
+#international_shipping_table {
+    font-size: medium;
+}
+
+#international_shipping_table th {
+    text-align: center;
+}
+
+#international_shipping_table td {
+    text-align: right;
+    padding-left: 1em;
+}
