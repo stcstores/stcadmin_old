@@ -14,11 +14,10 @@ if (isset($_SESSION['new_product'])) {
     exit();
 }
 $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
-$product_exists = $api->sku_exists($product->details['sku']->text);
 $item_title = get_linn_title($product);
 
 echo "<input type=button value='Create Product' id=create_product ";
-if ($product_exists) {
+if (producExists($product)) {
     echo ' disabled ';
 }
     echo "/>\n";

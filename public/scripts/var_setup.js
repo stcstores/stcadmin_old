@@ -326,11 +326,19 @@ function write() {
 $('#var_form').submit(function() {
     var $hidden = $("<input type='hidden' name='variation_types'/>");
     var $hidden2 = $("<input type='hidden' name='variations'/>");
-    $hidden.val(JSON.stringify(variations.getVariationTypes()));
-    $hidden2.val(JSON.stringify(variations.getVariationList()));
-    $(this).append($hidden);
-    $(this).append($hidden2);
-    return true;
+    var variationTypes = variations.getVariationTypes();
+    var variationList = variations.getVariationList();
+    if (variationList.length > 1) {
+        $hidden.val(JSON.stringify(variationTypes));
+        $hidden2.val(JSON.stringify(variationList));
+        $(this).append($hidden);
+        $(this).append($hidden2);
+        return true;
+    } else {
+        $('#errors').html('');
+        $('#errors').append('<p class=error >There must be at least two variations');
+        return false;
+    }
 });
 
 $(document).ready(function() {

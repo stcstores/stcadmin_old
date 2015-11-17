@@ -168,7 +168,6 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 <?php
 
 $_SESSION['new_product'] = $product;
-
 echo "<script src=/scripts/formstyle.js ></script>";
 echo "<script src=/scripts/validation.js ></script>";
 echo "<script> validateForm();</script>";

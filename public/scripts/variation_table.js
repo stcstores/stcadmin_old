@@ -7,6 +7,9 @@ $(document).ready(function() {
     setToggleAll();
     setInputFocus();
     setArrowKeyNav();
+    $('#reset_variations').click(function(){
+        window.location.href='new_linnworks_product_var_setup.php';
+    });
 });
 
 function setArrowKeyNav() {

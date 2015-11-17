@@ -58,7 +58,6 @@ $fields = getFormFieldsByPage('extended_properties');
 <?php
 
 $_SESSION['new_product'] = $product;
-
 echo "<script src=/scripts/formstyle.js ></script>";
 echo "<script src=/scripts/validation.js ></script>";
 

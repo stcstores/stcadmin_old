@@ -3,8 +3,8 @@
     require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
     require_once($CONFIG['include']);
     checkLogin();
-    
-    
+
+
 if (isset($_SESSION['new_product'])) {
     $product = $_SESSION['new_product'];
 } else {
@@ -18,16 +18,16 @@ if (isset($_SESSION['new_product'])) {
             exit();
         }
         add_chn_shopify($product);
-        
+
         if (true) { // error check
             $_SESSION['new_product'] = $product;
             header('Location: imageupload.php');
             exit();
         }
     }
-    
-    
-    
+
+
+
 require_once($CONFIG['header']);
 
 ?>
@@ -123,28 +123,28 @@ $_SESSION['new_product'] = $product;
 
 <script>
     $('#set_item_title').click(function() {
-       $('#shopify_title').val(product_title); 
+       $('#shopify_title').val(product_title);
     });
-    
+
     $('#set_ebay_title').click(function() {
-       $('#shopify_title').val(ebay_title); 
+       $('#shopify_title').val(ebay_title);
     });
-    
+
     $('#set_amazon_title').click(function() {
-       $('#shopify_title').val(amazon_title); 
+       $('#shopify_title').val(amazon_title);
     });
-    
-    
+
+
     $('#set_item_description').click(function() {
-       $('#shopify_description').val(product_description); 
+       $('#shopify_description').val(product_description);
     });
-    
+
     $('#set_ebay_description').click(function() {
-       $('#shopify_description').val(ebay_description); 
+       $('#shopify_description').val(ebay_description);
     });
-    
+
     $('#set_amazon_description').click(function() {
-       $('#shopify_description').val(amazon_description); 
+       $('#shopify_description').val(amazon_description);
     });
 </script>
 

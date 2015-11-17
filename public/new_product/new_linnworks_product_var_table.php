@@ -1,8 +1,7 @@
 <?php
-
-    require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
-    require_once($CONFIG['include']);
-    checkLogin();
+require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
+require_once($CONFIG['include']);
+checkLogin();
 
 if (isset($_SESSION['new_product'])) {
     $product = $_SESSION['new_product'];
@@ -38,6 +37,11 @@ $values = getVarSetupValues();
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <script src="/scripts/jquery.doubleScroll.js"></script>
 <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
+<?php
+if (producExists($product)) {
+    echo "<p><input id='reset_variations' type=button value='Reset Variations' /> <span class=error>Warning: This will delete any existing variations</span></p>";
+}
+?>
 <div id="errors"></div>
 <form method="post" id="var_form" enctype="multipart/form-data">
     <table id="var_setup" class="form_section">

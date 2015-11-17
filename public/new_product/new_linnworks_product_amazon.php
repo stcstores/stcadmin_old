@@ -17,7 +17,7 @@ if ( !empty($_POST) ) {
         exit();
     }
     add_chn_amazon($product);
-    
+
     if (true) { // error check
         $_SESSION['new_product'] = $product;
         header('Location: new_linnworks_product_shopify.php');
@@ -135,28 +135,28 @@ $_SESSION['new_product'] = $product;
 
 <script>
     $('#set_item_title').click(function() {
-       $('#am_title').val(product_title.substring(0, 79)); 
+       $('#am_title').val(product_title.substring(0, 79));
     });
-    
+
     $('#set_ebay_title').click(function() {
-       $('#am_title').val(ebay_title.substring(0, 79)); 
+       $('#am_title').val(ebay_title.substring(0, 79));
     });
-    
+
     $('#set_shopify_title').click(function() {
-       $('#am_title').val(shopify_title.substring(0, 79)); 
+       $('#am_title').val(shopify_title.substring(0, 79));
     });
-    
-    
+
+
     $('#set_item_description').click(function() {
-       $('#am_description').val(product_description); 
+       $('#am_description').val(product_description);
     });
-    
+
     $('#set_ebay_description').click(function() {
-       $('#am_description').val(ebay_description); 
+       $('#am_description').val(ebay_description);
     });
-    
+
     $('#set_shopify_description').click(function() {
-       $('#am_description').val(shopify_description); 
+       $('#am_description').val(shopify_description);
     });
 </script>
 

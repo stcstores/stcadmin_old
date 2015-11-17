@@ -330,3 +330,9 @@ function get_linn_title($product)
     }
     return $item_title;
 }
+
+function producExists($product)
+{
+    $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+    return $api->sku_exists($product->details['sku']->text);
+}

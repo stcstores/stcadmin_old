@@ -44,6 +44,7 @@ require_once($CONFIG['header']);
 
 <div class="">
     <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
+    <div id="errors"></div>
     <div>
         <table id="add_variation_types" class="form_section">
 
@@ -83,6 +84,7 @@ require_once($CONFIG['header']);
 
 <?php
     $_SESSION['new_product'] = $product;
+
 ?>
 <script>
     keyFields = <?php echo json_encode(getKeyFields()); ?>;

@@ -13,18 +13,18 @@ if (isset($_SESSION['new_product'])) {
 
 if ( !empty($_POST) ) {
     if (isset($_POST['previous'])) {
-        
+
         if ($product->details['var_type']->value == true) {
             header('Location: new_linnworks_product_var_setup.php');
             exit();
-            
+
         } elseif ($product->details['var_type']->value == false) {
             header('Location: new_linnworks_product_2_extended_properties.php');
-            exit();                
+            exit();
         }
     }
     add_chn_ebay($product);
-    
+
     if (true) { // error check
         $_SESSION['new_product'] = $product;
         header('Location: new_linnworks_product_amazon.php');
@@ -123,28 +123,28 @@ $_SESSION['new_product'] = $product;
 
 <script>
     $('#set_item_title').click(function() {
-       $('#ebay_title').val(product_title.substring(0, 79)); 
+       $('#ebay_title').val(product_title.substring(0, 79));
     });
-    
+
     $('#set_amazon_title').click(function() {
-       $('#ebay_title').val(amazon_title.substring(0, 79)); 
+       $('#ebay_title').val(amazon_title.substring(0, 79));
     });
-    
+
     $('#set_shopify_title').click(function() {
-       $('#ebay_title').val(shopify_title.substring(0, 79)); 
+       $('#ebay_title').val(shopify_title.substring(0, 79));
     });
-    
-    
+
+
     $('#set_item_description').click(function() {
-       $('#ebay_description').val(product_description); 
+       $('#ebay_description').val(product_description);
     });
-    
+
     $('#set_amazon_description').click(function() {
-       $('#ebay_description').val(amazon_description); 
+       $('#ebay_description').val(amazon_description);
     });
-    
+
     $('#set_shopify_description').click(function() {
-       $('#ebay_description').val(shopify_description); 
+       $('#ebay_description').val(shopify_description);
     });
 </script>
 
