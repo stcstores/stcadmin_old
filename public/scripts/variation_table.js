@@ -100,7 +100,7 @@ $('#var_form').submit(function(e) {
     var $hidden = $("<input type='hidden' name='variation_details'/>");
     var formData = getVariationDetails();
     if (validateFormData(formData)) {
-        $hidden.val(JSON.stringify(getVariationDetails()));
+        $hidden.val(JSON.stringify(formData));
         $(this).append($hidden);
         return true;
     } else {
@@ -142,12 +142,9 @@ function set_all_generator(field) {
         if (typeof new_value == "undefined") {
             new_value = '';
         }
-        inputs.each(function () {
-            var inputDetails = getInputDetails(this);
-            if (inputDetails.field == field) {
-                $(this).val(new_value);
-            }
-        });
+        for (var i=0; i<variation_count; i++){
+            $('#' + field + '-' + i).val(new_value);
+        }
         getInput(field, 0).focus();
     };
 }
@@ -166,12 +163,9 @@ function inputBlurGenerator() {
 
 function resizeColumn(variationNumber, size) {
     var inputs = $('#var_setup input').not(':input[type=button]');
-    inputs.each(function () {
-        var inputDetails = getInputDetails(this);
-        if (inputDetails.number == variationNumber) {
-            $(this).attr('size', size);
-        }
-    });
+    for (var i=0; i<fields.length; i++) {
+        $('#' + fields[i].field_name + '-' + variationNumber).attr('size', size);
+    }
 }
 
 function resetColumns() {
@@ -188,19 +182,16 @@ function expandColumn(variationNumber) {
 }
 
 function getMaxValLen(variationNumber) {
-    maxLenght = 0;
+    var maxLenght = 0;
     var inputs = $('#var_setup input').not(':input[type=button]');
-    inputs.each(function () {
-        var inputDetails = getInputDetails(this);
-        var value = inputDetails.val;
-        if (inputDetails.number == variationNumber) {
-            if (typeof value != "undefined"){
-                if (value.length > maxLenght) {
-                    maxLenght = value.length;
-                }
+    for (var i=0; i<fields.length; i++){
+        var value = $('#' + fields[i].field_name + '-' + variationNumber).val();
+        if (typeof value != "undefined"){
+            if (value.length > maxLenght) {
+                maxLenght = value.length;
             }
         }
-    });
+    }
     return maxLenght;
 }
 
@@ -212,17 +203,14 @@ function toggle_all_generator(field) {
         } else {
             checked = false;
         }
-        var inputs = $('#var_setup input').not(':input[type=button]');
-        inputs.each(function () {
-            var inputDetails = getInputDetails(this);
-            if (inputDetails.field == field) {
-                if (checked) {
-                    $(this).prop('checked', false);
-                } else {
-                    $(this).prop('checked', true);
-                }
+        for (var i=0; i<variation_count; i++) {
+            var input = $('#' + field + '-' + i);
+            if (checked) {
+                input.prop('checked', false);
+            } else {
+                input.prop('checked', true);
             }
-        });
+        }
     };
 }
 

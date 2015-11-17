@@ -79,7 +79,8 @@ $values = getVarSetupValues();
                 $value = $variation->details[$name]->text;
                 $id = $name . '-' . $variation_number;
                 echo "<td>\n";
-                echo "<input id='{$id}' class='{$name}' type='{$type}' value='{$value}' placeholder='{$title}' ";
+                echo "<input id='{$id}' class='{$name}' type='{$type}' value='{$value}' ";
+                echo "placeholder='{$title}' autocomplete='off' ";
                 if (array_key_exists($name, $product->keyFields) && $product->keyFields[$name]) {
                     echo "disabled ";
                 }

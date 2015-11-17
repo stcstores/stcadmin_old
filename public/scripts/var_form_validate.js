@@ -2,11 +2,18 @@ function validateFormData(formData) {
     //console.log('Validating');
     inputs.attr('class', '');
     $('#errors').html('');
-    noneEmpty(formData, 'weight');
+    regexTest(formData, 'barcode', 'barcode');
     noneEmpty(formData, 'retail_price');
+    regexTest(formData, 'retail_price', 'price');
     noneEmpty(formData, 'purchase_price');
-    isPrice(formData, 'retail_price');
-    isPrice(formData, 'purchase_price');
+    regexTest(formData, 'purchase_price', 'price');
+    noneEmpty(formData, 'shipping_price');
+    regexTest(formData, 'shipping_price', 'price');
+    noneEmpty(formData, 'weight');
+    onlyNumeric(formData, 'weight');
+    onlyNumeric(formData, 'width');
+    onlyNumeric(formData, 'depth');
+    onlyNumeric(formData, 'height');
     for (i=0; i<errors.length; i++) {
         $('#errors').append('<p class="error">' + errors[i]);
     }
@@ -28,23 +35,23 @@ function getFieldValues(formData, field) {
     return values;
 }
 
-function isPrice(formData, field) {
-    //console.log('Testing ' + field + ' is a price');
+function regexTest(formData, field, regex) {
+    if (regex == 'price') {
+        expression = /^([0-9]*((.)[0-9]{0,2}))$/;
+    } else if (regex == 'barcode') {
+        expression = /^\d{12,13}$/;
+    }
     var data = getFieldValues(formData, field);
-    var priceRegEx = /^([0-9]*((.)[0-9]{0,2}))$/;
     var error = true;
     for (var i=0; i<data.length; i++) {
-        if (!(priceRegEx.test(data[i]))) {
+        if ((!(isEmpty(data[i]))) && (!(expression.test(data[i])))) {
             error = false;
             var input = getInput(field, i);
-            addError(input, getFieldTitle(field) + " must be valid price");
+            addError(input, getFieldTitle(field) + " must be valid " + regex);
         }
     }
     return error;
 }
-
-//priceRegEx = /^([0-9]*((.)[0-9]{0,2}))$/;
-//barcodeRegEx = /^\d{12,13}$/;
 
 function noneEmpty(formData, field) {
     //console.log('Testing None Empty: ' + field);
@@ -58,6 +65,24 @@ function noneEmpty(formData, field) {
         }
     }
     return error;
+}
+
+function onlyNumeric(formData, field) {
+    //console.log('Testing only numeric: ' + field);
+    var error = true;
+    var data = getFieldValues(formData, field);
+    for (var i=0; i<data.length; i++) {
+        if ((!(isEmpty(data[i]))) && (!(isNumeric(data[i])))) {
+            var input = getInput(field, i);
+            error = false;
+            addError(input, "All " + getFieldTitle(field) + " must be numbers");
+        }
+    }
+    return error;
+}
+
+function isNumeric(value) {
+  return !isNaN(parseFloat(value)) && isFinite(value);
 }
 
 function unique_required(formData, field) {
@@ -127,10 +152,6 @@ function isEmpty(value) {
     if (value === undefined) {
         return true;
     } else if (value === '') {
-        return true;
-    } else if (value === 0) {
-        return true;
-    } else if (value === '0') {
         return true;
     }
     return false;
