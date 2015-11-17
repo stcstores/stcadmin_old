@@ -153,12 +153,14 @@ class ProductDetail {
         $this->product = $product;
         $this->value = null;
         $this->text = '';
+        $this->api_value = '';
     }
 
     public function set($value)
     {
         $this->value = $value;
         $this->text = (string)$value;
+        $this->api_value = (string)$value;
     }
 }
 
@@ -181,7 +183,8 @@ class NumericDetail extends ProductDetail {
         $this->name = $name;
         $this->product = $product;
         $this->value = null;
-        $this->text = '0';
+        $this->text = '';
+        $this->api_value = '0';
     }
 
     public function set($value)
@@ -189,8 +192,10 @@ class NumericDetail extends ProductDetail {
         $this->value = $value;
         if ($value > 0) {
             $this->text = (string)$value;
+            $this->api_value = (string)$value;
         } else {
             $this->text = '0';
+            $this->api_value = '0';
         }
     }
 }

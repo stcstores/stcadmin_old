@@ -7,7 +7,6 @@ $(document).ready(function() {
     setToggleAll();
     setInputFocus();
     setArrowKeyNav();
-    inputs.blur();
 });
 
 function setArrowKeyNav() {
@@ -161,12 +160,6 @@ function inputFocusGenerator(variation_number) {
 
 function inputBlurGenerator() {
     return function(event) {
-        var inputDetails = getInputDetails($(this));
-        if (numericFields.indexOf(inputDetails.field) != -1) {
-            if (inputDetails.val == '0') {
-                $(this).val('');
-            }
-        }
         resetColumns();
     };
 }

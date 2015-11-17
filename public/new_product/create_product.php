@@ -15,14 +15,14 @@ $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 function getCreateInventoryItem($product)
 {
     $item = array();
-    $item['ItemNumber'] = (string)$product->details['sku']->text;
+    $item['ItemNumber'] = (string)$product->details['sku']->api_value;
     $item['ItemTitle'] = get_linn_title($product);
-    $item['BarcodeNumber'] = (string)$product->details['barcode']->text;
-    $item['PurchasePrice'] = (string)$product->details['purchase_price']->text;
-    $item['RetailPrice'] = (string)$product->details['retail_price']->text;
-    $item['Quantity'] = (string)$product->details['quantity']->text;
+    $item['BarcodeNumber'] = (string)$product->details['barcode']->api_value;
+    $item['PurchasePrice'] = (string)$product->details['purchase_price']->api_value;
+    $item['RetailPrice'] = (string)$product->details['retail_price']->api_value;
+    $item['Quantity'] = (string)$product->details['quantity']->api_value;
     $item['TaxRate'] = '0';
-    $item['StockItemId'] = (string)$product->details['guid']->text;
+    $item['StockItemId'] = (string)$product->details['guid']->api_value;
     return $item;
 }
 
@@ -59,31 +59,31 @@ function getServiceId($api)
 function getUpdateInventoryItem($api, $product)
 {
     $item = array();
-    $item['ItemNumber'] = (string)$product->details['sku']->text;
+    $item['ItemNumber'] = (string)$product->details['sku']->api_value;
     $item['ItemTitle'] = get_linn_title($product);
-    $item['BarcodeNumber'] = (string)$product->details['barcode']->text;
-    $purchasePrice = (string)$product->details['purchase_price']->text;
+    $item['BarcodeNumber'] = (string)$product->details['barcode']->api_value;
+    $purchasePrice = (string)$product->details['purchase_price']->api_value;
     if ($purchasePrice == "") {
         $purchasePrice = "0";
     }
     $item['PurchasePrice'] = $purchasePrice;
-    $retailPrice = (string)$product->details['retail_price']->text;
+    $retailPrice = (string)$product->details['retail_price']->api_value;
     if ($retailPrice == "") {
         $retailPrice = "0";
     }
     $item['RetailPrice'] = $retailPrice;
-    $item['Quantity'] = (string)$product->details['quantity']->text;
+    $item['Quantity'] = (string)$product->details['quantity']->api_value;
     $item['TaxRate'] = '0';
-    $item['StockItemId'] = (string)$product->details['guid']->text;
+    $item['StockItemId'] = (string)$product->details['guid']->api_value;
     $item['VariationGroupName'] = '';
-    $item['MetaData'] = (string)$product->details['short_description']->text;
-    $item['CategoryId'] = getCategoryId($api, $product->details['department']->text);
-    $item['PackageGroupId'] = getPackageId($api, $product->details['shipping_method']->text);
+    $item['MetaData'] = (string)$product->details['short_description']->api_value;
+    $item['CategoryId'] = getCategoryId($api, $product->details['department']->api_value);
+    $item['PackageGroupId'] = getPackageId($api, $product->details['shipping_method']->api_value);
     $item['PostalServiceId'] = getServiceId($api);
-    $item['Weight'] = (string)$product->details['weight']->text;
-    $item['Width'] = (string)$product->details['width']->text;
-    $item['Depth'] = (string)$product->details['depth']->text;
-    $item['Height'] = (string)$product->details['height']->text;
+    $item['Weight'] = (string)$product->details['weight']->api_value;
+    $item['Width'] = (string)$product->details['width']->api_value;
+    $item['Depth'] = (string)$product->details['depth']->api_value;
+    $item['Height'] = (string)$product->details['height']->api_value;
     return $item;
 }
 
@@ -163,7 +163,7 @@ function createExtendedProperty($product, $name, $value, $type)
 {
     $exProp = array();
     $exProp['pkRowId'] = createGUID();
-    $exProp['fkStockItemId'] = (string)$product->details['guid']->text;
+    $exProp['fkStockItemId'] = (string)$product->details['guid']->api_value;
     $exProp['ProperyName'] = $name;
     $exProp['PropertyValue'] = $value;
     $exProp['PropertyType'] = $type;
@@ -215,7 +215,7 @@ function getImageAssignArrays($products)
 {
     $imageArrays = array();
     foreach ($products as $item) {
-        $guid = $item->details['guid']->text;
+        $guid = $item->details['guid']->api_value;
         $imageArrays[$guid] = array();
         foreach ($item->images->images as $image) {
             $imageArrays[$guid][] = $image->guid;
@@ -230,9 +230,11 @@ function getPrimaryImages($products)
 {
     $primaryImages = array();
     foreach ($products as $item) {
-        $guid = $item->details['guid']->text;
-        $imageGuid = $item->images->images[0]->guid;
-        $primaryImages[$guid] = $imageGuid;
+        if (count($item->images) > 0) {
+            $guid = $item->details['guid']->api_value;
+            $imageGuid = $item->images->images[0]->guid;
+            $primaryImages[$guid] = $imageGuid;
+        }
     }
     return $primaryImages;
 }
@@ -275,12 +277,12 @@ function assign_images($api, $product)
 function getCreateVariationGroupTemplate($product)
 {
     $template = array();
-    $template['ParentSKU'] = $product->details['sku']->text;
-    $template['VariationGroupName'] = $product->details['item_title']->text;
-    $template['ParentStockItemId'] = $product->details['guid']->text;
+    $template['ParentSKU'] = $product->details['sku']->api_value;
+    $template['VariationGroupName'] = $product->details['item_title']->api_value;
+    $template['ParentStockItemId'] = $product->details['guid']->api_value;
     $variationIds = array();
     foreach ($product->variations as $variation) {
-        $variationIds[] = $variation->details['guid']->text;
+        $variationIds[] = $variation->details['guid']->api_value;
     }
     $template['VariationItemIds'] = $variationIds;
     return json_encode($template);
@@ -329,21 +331,21 @@ function getAddTitlesForProduct($product)
     $ebay['pkRowId'] = createGUID();
     $ebay['Source'] = 'EBAY';
     $ebay['SubSource'] = 'EBAY0';
-    $ebay['Title'] = $product->details['ebay_title']->text;
+    $ebay['Title'] = $product->details['ebay_title']->api_value;
     $ebay['StockItemId'] = $guid;
 
     $amazon = array();
     $amazon['pkRowId'] = createGUID();
     $amazon['Source'] = 'AMAZON';
     $amazon['SubSource'] = 'Stc Stores';
-    $amazon['Title'] = $product->details['item_title']->text;
+    $amazon['Title'] = $product->details['item_title']->api_value;
     $amazon['StockItemId'] = $guid;
 
     $shopify = array();
     $shopify['pkRowId'] = createGUID();
     $shopify['Source'] = 'SHOPIFY';
     $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
-    $shopify['Title'] = $product->details['item_title']->text;
+    $shopify['Title'] = $product->details['item_title']->api_value;
     $shopify['StockItemId'] = $guid;
 
     return array($ebay, $amazon, $shopify);
@@ -374,7 +376,7 @@ function getAddPricesForProduct($product)
     $price = $product->details['retail_price']->value;
     $priceWithShipping = $price +  $product->details['shipping_price']->value;
 
-    $guid = $product->details['guid']->text;
+    $guid = $product->details['guid']->api_value;
     $ebay = array();
     $ebay['pkRowId'] = createGUID();
     $ebay['Source'] = 'EBAY';
@@ -421,26 +423,26 @@ function addDescriptions($api, $product)
 
 function getAddDescriptionsForProduct($product)
 {
-    $guid = $product->details['guid']->text;
+    $guid = $product->details['guid']->api_value;
     $ebay = array();
     $ebay['pkRowId'] = createGUID();
     $ebay['Source'] = 'EBAY';
     $ebay['SubSource'] = 'EBAY0';
-    $ebay['Description'] = to_html($product->details['short_description']->text);
+    $ebay['Description'] = to_html($product->details['short_description']->api_value);
     $ebay['StockItemId'] = $guid;
 
     $amazon = array();
     $amazon['pkRowId'] = createGUID();
     $amazon['Source'] = 'AMAZON';
     $amazon['SubSource'] = 'Stc Stores';
-    $amazon['Description'] = $product->details['short_description']->text;
+    $amazon['Description'] = $product->details['short_description']->api_value;
     $amazon['StockItemId'] = $guid;
 
     $shopify = array();
     $shopify['pkRowId'] = createGUID();
     $shopify['Source'] = 'SHOPIFY';
     $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
-    $shopify['Description'] = to_html($product->details['short_description']->text);
+    $shopify['Description'] = to_html($product->details['short_description']->api_value);
     $shopify['StockItemId'] = $guid;
 
     return array($ebay, $amazon, $shopify);
@@ -453,7 +455,7 @@ if ($product->details['var_type']->value == true) {
         addPrices($api, $variation);
     }
     createVariationGroup($api, $product);
-    $new_guid = $api->getVariationGroupIdBySKU($product->details['sku']->text);
+    $new_guid = $api->getVariationGroupIdBySKU($product->details['sku']->api_value);
     $product->details['guid']->set($new_guid);
 } else {
     createItem($api, $product);
