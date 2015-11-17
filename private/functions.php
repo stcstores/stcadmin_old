@@ -312,7 +312,7 @@ function get_linn_title_variation($variation)
         }
     }
     if ($var_append != '') {
-        $item_title += $var_append;
+        $item_title = $item_title . $var_append;
     }
     return trim($item_title);
 }
