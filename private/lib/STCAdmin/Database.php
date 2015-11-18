@@ -3,11 +3,12 @@ namespace STCAdmin;
 
 class Database extends \LSPHP\DatabaseConnection {
 
-    private $formFieldTable = 'new_product_form_field';
-    private $specialCharactersTable = 'special_characters';
+
 
     public function __construct()
     {
+        $this->formFieldTable = 'new_product_form_field';
+        $this->specialCharactersTable = 'special_characters';
         $host = "mysql.stcadmin.stcstores.co.uk";
         $database = "seatontrading";
         $user = "seatontrading";
@@ -24,7 +25,7 @@ class Database extends \LSPHP\DatabaseConnection {
 
     public function getFormFieldsByPage($page)
     {
-        $query = "SELECT * FROM {$this->$formFieldTable} WHERE page='{$page}' ORDER BY position;";
+        $query = "SELECT * FROM {$this->formFieldTable} WHERE page='{$page}' ORDER BY position;";
         $results = $this->selectQuery($query);
         return $results;
     }
@@ -45,7 +46,7 @@ class Database extends \LSPHP\DatabaseConnection {
 
     public function getExtendedProperties()
     {
-        $selectQuery = "SELECT field_name, field_title FROM {$this->$formFieldTable} WHERE csv='extended'";
+        $selectQuery = "SELECT field_name, field_title FROM {$this->formFieldTable} WHERE csv='extended'";
         $results = $this->selectQuery($selectQuery);
         $extendedProps = array();
         foreach ($results as $result) {
@@ -56,7 +57,7 @@ class Database extends \LSPHP\DatabaseConnection {
 
     public function getSpecialCharacters()
     {
-        $selectQuery = "SELECT sc, name FROM {$this->$specialCharactersTable};";
+        $selectQuery = "SELECT sc, name FROM {$this->specialCharactersTable};";
         $results = $this->selectQuery($selectQuery);
         return $results;
     }

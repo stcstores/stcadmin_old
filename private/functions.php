@@ -42,24 +42,6 @@ function isValidPrice($price)
 
 
 
-/*function getVarSetupValues() {
-    if (isset($_SESSION['new_product'])) {
-        $product = $_SESSION['new_product'];
-        $variations = array();
-        foreach ($product->variations as $variation) {
-            foreach ($variation->details as $key => $value) {
-                $newArray[$key] = htmlspecialchars($value->text);
-            }
-            $variations[] = $newArray;
-        }
-        return $variations;
-    } else {
-        return null;
-    }
-}*/
-
-
-
 
 
 /*function list_pending_products() {
@@ -122,22 +104,4 @@ function get_international_shipping($weight) {
     $weights['row'] = $table['row'][$i];
 
     return $weights;
-}
-
-
-
-
-
-function get_linn_title($product)
-{
-    if ($product instanceof NewVariation) {
-        $item_title = get_linn_title_variation($product);
-    } else {
-        if (count($product->variations) > 0) {
-            $item_title = get_linn_title_var_parent($product);
-        } else {
-            $item_title = get_linn_title_single_item($product);
-        }
-    }
-    return $item_title;
 }

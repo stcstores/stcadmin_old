@@ -95,7 +95,7 @@ if ($product->onServer()) {
                 echo "<div class=variation_table >";
                 echo "<table id=testvar >";
                 echo "<tr>";
-                $fields = getVarSetupFields();
+                $fields = $database->getVarSetupFields();
 
                 $ignoreFields = ['var_append'];
                 echo "<th>SKU</th>";
@@ -110,7 +110,7 @@ if ($product->onServer()) {
 
                 $var_names = array();
                 foreach ($product->variations as $variation) {
-                    $var_names[] = get_linn_title($variation);
+                    $var_names[] = $variation->getLinnTitle();
                 }
                 $max_var_name = max(array_map('strlen', $var_names));
 
@@ -132,7 +132,7 @@ if ($product->onServer()) {
                             if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
                                 echo '&pound;' . sprintf("%0.2f",$variation->details[$field['field_name']]->text) .'" size=5';
                             } else if ($field['field_name'] == 'var_name') {
-                                echo get_linn_title($variation) . '" size="' . $max_var_name . ' "';
+                                echo $variation->getLinnTitle() . '" size="' . $max_var_name . ' "';
                             } else {
                                 echo $variation->details[$field['field_name']]->text .'" size=' . $field_size;
                             }

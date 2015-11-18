@@ -4,7 +4,7 @@ require_once($CONFIG['include']);
 checkLogin();
 
 print_r($_FILES);
-
+$api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 $product = $_SESSION['new_product'];
 $products = array($product);
 if ($product->details['var_type']->value == true) {
@@ -15,7 +15,6 @@ if ($product->details['var_type']->value == true) {
 
 if (isset($_POST['sku'])) {
     if (is_array($_FILES)) {
-        $api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
         $i=0;
         $sku = $_POST['sku'];
         $errors = array();
@@ -60,7 +59,6 @@ if (isset($_POST['sku'])) {
     print_r($response);
 } else if (isset($_POST['field'])) {
     if (is_array($_FILES)) {
-        $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
         $i=0;
         $field = $_POST['field'];
         $value = $_POST['value'];

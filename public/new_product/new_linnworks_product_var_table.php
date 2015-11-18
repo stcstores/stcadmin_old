@@ -3,6 +3,9 @@ require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
 checkLogin();
 
+$database = new STCAdmin\Database();
+$api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+
 if (isset($_SESSION['new_product'])) {
     $product = $_SESSION['new_product'];
 } else {
@@ -26,19 +29,19 @@ if (isset($_POST['variation_details'])) {
 require_once($CONFIG['header']);
 
 $fields = array();
-foreach (getVarSetupFields() as $field) {
+foreach ($database->getVarSetupFields() as $field) {
     if (!(in_array($field['field_name'], array('var_name')))) {
         $fields[] = $field;
     }
 }
-$values = getVarSetupValues();
+$values = $product->getVariationDetailValues();
 ?>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <script src="/scripts/jquery.doubleScroll.js"></script>
 <h2>Set Variations for <?php echo $product->details['item_title']->text; ?></h2>
 <?php
-if (!(producExists($product))) {
+if (!($product->onServer())) {
     echo "<p><input id='reset_variations' type=button value='Reset Variations' /> <span class=error>Warning: This will delete any existing variations</span></p>";
 }
 ?>

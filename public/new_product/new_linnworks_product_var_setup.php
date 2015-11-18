@@ -9,7 +9,8 @@ if (isset($_SESSION['new_product'])) {
     header('Location: new_product_start.php');
     exit();
 }
-
+$api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+$database = new STCAdmin\Database();
 if (isset($_POST['variation_types']) && isset($_POST['variations'])) {
     $variationTypes = json_decode($_POST['variation_types'], true);
     $variationList = json_decode($_POST['variations'], true);
@@ -23,7 +24,7 @@ if (isset($_POST['variation_types']) && isset($_POST['variations'])) {
         }
     }
     foreach ($variationList as $variation) {
-        $new_variation = new NewVariation($product);
+        $new_variation = new STCAdmin\NewVariation($product, $api, $database);
         foreach ($variation as $key => $value) {
             $new_variation -> details[$key] -> set($value);
         }
@@ -38,7 +39,7 @@ if (isset($_POST['variation_types']) && isset($_POST['variations'])) {
         exit();
     }
 }
-$database = new STCAdmin\Database();
+
 require_once($CONFIG['header']);
 ?>
 

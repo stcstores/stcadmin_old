@@ -134,7 +134,8 @@ class Product {
     {
         $item_title = $this->details['item_title']->text;
 
-        if (variationDetailsMatch('mpn')) {
+        if ($this->variationDetailsMatch('mpn')) {
+            $mpn = $this->variations[0]->details['mpn']->text;
             $item_title = $mpn . ' ' . $item_title;
         }
         return $item_title;
@@ -151,11 +152,23 @@ class Product {
                 break;
             }
         }
-        return match;
+        return $match;
     }
 
     public function onServer()
     {
         return $this->api->sku_exists($this->details['sku']->text);
+    }
+
+    public function getVariationDetailValues()
+    {
+        $variationValues = array();
+        foreach ($this->variations as $variation) {
+            foreach ($variation->details as $key => $value) {
+                $newArray[$key] = htmlspecialchars($value->text);
+            }
+            $variations[] = $newArray;
+        }
+        return $variationValues;
     }
 }
