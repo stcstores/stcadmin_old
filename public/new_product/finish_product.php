@@ -21,7 +21,7 @@ echo "<input type=button value='Create Product' id=create_product ";
 if ($product->onServer()) {
     echo ' disabled ';
 }
-    echo "/>\n";
+echo "/>\n";
 ?>
     <h3>Basic Product Info <a class="editlink" href="new_linnworks_product_1_basic_info.php" >Edit</a></h3>
     <table>
@@ -89,99 +89,100 @@ if ($product->onServer()) {
         </tr>
     </table>
 
-    <?php
-            if (count($product->variations) > 0) {
-                echo '<h3>Variations<a class="editlink" href="new_linnworks_product_var_table.php" >Edit</a></h3>';
-                echo "<div class=variation_table >";
-                echo "<table id=testvar >";
-                echo "<tr>";
-                $fields = $database->getVarSetupFields();
+<?php
+if (count($product->variations) > 0) {
+    echo '<h3>Variations<a class="editlink" href="new_linnworks_product_var_table.php" >Edit</a></h3>';
+    echo "<div class=variation_table >";
+    echo "<table id=testvar >";
+    echo "<tr>";
+    $fields = $database->getVarSetupFields();
 
-                $ignoreFields = ['var_append'];
-                echo "<th>SKU</th>";
-                foreach ($fields as $field) {
-                    if (!(in_array($field['field_name'], $ignoreFields))) {
-                        echo "<th>";
-                        echo $field['field_title'];
-                        echo "</th>";
-                    }
-                }
-                echo "<th>Images</th>";
+    $ignoreFields = ['var_append'];
+    echo "<th>SKU</th>";
+    foreach ($fields as $field) {
+        if (!(in_array($field['field_name'], $ignoreFields))) {
+            echo "<th>";
+            echo $field['field_title'];
+            echo "</th>";
+        }
+    }
+    echo "<th>Images</th>";
 
-                $var_names = array();
-                foreach ($product->variations as $variation) {
-                    $var_names[] = $variation->getLinnTitle();
-                }
-                $max_var_name = max(array_map('strlen', $var_names));
+    $var_names = array();
+    foreach ($product->variations as $variation) {
+        $var_names[] = $variation->getLinnTitle();
+    }
+    $max_var_name = max(array_map('strlen', $var_names));
 
-                foreach ($product->variations as $variation) {
-                    echo "<tr>";
-                    echo "<td><input value='" . $variation->details['sku']->text . "' class=disabled readonly size=11 /></td>";
-                    foreach ($fields as $field) {
-                        if (!(in_array($field['field_name'], $ignoreFields))) {
-                            $var_values = array();
-                            foreach ($product->variations as $_variation) {
-                                $var_values[] = $_variation->details[$field['field_name']]->text;
-                            }
-                            $field_size = max(array_map('strlen', $var_values));
-                            if ($field_size < 5) {
-                                $field_size = 5;
-                            }
-                            echo "<td>";
-                            echo '<input value="';
-                            if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
-                                echo '&pound;' . sprintf("%0.2f",$variation->details[$field['field_name']]->text) .'" size=5';
-                            } else if ($field['field_name'] == 'var_name') {
-                                echo $variation->getLinnTitle() . '" size="' . $max_var_name . ' "';
-                            } else {
-                                echo $variation->details[$field['field_name']]->text .'" size=' . $field_size;
-                            }
-                            echo " class=disabled readonly /></td>\n";
-                        }
-                    }
-                    echo "<td class=image_row>";
-                    foreach ($variation->images->images as $image) {
-                        echo "<img class=in_table_image src='" . $image->thumbPath . "' />";
-                    }
-                    echo "</td>";
-                    echo "</tr>";
+    foreach ($product->variations as $variation) {
+        echo "<tr>";
+        echo "<td><input value='" . $variation->details['sku']->text . "' class=disabled readonly size=11 /></td>";
+        foreach ($fields as $field) {
+            if (!(in_array($field['field_name'], $ignoreFields))) {
+                $var_values = array();
+                foreach ($product->variations as $_variation) {
+                    $var_values[] = $_variation->details[$field['field_name']]->text;
                 }
-                echo "</table>";
-                echo "</div>";
-            } else {
-                echo '<h3>Extended Properties<a class="editlink" href="new_linnworks_product_2_extended_properties.php" >Edit</a></h3>';
-                echo "<table>";
-                $fields = $database->getFormFieldsByPage('extended_properties');
-                foreach ($fields as $field) {
-                    echo "<tr>";
-                    echo "<td>";
-                    echo $field['field_title'];
-                    echo "</td>";
-                    echo "<td>";
-                    echo '<input value="';
-                    if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
-                        echo '&pound;' . sprintf("%0.2f",$product->details[$field['field_name']]->text) .'" size="5';
-                    } else {
-                        echo $product->details[$field['field_name']]->text .'" size=' . strlen($product->details[$field['field_name']]->text);
-                    }
-                    echo '" class=disabled readonly />';
-                    echo "</td>";
-                    echo "</tr>";
+                $field_size = max(array_map('strlen', $var_values));
+                if ($field_size < 5) {
+                    $field_size = 5;
                 }
-                echo "</table>";
+                echo "<td>";
+                echo '<input value="';
+                if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
+                    echo '&pound;' . sprintf("%0.2f", $variation->details[$field['field_name']]->text) .'" size=5';
+                } else if ($field['field_name'] == 'var_name') {
+                    echo $variation->getLinnTitle() . '" size="' . $max_var_name . ' "';
+                } else {
+                    echo $variation->details[$field['field_name']]->text .'" size=' . $field_size;
+                }
+                echo " class=disabled readonly /></td>\n";
             }
-            ?>
-    <h3>Images</h3>
-    <table>
-        <tr>
-            <?php
-                foreach ($product->images->images as $image) {
-                    echo "<td class=image_row><img class=in_table_image src='" . $image->thumbPath . "' /></td>";
-                }
-            ?>
-        </tr>
-    </table>
-
+        }
+        echo "<td class=image_row>";
+        foreach ($variation->images->images as $image) {
+            echo "<img class=in_table_image src='" . $image->thumbPath . "' />";
+        }
+        echo "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+    echo "</div>";
+} else {
+    echo '<h3>Extended Properties<a class="editlink" ';
+    echo 'href="new_linnworks_product_2_extended_properties.php" >Edit</a></h3>';
+    echo "<table>";
+    $fields = $database->getFormFieldsByPage('extended_properties');
+    foreach ($fields as $field) {
+        echo "<tr>";
+        echo "<td>";
+        echo $field['field_title'];
+        echo "</td>";
+        echo "<td>";
+        echo '<input value="';
+        if (in_array($field['field_name'], array('shipping_price', 'retail_price', 'purchase_price'))) {
+            echo '&pound;' . sprintf("%0.2f", $product->details[$field['field_name']]->text) .'" size="5';
+        } else {
+            echo $product->details[$field['field_name']]->text;
+            echo '" size=' . strlen($product->details[$field['field_name']]->text);
+        }
+        echo '" class=disabled readonly />';
+        echo "</td>";
+        echo "</tr>";
+    }
+    echo "</table>";
+}
+if (count($product->images->images > 0)) {
+    echo "<h3>Images</h3>\n";
+    echo "<table>\n";
+    echo "<tr>";
+    foreach ($product->images->images as $image) {
+        echo "<td class=image_row><img class=in_table_image src='" . $image->thumbPath . "' /></td>";
+    }
+    echo "</tr>\n";
+    echo "</table>\n";
+}
+?>
     <h3>eBay Details<a class="editlink" href="new_linnworks_product_ebay.php" >Edit</a></h3>
     <table>
         <tr>
