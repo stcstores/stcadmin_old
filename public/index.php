@@ -4,7 +4,7 @@ require_once($CONFIG['include']);
 checkLogin();
 require_once($CONFIG['header']);
 
-$database = new DatabaseConnection();
+$database = new STCAdmin\Database();
 $query = "SELECT id, header FROM stcadmin_news WHERE display=TRUE ORDER BY timestamp DESC LIMIT 50;";
 $result = $database -> selectQuery($query);
 
@@ -12,7 +12,7 @@ $result = $database -> selectQuery($query);
 
 <div class=pagebox>
     <h2>Welcome to STC Admin</h2>
-    
+
     <p>From here you Can:</p>
     <ul>
         <li><a href='new_product/new_product_start.php' >Add a new product to Linnworks</a></li>
