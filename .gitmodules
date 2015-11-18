@@ -1,0 +1,3 @@
+[submodule "private/lib/LSPHP"]
+	path = private/lib/LSPHP
+	url = ssh://lseagle@lsgit.uk/~/lsgit.uk/LSPHP.git
