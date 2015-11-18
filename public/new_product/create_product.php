@@ -10,13 +10,14 @@ if (isset($_SESSION['new_product'])) {
     exit();
 }
 
-$api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+$database = new STCAdmin\Database();
+$api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
 function getCreateInventoryItem($product)
 {
     $item = array();
     $item['ItemNumber'] = (string)$product->details['sku']->api_value;
-    $item['ItemTitle'] = get_linn_title($product);
+    $item['ItemTitle'] = $product->getLinnTitle();
     $item['BarcodeNumber'] = (string)$product->details['barcode']->api_value;
     $item['PurchasePrice'] = (string)$product->details['purchase_price']->api_value;
     $item['RetailPrice'] = (string)$product->details['retail_price']->api_value;
@@ -60,7 +61,7 @@ function getUpdateInventoryItem($api, $product)
 {
     $item = array();
     $item['ItemNumber'] = (string)$product->details['sku']->api_value;
-    $item['ItemTitle'] = get_linn_title($product);
+    $item['ItemTitle'] = $product->getLinnTitle();
     $item['BarcodeNumber'] = (string)$product->details['barcode']->api_value;
     $purchasePrice = (string)$product->details['purchase_price']->api_value;
     if ($purchasePrice == "") {
@@ -162,7 +163,7 @@ function requestExtendedProperties($api, $product, $product_type)
 function createExtendedProperty($product, $name, $value, $type)
 {
     $exProp = array();
-    $exProp['pkRowId'] = createGUID();
+    $exProp['pkRowId'] = $product->createGUID();
     $exProp['fkStockItemId'] = (string)$product->details['guid']->api_value;
     $exProp['ProperyName'] = $name;
     $exProp['PropertyValue'] = $value;
@@ -330,21 +331,21 @@ function getAddTitlesForProduct($product)
 {
     $guid = $product->details['guid']->text;
     $ebay = array();
-    $ebay['pkRowId'] = createGUID();
+    $ebay['pkRowId'] = $product->createGUID();
     $ebay['Source'] = 'EBAY';
     $ebay['SubSource'] = 'EBAY0';
     $ebay['Title'] = $product->details['ebay_title']->api_value;
     $ebay['StockItemId'] = $guid;
 
     $amazon = array();
-    $amazon['pkRowId'] = createGUID();
+    $amazon['pkRowId'] = $product->createGUID();
     $amazon['Source'] = 'AMAZON';
     $amazon['SubSource'] = 'Stc Stores';
     $amazon['Title'] = $product->details['item_title']->api_value;
     $amazon['StockItemId'] = $guid;
 
     $shopify = array();
-    $shopify['pkRowId'] = createGUID();
+    $shopify['pkRowId'] = $product->createGUID();
     $shopify['Source'] = 'SHOPIFY';
     $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
     $shopify['Title'] = $product->details['item_title']->api_value;
@@ -380,21 +381,21 @@ function getAddPricesForProduct($product)
 
     $guid = $product->details['guid']->api_value;
     $ebay = array();
-    $ebay['pkRowId'] = createGUID();
+    $ebay['pkRowId'] = $product->createGUID();
     $ebay['Source'] = 'EBAY';
     $ebay['SubSource'] = 'EBAY0';
     $ebay['Price'] = (string)$priceWithShipping;
     $ebay['StockItemId'] = $guid;
 
     $amazon = array();
-    $amazon['pkRowId'] = createGUID();
+    $amazon['pkRowId'] = $product->createGUID();
     $amazon['Source'] = 'AMAZON';
     $amazon['SubSource'] = 'Stc Stores';
     $amazon['Price'] = (string)$priceWithShipping;
     $amazon['StockItemId'] = $guid;
 
     $shopify = array();
-    $shopify['pkRowId'] = createGUID();
+    $shopify['pkRowId'] = $product->createGUID();
     $shopify['Source'] = 'SHOPIFY';
     $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
     $shopify['Price'] = $price;
@@ -427,24 +428,24 @@ function getAddDescriptionsForProduct($product)
 {
     $guid = $product->details['guid']->api_value;
     $ebay = array();
-    $ebay['pkRowId'] = createGUID();
+    $ebay['pkRowId'] = $product->createGUID();
     $ebay['Source'] = 'EBAY';
     $ebay['SubSource'] = 'EBAY0';
-    $ebay['Description'] = to_html($product->details['short_description']->api_value);
+    $ebay['Description'] = $product->toHTML($product->details['short_description']->api_value);
     $ebay['StockItemId'] = $guid;
 
     $amazon = array();
-    $amazon['pkRowId'] = createGUID();
+    $amazon['pkRowId'] = $product->createGUID();
     $amazon['Source'] = 'AMAZON';
     $amazon['SubSource'] = 'Stc Stores';
     $amazon['Description'] = $product->details['short_description']->api_value;
     $amazon['StockItemId'] = $guid;
 
     $shopify = array();
-    $shopify['pkRowId'] = createGUID();
+    $shopify['pkRowId'] = $product->createGUID();
     $shopify['Source'] = 'SHOPIFY';
     $shopify['SubSource'] = 'stcstores.co.uk (shopify)';
-    $shopify['Description'] = to_html($product->details['short_description']->api_value);
+    $shopify['Description'] = $product->toHTML($product->details['short_description']->api_value);
     $shopify['StockItemId'] = $guid;
 
     return array($ebay, $amazon, $shopify);
