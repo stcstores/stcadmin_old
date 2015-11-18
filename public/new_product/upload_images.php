@@ -15,7 +15,7 @@ if ($product->details['var_type']->value == true) {
 
 if (isset($_POST['sku'])) {
     if (is_array($_FILES)) {
-        $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+        $api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
         $i=0;
         $sku = $_POST['sku'];
         $errors = array();
