@@ -91,4 +91,66 @@ class Product {
         }
         return $array;
     }
+
+    public function toHTML($string)
+    {
+        $lines = explode("\n", $string);
+        $new_string = "";
+        foreach ($lines as $line) {
+            if (trim($line) == '') {
+                $new_string = $new_string . "<br />\n";
+            } else {
+                $new_string = $new_string . "<p>" . trim($line) . "</p>\n";
+            }
+        }
+        return $new_string;
+    }
+
+    public function getLinnTitle()
+    {
+        if (count($this->variations) > 1) {
+            return $this->getLinnTitleForVariationParent();
+        } else {
+            return getLinnTitleForSingleItem();
+        }
+    }
+
+    private function getLinnTitleForSingleItem()
+    {
+        $item_title = $this->details['item_title']->text;
+        $location = $this->details['location']->text;
+        $mpn = $this->details['mpn']->text;
+        if (strlen($mpn) > 0) {
+            $item_title = $mpn . ' ' . $item_title;
+        }
+
+        if (strlen($location) > 0) {
+            $item_title = $location . ' ' . $item_title;
+        }
+        return $item_title;
+    }
+
+    private function getLinnTitleForVariationParent()
+    {
+        $item_title = $this->details['item_title']->text;
+
+        if (variationDetailsMatch('mpn')) {
+            $item_title = $mpn . ' ' . $item_title;
+        }
+        return $item_title;
+    }
+
+    public function variationDetailsMatch($detail)
+    {
+        $match = true;
+        $detail_value = $this->variations[0]->details[$detail]->text;
+        foreach ($this->variations as $variation) {
+            $this_detail = $variation->details[$detail]->text;
+            if ($this_detail == '' || $this_detail != $detail_value) {
+                $match = false;
+                break;
+            }
+        }
+        return match;
+    }
 }

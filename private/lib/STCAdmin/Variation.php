@@ -2,12 +2,19 @@
 namespace STCAdmin;
 
 class Variation  extends Product {
-    public function __construct($product)
+    public function __construct($product, $api, $database)
     {
         $this->product = $product;
-        $this->errors = $this->createFieldsArray();
-        $this->details['sku'] = new SKU('sku', $this);
-        $this->details['guid'] = new GUID('guid', $this);
+        $this->api = $api;
+        $this->database = $database;
+        $this->errors = $this->product->createFieldsArray();
+        $this->createDetails();
+    }
+
+    public function createDetails()
+    {
+        $this->details['sku'] = new ProductDetail('sku', $this);
+        $this->details['guid'] = new ProductDetail('guid', $this);
         $this->details['var_append'] = new ProductDetail('var_append', $this);
 
         //basic info
@@ -60,13 +67,36 @@ class Variation  extends Product {
         $this->details['ebay_title'] = new ProductDetail('ebay_title', $this);
         $this->details['ebay_title']->set($product->details['ebay_title']->value);
 
-        $this->keyFields = array();
-        foreach (getKeyFields() as $keyField) {
-            $this->keyFields[$keyField['field_name']] = false;
+        $this -> images = new Images();
+
+        $this -> images = new Images();
+    }
+
+    public function getLinnTitle()
+    {
+        $product_title = $this->product->details['item_title']->text;
+        $location = $this->details['location']->text;
+        $mpn = $this->details['mpn']->text;
+        $var_append = $this->details['var_append']->text;
+        $item_title = '';
+        if (strlen($location) > 0) {
+            $item_title = $item_title . $location . ' ';
         }
-
-        $this -> images = new Images();
-
-        $this -> images = new Images();
+        if (strlen($mpn) > 0) {
+            $item_title = $item_title . $mpn . ' ';
+        }
+        $item_title = $item_title . $product_title . ' ';
+        $keyFields = $this->product->keyFields;
+        foreach ($keyFields as $field => $isKey) {
+            if ($isKey) {
+                $item_title = $item_title . '{ ';
+                $item_title = $item_title . $variation->details[$field]->text;
+                $item_title = $item_title . ' } ';
+            }
+        }
+        if ($var_append != '') {
+            $item_title = $item_title . $var_append;
+        }
+        return trim($item_title);
     }
 }
