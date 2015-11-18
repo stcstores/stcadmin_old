@@ -38,7 +38,7 @@ if (isset($_POST['variation_types']) && isset($_POST['variations'])) {
         exit();
     }
 }
-
+$database = new STCAdmin\Database();
 require_once($CONFIG['header']);
 ?>
 
@@ -87,7 +87,7 @@ require_once($CONFIG['header']);
 
 ?>
 <script>
-    keyFields = <?php echo json_encode(getKeyFields()); ?>;
+    keyFields = <?php echo json_encode($database->getKeyFields()); ?>;
 </script>
 <script src=/scripts/var_setup.js ></script>
 <script src=/scripts/formstyle.js ></script>
