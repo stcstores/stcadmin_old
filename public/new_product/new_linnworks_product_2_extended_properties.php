@@ -26,8 +26,8 @@ if ( !empty($_POST) ) {
 }
 
 require_once($CONFIG['header']);
-
-$fields = getFormFieldsByPage('extended_properties');
+$database = new STCAdmin\Database();
+$fields = $database->getFormFieldsByPage('extended_properties');
 ?>
 <div class=small_form_container>
     <form method='post' enctype='multipart/form-data'>
