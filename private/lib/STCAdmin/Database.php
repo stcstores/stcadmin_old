@@ -9,19 +9,21 @@ class Database extends \LSPHP\DatabaseConnection {
         $database = "seatontrading";
         $user = "seatontrading";
         $passwd = "Cosworth1";
+        $formFieldTable = 'new_product_form_field';
+        $specialCharactersTable = 'special_characters';
         parent::__construct($host, $database, $user, $passwd);
     }
 
     public function getKeyFields()
     {
-        $selectQuery = "SELECT field_name, field_title FROM new_product_form_field WHERE `can_be_key` = TRUE ORDER BY position;";
+        $selectQuery = "SELECT field_name, field_title FROM {$formFieldTable} WHERE `can_be_key` = TRUE ORDER BY position;";
         $results = $this->selectQuery($selectQuery);
         return $results;
     }
 
     public function getFormFieldsByPage($page)
     {
-        $query = "SELECT * FROM new_product_form_field WHERE page='{$page}' ORDER BY position;";
+        $query = "SELECT * FROM {$formFieldTable} WHERE page='{$page}' ORDER BY position;";
         $results = $this->selectQuery($query);
         return $results;
     }
@@ -42,7 +44,7 @@ class Database extends \LSPHP\DatabaseConnection {
 
     public function getExtendedProperties()
     {
-        $selectQuery = "SELECT field_name, field_title FROM new_product_form_field WHERE csv='extended'";
+        $selectQuery = "SELECT field_name, field_title FROM {$formFieldTable} WHERE csv='extended'";
         $results = $this->selectQuery($selectQuery);
         $extendedProps = array();
         foreach ($results as $result) {
@@ -53,7 +55,7 @@ class Database extends \LSPHP\DatabaseConnection {
 
     public function getSpecialCharacters()
     {
-        $selectQuery = "SELECT sc, name FROM special_characters;";
+        $selectQuery = "SELECT sc, name FROM {$specialCharactersTable};";
         $results = $this->selectQuery($selectQuery);
         return $results;
     }
