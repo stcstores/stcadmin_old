@@ -58,7 +58,7 @@ class LinnworksAPI
     public function make_request($url, $data)
     {
         $requestURL = $url . '?token=' . $this->token;
-        $this -> rawRequest($requestURL, $data);
+        return $this -> rawRequest($requestURL, $data);
     }
 
     public function request($url, $data = null)

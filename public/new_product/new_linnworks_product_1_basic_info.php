@@ -4,6 +4,8 @@
     require_once($CONFIG['include']);
     checkLogin();
 
+$api = new LinnworksAPI\LinnworksAPI('stcstores@yahoo.com', 'cosworth');
+
 if ( !empty($_POST) ) {
     $product = add_basic_info();
     if (isset($_POST['previous'])) {
@@ -29,16 +31,15 @@ if ( !empty($_POST) ) {
     }
 
 } else {
-    if (isset($_SESSION['new_product'])){
+    if (isset($_SESSION['new_product'])) {
         $product = $_SESSION['new_product'];
     } else {
-        $product = new NewProduct();
+        $database = new STCAdmin\Database();
+        $product = new STCAdmin\NewProduct($database, $api);
     }
 }
 
 require_once($CONFIG['header']);
-
-$api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
 ?>
 
