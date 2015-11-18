@@ -13,11 +13,12 @@ if (isset($_SESSION['new_product'])) {
     header('Location: new_product_start.php');
     exit();
 }
-$api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
-$item_title = get_linn_title($product);
+$api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+$database = new STCAdmin\Database();
+$item_title = $product->getLinnTitle();
 
 echo "<input type=button value='Create Product' id=create_product ";
-if (producExists($product)) {
+if ($product->onServer()) {
     echo ' disabled ';
 }
     echo "/>\n";
@@ -58,7 +59,7 @@ if (producExists($product)) {
             <td>Department</td>
             <?php
             $department = $product->details['department']->text;
-             $size = strlen($product->details['department']->text) + 2;
+            $size = strlen($product->details['department']->text) + 2;
             ?>
             <td><input value="<?php echo $department; ?>" size="<?php echo $size; ?>" class=disabled readonly /></td>
         </tr>
@@ -150,7 +151,7 @@ if (producExists($product)) {
             } else {
                 echo '<h3>Extended Properties<a class="editlink" href="new_linnworks_product_2_extended_properties.php" >Edit</a></h3>';
                 echo "<table>";
-                $fields = getFormFieldsByPage('extended_properties');
+                $fields = $database->getFormFieldsByPage('extended_properties');
                 foreach ($fields as $field) {
                     echo "<tr>";
                     echo "<td>";
@@ -189,8 +190,8 @@ if (producExists($product)) {
         </tr>
         <tr>
             <td>eBay Description</td>
-            <td><div class=description ><?php echo to_html($product->details['short_description']->text); ?></div></td>
-            <td><textarea rows=15 cols=50 class=disabled readonly ><?php echo to_html($product->details['short_description']->text); ?></textarea></td></td>
+            <td><div class=description ><?php echo $product->toHTML($product->details['short_description']->text); ?></div></td>
+            <td><textarea rows=15 cols=50 class=disabled readonly ><?php echo $product->toHTML($product->details['short_description']->text); ?></textarea></td></td>
         </tr>
     </table>
     <?php if (count($product->variations) == 0) { ?>
