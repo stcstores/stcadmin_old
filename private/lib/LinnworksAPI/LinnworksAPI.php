@@ -1,6 +1,5 @@
 <?php
-
-require_once($CONFIG['inventory_item_class']);
+namespace LinnworksAPI;
 
 set_time_limit(15000);
 
@@ -42,11 +41,10 @@ class LinnworksAPI
         return $curl;
     }
 
-    private function make_request($url, $data)
-    {
+    private function rawRequest($requestURL, $data) {
         $curl = $this->curl;
         $datastring = http_build_query($data);
-        curl_setopt($curl, CURLOPT_URL, $url . '?token=' . $this->token);
+        curl_setopt($curl, CURLOPT_URL, $requestURL);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $datastring);
         $information = curl_getinfo($curl);
         $response = curl_exec($curl);
@@ -55,6 +53,12 @@ class LinnworksAPI
         $body = substr($response, $header_size);
         $responseJson = json_decode($body, true);
         return $responseJson;
+    }
+
+    public function make_request($url, $data)
+    {
+        $requestURL = $url . '?token=' . $this->token;
+        $this -> rawRequest($requestURL, $data);
     }
 
     public function request($url, $data = null)
@@ -71,10 +75,10 @@ class LinnworksAPI
         $loginURL = 'https://api.linnworks.net/api/Auth/Multilogin';
         $authURL = 'https://api.linnworks.net/api/Auth/Authorize';
         $data = array('userName' => $this -> username, 'password' => $this -> password);
-        $multiLogin = $this -> make_request($loginURL, $data);
+        $multiLogin = $this -> rawRequest($loginURL, $data);
         $this -> userID = $multiLogin[0]['Id'];
         $data['userId'] = $this -> userID;
-        $authorise = $this -> make_request($authURL, $data);
+        $authorise = $this -> rawRequest($authURL, $data);
         $_SESSION['token'] = $authorise['Token'];
         $this -> token = $authorise['Token'];
         $_SESSION['server'] = $authorise['Server'];

@@ -13,17 +13,6 @@ function getValuesFromDatabase($table, $column){
     return $resultArray;
 }
 
-function getDatabaseColumn($table, $column){
-    $database = new DatabaseConnection();
-    $query = "SELECT {$column} FROM {$table};";
-    //echo $query;
-    $results = $database -> selectQuery($query);
-    foreach ($results as $result) {
-        $resultArray[] = $result[$column];
-    }
-    return $resultArray;
-}
-
 function getShippingMethods($api){
     $response = $api->getShippingMethods();
     $shippingMethods = array();
@@ -38,11 +27,6 @@ function getFormFieldsByPage($page){
     $query = "SELECT * FROM new_product_form_field WHERE page='{$page}' ORDER BY position;";
     $results = $database->selectQuery($query);
     return $results;
-}
-
-function generateSku() {
-    $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
-    return $api->get_new_sku();
 }
 
 function addSkuToDatabase($sku) {
@@ -170,13 +154,6 @@ function getSpecialCharacters() {
     return $results;
 }
 
-function getKeyFields() {
-    $selectQuery = "SELECT field_name, field_title FROM new_product_form_field WHERE `can_be_key` = TRUE ORDER BY position;";
-    $database = new DatabaseConnection();
-    $results = $database->selectQuery($selectQuery);
-    return $results;
-}
-
 function list_pending_products() {
     $basicInfoCsv = new BasicInfoFile();
     $basicInfo = $basicInfoCsv->read();
@@ -209,13 +186,6 @@ function list_pending_products() {
     }
 
     return $pending_products;
-}
-
-function createGUID() {
-    $guid = shell_exec('python ' . dirname($_SERVER['DOCUMENT_ROOT']) . '/private/get_uuid.py');
-    $guid = str_replace(array("\r", "\n"), '', $guid);
-    return $guid;
-
 }
 
 function to_html($string) {
