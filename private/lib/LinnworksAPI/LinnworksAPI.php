@@ -24,7 +24,15 @@ class LinnworksAPI
         }
     }
 
-    private function curlSetup()
+    public function getCurl()
+    {
+        if (!(is_resource($this->curl))) {
+            $this->curl = $this->curlSetup();
+        }
+        return $this->curl;
+    }
+
+    public function curlSetup()
     {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_POST, true);
@@ -41,8 +49,9 @@ class LinnworksAPI
         return $curl;
     }
 
-    private function rawRequest($requestURL, $data) {
-        $curl = $this->curl;
+    private function rawRequest($requestURL, $data)
+    {
+        $curl = $this->getCurl();
         $datastring = http_build_query($data);
         curl_setopt($curl, CURLOPT_URL, $requestURL);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $datastring);
