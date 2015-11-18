@@ -3,27 +3,28 @@ namespace STCAdmin;
 
 class Database extends \LSPHP\DatabaseConnection {
 
+    private $formFieldTable = 'new_product_form_field';
+    private $specialCharactersTable = 'special_characters';
+
     public function __construct()
     {
         $host = "mysql.stcadmin.stcstores.co.uk";
         $database = "seatontrading";
         $user = "seatontrading";
         $passwd = "Cosworth1";
-        $formFieldTable = 'new_product_form_field';
-        $specialCharactersTable = 'special_characters';
         parent::__construct($host, $database, $user, $passwd);
     }
 
     public function getKeyFields()
     {
-        $selectQuery = "SELECT field_name, field_title FROM {$formFieldTable} WHERE `can_be_key` = TRUE ORDER BY position;";
+        $selectQuery = "SELECT field_name, field_title FROM {$this->formFieldTable} WHERE `can_be_key` = TRUE ORDER BY position;";
         $results = $this->selectQuery($selectQuery);
         return $results;
     }
 
     public function getFormFieldsByPage($page)
     {
-        $query = "SELECT * FROM {$formFieldTable} WHERE page='{$page}' ORDER BY position;";
+        $query = "SELECT * FROM {$this->$formFieldTable} WHERE page='{$page}' ORDER BY position;";
         $results = $this->selectQuery($query);
         return $results;
     }
@@ -44,7 +45,7 @@ class Database extends \LSPHP\DatabaseConnection {
 
     public function getExtendedProperties()
     {
-        $selectQuery = "SELECT field_name, field_title FROM {$formFieldTable} WHERE csv='extended'";
+        $selectQuery = "SELECT field_name, field_title FROM {$this->$formFieldTable} WHERE csv='extended'";
         $results = $this->selectQuery($selectQuery);
         $extendedProps = array();
         foreach ($results as $result) {
@@ -55,7 +56,7 @@ class Database extends \LSPHP\DatabaseConnection {
 
     public function getSpecialCharacters()
     {
-        $selectQuery = "SELECT sc, name FROM {$specialCharactersTable};";
+        $selectQuery = "SELECT sc, name FROM {$this->$specialCharactersTable};";
         $results = $this->selectQuery($selectQuery);
         return $results;
     }
