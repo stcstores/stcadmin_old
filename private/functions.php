@@ -2,7 +2,7 @@
 
 set_time_limit ( 150 );
 
-function getValuesFromDatabase($table, $column){
+/*function getValuesFromDatabase($table, $column){
     $database = new DatabaseConnection();
     $query = "SELECT {$column} FROM {$table} ORDER BY is_default DESC, {$column};";
     //echo $query;
@@ -22,7 +22,7 @@ function getValuesFromDatabase($table, $column){
     return $shippingMethods;
 }*/
 
-function isValidPrice($price)
+/*function isValidPrice($price)
 {
     if (is_numeric($price)) {
         return true;
