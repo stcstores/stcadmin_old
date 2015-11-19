@@ -144,8 +144,8 @@ function add_extended_properties($product)
     if (isset($_POST['quantity'])) {
         $product->details['quantity']->set($_POST['quantity']);
     }
-
-    $intPostagePrices = get_international_shipping($product->details['weight']->value);
+    $shippingLookup = new STCAdmin\CSV\InternationalShippingLookup();
+    $intPostagePrices = $shippingLookup->getInternationalShipping($product->details['weight']->value);
     $product->details['shipping_fr']->set($intPostagePrices['fr']);
     $product->details['shipping_de']->set($intPostagePrices['de']);
     $product->details['shipping_eu']->set($intPostagePrices['eu']);
