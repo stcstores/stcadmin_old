@@ -1,5 +1,5 @@
 <?php
-namespace STCAdmin;
+namespace STCAdmin\Product;
 
 class NewProduct extends Product {
 

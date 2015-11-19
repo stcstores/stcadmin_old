@@ -9,10 +9,7 @@
     session_start();
     require_once($CONFIG['login_functions']);
     require_once($CONFIG['colours']);
-    require_once($CONFIG['functions']);
+    //require_once($CONFIG['functions']);
     require_once($CONFIG['catch']);
     require_once($CONFIG['forms']);
     //require_once($CONFIG['api_class']);
-
-
-?>

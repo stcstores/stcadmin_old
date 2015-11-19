@@ -54,7 +54,7 @@ if (isset($_POST['sku'])) {
         $guid = $response[0]['FileId'];
         $thumbPath = $response[0]['ThumbnailUrl'];
         $fullPath = $response[0]['ImageUrl'];
-        $currentProduct->images->addImage($guid, $thumbPath, $fullPath);
+        $currentProduct->addImage($guid, $thumbPath, $fullPath);
     }
     print_r($response);
 } else if (isset($_POST['field'])) {
@@ -85,7 +85,7 @@ if (isset($_POST['sku'])) {
                         $guid = $response[0]['FileId'];
                         $thumbPath = $response[0]['ThumbnailUrl'];
                         $fullPath = $response[0]['ImageUrl'];
-                        $variation->images->addImage($guid, $thumbPath, $fullPath);
+                        $variation->addImage($guid, $thumbPath, $fullPath);
                     }
                 }
             }

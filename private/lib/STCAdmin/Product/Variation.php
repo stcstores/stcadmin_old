@@ -1,14 +1,11 @@
 <?php
-namespace STCAdmin;
+namespace STCAdmin\Product;
 
 class Variation  extends Product {
-    public function __construct($product, $api, $database)
+    public function __construct($product, $api)
     {
         $this->product = $product;
-        $this->api = $api;
-        $this->database = $database;
-        $this->errors = $this->product->createFieldsArray();
-        $this->createDetails();
+        parent::__construct($product->database, $api);
     }
 
     public function createDetails()
@@ -58,10 +55,6 @@ class Variation  extends Product {
 
         //chn_ebay
         $this->details['ebay_title'] = new ProductDetails\ProductDetail('ebay_title', $this);
-
-        $this -> images = new Images();
-
-        $this -> images = new Images();
     }
 
     public function getLinnTitle()

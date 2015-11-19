@@ -1,10 +1,10 @@
 <?php
-namespace STCAdmin;
+namespace STCAdmin\Product;
 
 class NewVariation  extends Variation {
-    public function __construct($product, $api, $database)
+    public function __construct($product, $api)
     {
-        parent::__construct($product, $api, $database);
+        parent::__construct($product, $api);
         $this->setDetails();
     }
 

@@ -35,7 +35,7 @@ if ( !empty($_POST) ) {
         $product = $_SESSION['new_product'];
     } else {
         $database = new STCAdmin\Database();
-        $product = new STCAdmin\NewProduct($database, $api);
+        $product = new STCAdmin\Product\NewProduct($database, $api);
     }
 }
 

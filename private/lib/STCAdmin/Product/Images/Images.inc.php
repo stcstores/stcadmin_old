@@ -1,5 +1,5 @@
 <?php
-namespace STCAdmin\ProductDetails;
+namespace STCAdmin\Product\Images;
 
 function load($namespace)
 {

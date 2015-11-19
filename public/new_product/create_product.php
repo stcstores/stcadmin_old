@@ -216,10 +216,10 @@ function getImageAssignArrays($products)
 {
     $imageArrays = array();
     foreach ($products as $item) {
-        if (count($item->images->images) > 0) {
+        if (count($item->images) > 0) {
             $guid = $item->details['guid']->api_value;
             $imageArrays[$guid] = array();
-            foreach ($item->images->images as $image) {
+            foreach ($item->images as $image) {
                 $imageArrays[$guid][] = $image->guid;
             }
         }
@@ -233,9 +233,9 @@ function getPrimaryImages($products)
 {
     $primaryImages = array();
     foreach ($products as $item) {
-        if (count($item->images->images) > 0) {
+        if (count($item->images) > 0) {
             $guid = $item->details['guid']->api_value;
-            $imageGuid = $item->images->images[0]->guid;
+            $imageGuid = $item->images[0]->guid;
             $primaryImages[$guid] = $imageGuid;
         }
     }

@@ -24,7 +24,7 @@ if (isset($_POST['variation_types']) && isset($_POST['variations'])) {
         }
     }
     foreach ($variationList as $variation) {
-        $new_variation = new STCAdmin\NewVariation($product, $api, $database);
+        $new_variation = new STCAdmin\Product\NewVariation($product, $api, $database);
         foreach ($variation as $key => $value) {
             $new_variation -> details[$key] -> set($value);
         }

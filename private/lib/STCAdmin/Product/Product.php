@@ -1,32 +1,30 @@
 <?php
-namespace STCAdmin;
+namespace STCAdmin\Product;
 
 class Product {
     public function __construct($database, $api)
     {
         $this->database = $database;
         $this->api = $api;
-        $this->errors = $this->createFieldsArray();
         $this->variations = array();
-
-
+        $this->images = array();
         $this->createDetails();
-
-        $this->keyFields = array();
-        foreach ($database->getKeyFields() as $keyField) {
-            $this->keyFields[$keyField['field_name']] = false;
-        }
-
-        $this -> images = new Images();
-
+        $this->createKeyFields();
     }
 
     public function createGUID()
     {
-        $guid = shell_exec('python ' . dirname($_SERVER['DOCUMENT_ROOT']) . '/private/get_uuid.py');
+        $guid = shell_exec('python ' . dirname(__FILE__) . '/get_uuid.py');
         $guid = str_replace(array("\r", "\n"), '', $guid);
         return $guid;
+    }
 
+    private function createKeyFields()
+    {
+        $this->keyFields = array();
+        foreach ($this->database->getKeyFields() as $keyField) {
+            $this->keyFields[$keyField['field_name']] = false;
+        }
     }
 
     public function createDetails()
@@ -80,16 +78,6 @@ class Product {
     {
         $this->item_title = $title;
         $this->values['item_title'] = $title;
-    }
-
-    public function createFieldsArray()
-    {
-        $array = array();
-        $fields = $this->database->getColumn('new_product_form_field', 'field_name');
-        foreach ($fields as $field) {
-            $array[$field] = '';
-        }
-        return $array;
     }
 
     public function toHTML($string)
@@ -170,5 +158,37 @@ class Product {
             $variations[] = $newArray;
         }
         return $variationValues;
+    }
+
+    public function setImagePrimary($guid)
+    {
+        $i = 0;
+        foreach ($this->images as $image) {
+            if ($image->guid == $guid) {
+                $newPrimeId = $i;
+            }
+            $i++;
+        }
+        $newPrimeImage = $this->images[$newPrimeId];
+        unset($this->images[$newPrimeId]);
+        array_unshift($this->images, $newPrimeImage);
+    }
+
+    public function addImage($guid, $thumbPath, $fullPath)
+    {
+        $this -> images[] = new Image($guid, $thumbPath, $fullPath);
+    }
+
+    public function removeImage($guid)
+    {
+        $i = 0;
+        foreach ($this->images as $image) {
+            if ($image->guid == $guid) {
+                $idToRemove = $i;
+            }
+            $i++;
+        }
+
+        array_splice($this->images, $idToRemove, 1);
     }
 }

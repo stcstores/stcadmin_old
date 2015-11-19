@@ -7,7 +7,7 @@ function get_image_details($product)
     $data = array();
     $data['image_list'] = array();
     $imageNumber = 0;
-    foreach ($product->images->images as $image) {
+    foreach ($product->images as $image) {
         $imageData = array();
         $imageData['thumbPath'] = $image->thumbPath;
         $imageData['guid'] = $image->guid;

@@ -1,5 +1,5 @@
 <?php
-namespace STCAdmin\ProductDetails;
+namespace STCAdmin\Product\ProductDetails;
 
 class BooleanDetail extends ProductDetail {
     public function set($value)

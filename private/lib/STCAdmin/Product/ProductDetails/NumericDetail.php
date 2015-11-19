@@ -1,5 +1,5 @@
 <?php
-namespace STCAdmin\ProductDetails;
+namespace STCAdmin\Product\ProductDetails;
 
 class NumericDetail extends ProductDetail {
     public function __construct($name, $product)

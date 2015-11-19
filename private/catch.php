@@ -216,12 +216,13 @@ function add_variation($product, $variationDetails)
     }
 
     $max_weight = 0;
-
+    $shippingLookup = new STCAdmin\CSV\InternationalShippingLookup();
     foreach ($product->variations as $variation) {
         if ($variation->details['weight']->value > $max_weight) {
             $max_weight = $variation->details['weight']->value;
         }
-        $intPostagePrices = get_international_shipping($variation->details['weight']->value);
+
+        $intPostagePrices = $shippingLookup->getInternationalShipping($variation->details['weight']->value);
         $variation->details['shipping_fr']->set($intPostagePrices['fr']);
         $variation->details['shipping_de']->set($intPostagePrices['de']);
         $variation->details['shipping_eu']->set($intPostagePrices['eu']);
@@ -230,7 +231,7 @@ function add_variation($product, $variationDetails)
         $variation->details['shipping_row']->set($intPostagePrices['row']);
     }
 
-    $intPostagePrices = get_international_shipping($max_weight);
+    $intPostagePrices = $shippingLookup->getInternationalShipping($max_weight);
     $product->details['shipping_fr']->set($intPostagePrices['fr']);
     $product->details['shipping_de']->set($intPostagePrices['de']);
     $product->details['shipping_eu']->set($intPostagePrices['eu']);

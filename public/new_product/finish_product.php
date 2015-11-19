@@ -140,7 +140,7 @@ if (count($product->variations) > 0) {
             }
         }
         echo "<td class=image_row>";
-        foreach ($variation->images->images as $image) {
+        foreach ($variation->images as $image) {
             echo "<img class=in_table_image src='" . $image->thumbPath . "' />";
         }
         echo "</td>";
@@ -172,11 +172,11 @@ if (count($product->variations) > 0) {
     }
     echo "</table>";
 }
-if (count($product->images->images > 0)) {
+if (count($product->images > 0)) {
     echo "<h3>Images</h3>\n";
     echo "<table>\n";
     echo "<tr>";
-    foreach ($product->images->images as $image) {
+    foreach ($product->images as $image) {
         echo "<td class=image_row><img class=in_table_image src='" . $image->thumbPath . "' /></td>";
     }
     echo "</tr>\n";

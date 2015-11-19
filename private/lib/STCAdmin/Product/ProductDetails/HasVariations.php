@@ -1,5 +1,5 @@
 <?php
-namespace STCAdmin;
+namespace STCAdmin\Product\ProductDetails;
 
 class Has_Variations extends ProductDetail {
     public function __construct($name, $product)
