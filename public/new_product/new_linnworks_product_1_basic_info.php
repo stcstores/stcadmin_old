@@ -4,7 +4,7 @@
     require_once($CONFIG['include']);
     checkLogin();
 
-$api = new LinnworksAPI\LinnworksAPI('stcstores@yahoo.com', 'cosworth');
+$api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
 if ( !empty($_POST) ) {
     $product = add_basic_info();
