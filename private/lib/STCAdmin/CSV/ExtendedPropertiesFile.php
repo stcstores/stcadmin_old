@@ -14,9 +14,10 @@ class ExtendedPropertiesFile extends CsvFile {
 
     public function getRowArray($product)
     {
+        $database = new \STCAdmin\Database();
         $rowsArray = array();
         $sku = $product->details['sku']->text;
-        foreach (getExtendedProperties() as $extendedProp) {
+        foreach ($database->getExtendedProperties() as $extendedProp) {
             if ($product->details[$extendedProp['field_name']]->text != '') {
                 $newRow = array();
                 $newRow[] = $sku;

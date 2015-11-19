@@ -17,8 +17,8 @@ class STCStoresFile extends CsvFile {
     {
         $newRow = array();
         $newRow[] = $product->details['sku']->text;
-        $newRow[] = $product->details['shopify_title']->text;
-        $newRow[] = $product->details['shopify_description']->text;
+        $newRow[] = $product->details['item_title']->text;
+        $newRow[] = $product->toHTML($product->details['short_description']->text);
         return $newRow;
     }
 

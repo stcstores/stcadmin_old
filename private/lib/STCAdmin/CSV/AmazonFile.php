@@ -14,11 +14,6 @@ class AmazonFile extends CsvFile {
             'SKU',
             'Title',
             'Description',
-            'AmazonBullet1',
-            'AmazonBullet2',
-            'AmazonBullet3',
-            'AmazonBullet4',
-            'AmazonBullet5'
         );
     }
 
@@ -26,13 +21,8 @@ class AmazonFile extends CsvFile {
     {
         $newRow = array();
         $newRow[] = $product->details['sku']->text;
-        $newRow[] = $product->details['am_title']->text;
-        $newRow[] = $product->details['am_description']->text;
-        $newRow[] = $product->details['am_bullet_1']->text;
-        $newRow[] = $product->details['am_bullet_2']->text;
-        $newRow[] = $product->details['am_bullet_3']->text;
-        $newRow[] = $product->details['am_bullet_4']->text;
-        $newRow[] = $product->details['am_bullet_5']->text;
+        $newRow[] = $product->details['item_title']->text;
+        $newRow[] = $product->details['short_description']->text;
         return $newRow;
     }
 

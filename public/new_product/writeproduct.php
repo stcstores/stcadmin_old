@@ -2,39 +2,39 @@
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
 
-echo $CSVFILEPATH;
+//echo $CSVFILEPATH;
 
 if (isset($_SESSION['new_product'])) {
-    $varSet = $_SESSION['new_product']->details['var_type']->value;
+    $product = $_SESSION['new_product'];
+    $varSet = (count($product->variations) > 1);
 
     if ($varSet) {
-        $newVarGroupFile = new NewVarGroupFile();
+        $newVarGroupFile = new STCAdmin\CSV\NewVarGroupFile();
 
         $newVarGroupFile->write();
     }
 
-
-    $basicInfoFile = new BasicInfoFile();
+    $basicInfoFile = new STCAdmin\CSV\BasicInfoFile();
     $basicInfoFile->write();
 
     if ($varSet) {
-        $addToVarGroupFile = new AddToVarGroupFile();
+        $addToVarGroupFile = new STCAdmin\CSV\AddToVarGroupFile();
         $addToVarGroupFile->write();
     }
 
-    $imageUrlFile = new ImageUrlFile();
+    $imageUrlFile = new STCAdmin\CSV\ImageUrlFile();
     $imageUrlFile->write();
 
-    $extendedPropertiesFile = new ExtendedPropertiesFile();
+    $extendedPropertiesFile = new STCAdmin\CSV\ExtendedPropertiesFile();
     $extendedPropertiesFile->write();
 
-    $ebayChannelFile = new EbayFile();
+    $ebayChannelFile = new STCAdmin\CSV\EbayFile();
     $ebayChannelFile->write();
 
-    $stcStoresFile = new StcStoresFile();
+    $stcStoresFile = new STCAdmin\CSV\STCStoresFile();
     $stcStoresFile->write();
 
-    $amazonFile = new AmazonFile();
+    $amazonFile = new STCAdmin\CSV\AmazonFile();
     $amazonFile->write();
 
 

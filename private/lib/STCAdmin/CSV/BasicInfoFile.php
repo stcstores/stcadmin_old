@@ -47,7 +47,7 @@ class BasicInfoFile extends CsvFile {
                 foreach ($product->variations as $variation) {
                     $varArray = array(
                         'SKU' => $variation->details['sku']->text,
-                        'Title' => $variation->details['var_name']->text,
+                        'Title' => $variation->getLinnTitle(),
                         'PurchasePrice' => $variation->details['purchase_price']->text,
                         'RetailPrice' => $variation->details['retail_price']->text,
                         'Weight' => $variation->details['weight']->text,
@@ -65,7 +65,7 @@ class BasicInfoFile extends CsvFile {
             } else {
                 $rowsArray[] = array(
                     'SKU' => $product->details['sku']->text,
-                    'Title' => $product->details['item_title']->text,
+                    'Title' => $product->getLinnTitle(),
                     'PurchasePrice' => $product->details['purchase_price']->text,
                     'RetailPrice' => $product->details['retail_price']->text,
                     'Weight' => $product->details['weight']->text,

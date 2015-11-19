@@ -15,7 +15,7 @@ class NewVarGroupFile extends CsvFile {
     public function write()
     {
         $product = $_SESSION['new_product'];
-        $title = $product->details['item_title']->text;
+        $title = $product->getLinnTitle();
         $sku = $product->details['sku']->text;
         $rowArray = array($sku, $title);
         $this->addline($rowArray);

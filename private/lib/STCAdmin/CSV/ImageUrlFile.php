@@ -17,15 +17,15 @@ class ImageUrlFile extends CsvFile {
     public function getRowArray($product)
     {
         $sku = $product->details['sku']->text;
-        $imageInfo = getImageIdsForSKU($sku);
         $newRows = array();
-        foreach ($imageInfo as $image) {
-            if ($image['is_primary'] == true) {
+        $images = $product->images;
+        for ($i=0; $i<count($images); $i++) {
+            if ($i == 0) {
                 $isPrimary = 'TRUE';
             } else {
                 $isPrimary = 'FALSE';
             }
-            $imageUrl = $this->imageUrl . $image['id'];
+            $imageUrl = $images[$i]->fullPath;
             $newRow = array($sku, $isPrimary, $imageUrl);
             $newRows[] = $newRow;
         }
