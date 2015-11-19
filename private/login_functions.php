@@ -70,7 +70,11 @@ function make_request($url, $data)
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-    curl_setopt($curl, CURLOPT_CAINFO, dirname($_SERVER['DOCUMENT_ROOT']) . '/private/certificates/thawtePrimaryRootCA.crt');
+    curl_setopt(
+        $curl,
+        CURLOPT_CAINFO,
+        dirname($_SERVER['DOCUMENT_ROOT']) . '/private/lib/LinnworksAPI/thawtePrimaryRootCA.crt'
+    );
     $dataString = http_build_query($data);
     curl_setopt($curl, CURLOPT_URL, $url . '?' . $dataString);
     echo curl_error($curl);

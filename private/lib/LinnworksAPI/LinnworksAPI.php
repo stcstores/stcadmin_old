@@ -42,7 +42,7 @@ class LinnworksAPI
         curl_setopt(
             $curl,
             CURLOPT_CAINFO,
-            dirname($_SERVER['DOCUMENT_ROOT']) . '/private/certificates/thawtePrimaryRootCA.crt'
+            dirname(__FILE__) . '/thawtePrimaryRootCA.crt'
         );
         curl_setopt($curl, CURLOPT_VERBOSE, true);
         curl_setopt($curl, CURLOPT_HEADER, true);
