@@ -12,9 +12,9 @@ require_once($CONFIG['header']);
 </form>
 
 <script type='text/javascript'>
-    
+
     function getSku() {
-        
+
         $.ajax({
             url: 'generatesku.php',
             async: false,
@@ -26,27 +26,28 @@ require_once($CONFIG['header']);
             }
         });
     }
-    
+
     function setSku(sku) {
         $('#new_sku_text').val(sku);
-        
+
     }
-    
+
     function disableInputs() {
         $(':input').attr('disabled','disabled');
     }
-    
+
     function enableInputs() {
         $(':input').removeAttr('disabled');
     }
-    
+
     $('#new_sku_button').click(function() {
         disableInputs();
         var sku = getSku();
-        
+
         enableInputs();
     });
-    
+
 </script>
 
-<?php require_once('../private/footer.php'); ?>
+<?php
+require_once($CONFIG['footer']);
