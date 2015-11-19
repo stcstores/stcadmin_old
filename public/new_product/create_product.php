@@ -3,6 +3,9 @@ require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
 checkLogin();
 
+require_once('writeproduct.php');
+ob_start();
+
 if (isset($_SESSION['new_product'])) {
     $product = $_SESSION['new_product'];
 } else {
@@ -469,3 +472,10 @@ createExtendedProperties($api, $product);
 assign_images($api, $product);
 addTitles($api, $product);
 addDescriptions($api, $product);
+
+$output = ob_get_contents();
+ob_end_flush();
+$fp = fopen($CSVFILEPATH . "output.html", "w");
+fwrite($fp, $output);
+fclose($fp);
+require_once('archive_new_product_csv.php');

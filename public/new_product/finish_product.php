@@ -258,21 +258,6 @@ if (count($product->images > 0)) {
             $('#content').empty()
             $('#content').html('<div style="margin 0 auto;" ><img class=working src=/images/ajax-loader.gif alt=working /></div>');
             $.ajax({
-                url: 'writeproduct.php',
-                async: true,
-                dataType: 'json',
-                success: function(data){
-                }
-            });
-            $.ajax({
-                url: 'archive_new_product_csv.php',
-                async: true,
-                dataType: 'json',
-                success: function(data){
-
-                }
-            })
-            $.ajax({
                 url: 'create_product.php',
                 async: true,
                 dataType: 'json',
