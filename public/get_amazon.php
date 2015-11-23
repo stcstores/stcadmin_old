@@ -5,7 +5,7 @@ require_once $CONFIG['include'];
 checkLogin();
 require_once($CONFIG['header']);
 
-$api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+$api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 echo "<div class=pagebox >\n";
 
 

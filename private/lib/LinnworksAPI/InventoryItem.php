@@ -32,10 +32,10 @@ class InventoryItem {
         $this -> width = 0;
         $this -> quantity = 0;
         $this -> meta_data = '';
-        $this -> extended_properties = new _ExtendedProperties($this);
+        $this -> extended_properties = new ExtendedProperties($this);
     }
 
-    private function __toString()
+    public function __toString()
     {
         return $this -> sku . ': ' . $this -> title;
     }
@@ -145,7 +145,7 @@ class InventoryItem {
 
     public function create_extended_property($name = '', $value = '', $property_type = 'Attribute')
     {
-        $prop = _ExtendedProperty();
+        $prop = new ExtendedProperty();
         $prop -> name = $name;
         $prop -> value = $value;
         $prop -> type = $property_type;

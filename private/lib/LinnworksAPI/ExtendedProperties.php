@@ -53,12 +53,12 @@ class ExtendedProperties {
 
     public function add($json)
     {
-        $this -> extended_properties[] = new _ExtendedProperty($this -> item, $json = $json);
+        $this -> extended_properties[] = new ExtendedProperty($this -> item, $json = $json);
     }
 
     public function create($name = '', $value = '', $property_type = 'Attribute')
     {
-        $prop = $_ExtendedProperty($this -> item);
+        $prop = new ExtendedProperty($this -> item);
         $prop -> name = $name;
         $prop -> value = $value;
         $prop -> type = $property_type;

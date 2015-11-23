@@ -23,13 +23,13 @@ function var_sort($variations) {
             }
         }
     }
-    
+
     foreach (array_reverse($variation_types) as $var_type) {
         usort($variations, function($a, $b) use ($var_type) {
             return strcmp(extended_property_value($a, $var_type), extended_property_value($b, $var_type));
         });
     }
-    
+
     return $variations;
 }
 
@@ -41,20 +41,20 @@ function var_sort($variations) {
         <input name='sku' value='<?php if (isset($_POST['sku'])) { echo $_POST['sku']; } ?>' />
         <input type=submit value='Get Info' />
     </form>
-    
+
     <?php
-    
+
     if (isset($_POST['sku'])) {
         $sku = trim($_POST['sku']);
     } else if (isset($_GET['sku'])) {
         $sku = trim($_GET['sku']);
     }
-    
-    if (isset($sku)) {    
-        $api = new LinnworksAPI($_SESSION['username'], $_SESSION['password']);
-        
+
+    if (isset($sku)) {
+        $api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
+
         $guid = $api -> get_inventory_item_id_by_SKU($sku);
-        
+
         if ($guid == null) {
             $guid = $api -> get_variation_group_id_by_SKU($sku);
             $has_variations = true;
@@ -64,12 +64,12 @@ function var_sort($variations) {
         } else {
             $has_variations = false;
         }
-        
+
         if ($guid == null) {
             echo "<p class='error'>Product Not Found</p>";
         } else {
             $item = $api -> get_inventory_item_by_id($guid);
-            
+
             if ($has_variations == true) {
                 $variations = array();
                 foreach ($api -> get_variation_children($item -> stock_id) as $guid) {
@@ -169,8 +169,8 @@ function var_sort($variations) {
             }
             if ($has_variations == false) {
             ?>
-            
-            
+
+
             <table class='item_details'>
                 <?php
                 $images = $api -> get_image_thumbnail_urls_by_item_id($item -> stock_id);
@@ -199,7 +199,7 @@ function var_sort($variations) {
                         }
                         echo "</td>";
                         ?>
-                        
+
                         <?php foreach($images as $image) { ?>
                             <tr>
                                 <td><a href='<?php echo $image['full']; ?>' target="_blank" ><img src='<?php echo $image['thumb']; ?>' /></a></td>
