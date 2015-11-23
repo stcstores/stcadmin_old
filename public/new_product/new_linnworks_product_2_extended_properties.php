@@ -15,7 +15,7 @@ if ( !empty($_POST) ) {
         header('Location: new_linnworks_product_1_basic_info.php');
         exit();
     }
-    STCAdmin\FormCatch::addExtendedProperties($product, $_POST);
+    STCAdmin\Forms::addExtendedProperties($product, $_POST);
 
     if (true) { // error check
         $_SESSION['new_product'] = $product;
@@ -38,7 +38,7 @@ $fields = $database->getFormFieldsByPage('extended_properties');
                 <tr>
                     <td class=form_table_field_name ><label for="<?php echo $field['field_name']; ?>"><?php echo $field['field_title']; ?></label></td>
                     <td class=form_table_input>
-                        <?php STCAdmin\FormCatch::echoInput($field, $product); ?>
+                        <?php STCAdmin\Forms::echoInput($field, $product); ?>
                     </td>
                     <td class=form_field_table_description ><?php echo $field['field_description']; ?></td>
                 </tr>

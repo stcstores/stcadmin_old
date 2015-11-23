@@ -1,7 +1,7 @@
 <?php
 namespace STCAdmin;
 
-class FormCatch {
+class Forms {
 
     public function addBasicInfo($product, $postData)
     {

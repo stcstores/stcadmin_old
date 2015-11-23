@@ -14,7 +14,7 @@ if (isset($_SESSION['new_product'])) {
 }
 
 if (!empty($_POST)) {
-    STCAdmin\FormCatch::addBasicInfo($product, $_POST);
+    STCAdmin\Forms::addBasicInfo($product, $_POST);
     if (isset($_POST['previous'])) {
         header('Location: new_linnworks_product_1_basic_info.php');
         exit();
