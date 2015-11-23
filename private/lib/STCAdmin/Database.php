@@ -61,4 +61,18 @@ class Database extends \LSPHP\DatabaseConnection {
         $results = $this->selectQuery($selectQuery);
         return $results;
     }
+
+    public function getAllNews()
+    {
+        $query = "SELECT * FROM stcadmin_news WHERE display=TRUE ORDER BY timestamp DESC;";
+        $results = $this->selectQuery($query);
+        return $results;
+    }
+
+    public function getNewsByID($id)
+    {
+        $query= "SELECT * FROM stcadmin_news WHERE id=" . $id . ";";
+        $results = $this->selectQuery($query);
+        return $results;
+    }
 }

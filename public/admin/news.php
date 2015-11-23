@@ -5,28 +5,22 @@ checkLogin();
 require_once($CONFIG['header']);
 
 
-$database = new DatabaseConnection();
+$database = new STCAdmin\Database();
 if (isset($_GET['id'])) {
-    $query= "SELECT * FROM stcadmin_news WHERE id={$_GET['id']};";
+    $news = $database->getNewsByID($_GET['id']);
 } else {
-    $query = "SELECT * FROM stcadmin_news WHERE display=TRUE ORDER BY timestamp DESC;";
+    $news = $database->getAllNews();
 }
-$results = $database -> selectQuery($query);
-?>
 
-
-<?php
-foreach ($results as $record) {
-  ?>
-  <div class=pagebox>
-        <div class=news_article>
-          <h4><?php echo $record['header']; ?></h4>
-          <p><?php echo date('Y-m-d', strtotime($record['timestamp']));?></p>
-          <p><?php echo nl2br($record['message']); ?></p>
-      </div>
-  </div>
-  <br />
-  <?php
+foreach ($news as $article) {
+    echo "\t<div class=pagebox>\n";
+    echo "\t\t<div class=news_article>\n";
+    echo "\t\t\t<h4>" . $article['header'] . "</h4>\n";
+    echo "\t\t\t<p>" . date('Y-m-d', strtotime($article['timestamp'])) . "</p>\n";
+    echo "\t\t\t<p>" . nl2br($article['message']) . "</p>\n";
+    echo "\t\t</div>\n";
+    echo "\t</div>\n";
+    echo "\t<br />\n";
 }
 
 require_once($CONFIG['footer']);
