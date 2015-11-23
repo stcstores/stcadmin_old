@@ -2,7 +2,7 @@
 
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
-checkLogin();
+STCAdmin\UserLogin::checkLogin();
 require_once($CONFIG['header']);
 
 

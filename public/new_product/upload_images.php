@@ -1,7 +1,7 @@
 <?php
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
-checkLogin();
+STCAdmin\UserLogin::checkLogin();
 
 print_r($_FILES);
 $api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);

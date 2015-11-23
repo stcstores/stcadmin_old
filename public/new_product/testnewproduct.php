@@ -2,7 +2,7 @@
 
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
-checkLogin();
+STCAdmin\UserLogin::checkLogin();
 require_once($CONFIG['header']);
 
 
@@ -22,7 +22,7 @@ if (!isset($_SESSION['new_product'])) {
     var_dump($product->keyFields);
     echo "<br />";
     foreach ($product->details as $detail ) {
-        
+
         echo "<tr><td>" . $detail->name . "</td><td>" . htmlspecialchars($detail->text) . "</td><td>";
         if (is_array($detail->value)) {
             echo "Array()";
@@ -32,9 +32,9 @@ if (!isset($_SESSION['new_product'])) {
         echo "</td></tr>";
     }
     echo "</table>";
-    
+
     echo "<br />";
-    
+
     if (count($product->variations) > 0) {
         echo "<table id=testvar>";
         echo "<tr>";
@@ -47,7 +47,7 @@ if (!isset($_SESSION['new_product'])) {
             echo "<tr>";
             echo "<td>{$key}</td>";
             foreach ($variation->details as $detail=>$value) {
-                echo "<td>" . htmlspecialchars($value->text) . "</td>";               
+                echo "<td>" . htmlspecialchars($value->text) . "</td>";
             }
             echo "</tr>";
         }
@@ -55,10 +55,10 @@ if (!isset($_SESSION['new_product'])) {
         echo "</table>";
     }
     echo "</div>";
-    
-    
+
+
     ?>
-    
+
     <div>
         <table>
             <?php
@@ -92,7 +92,7 @@ if (!isset($_SESSION['new_product'])) {
             ?>
         </table>
     </div>
-    
+
     <table>
         <tr>
             <th>Field</th>
@@ -109,17 +109,17 @@ if (!isset($_SESSION['new_product'])) {
                     } else {
                         echo '???';
                     }
-                
+
                 ?></td>
             </tr>
         <?php } ?>
     </table>
-    
+
  <?php
  print_r($product->images[0]->thumbPath);
- 
+
  ?>
-    
+
     <script>
         $('#write_product').click(function() {
             $.ajax({
@@ -131,7 +131,7 @@ if (!isset($_SESSION['new_product'])) {
             });
         });
     </script>
-    
+
     <?php
 }
 

@@ -1,7 +1,7 @@
 <?php
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
-checkLogin($admin_required=true);
+STCAdmin\UserLogin::checkLogin();
 require_once($CONFIG['header']);
 
 function monthNumberToName($month) {
@@ -25,11 +25,11 @@ function addOrdinalSuffix($day) {
     } else {
         $suffix = 'th';
     }
-    
+
     if (substr($day, 0, 1) == 0) {
         $day = substr($day, 1, 50);
     }
-    
+
     return $day . "<sup>{$suffix}</sup>";
 }
 
@@ -51,7 +51,7 @@ foreach ($folders as $folder) {
     $month = substr($folder, 5, 2);
     $day = substr($folder, 8, 2);
     $time = substr($folder, 11);
-    
+
     if (!array_key_exists($year, $archive)) {
         $archive[$year] = array();
     }
@@ -92,10 +92,10 @@ echo "</div>";
 <script>
     function getZip(year, month, day, time) {
         targetUrl = "get_archived_zip.php";
-        
+
         window.location.replace(targetUrl + '?year=' + year + '&month=' + month + '&day=' + day + '&time=' + time);
     }
-    
+
     $(function() {
     // Find list items representing folders and
     // style them accordingly.  Also, turn them
@@ -122,7 +122,7 @@ echo "</div>";
     // Hide all lists except the outermost.
     $('ul ul').hide();
 });
-    
+
     //$('#archive ul').find('ul').hide();
     //
     //$('.year').click(function() {
@@ -134,7 +134,7 @@ echo "</div>";
     //    $(this).children().toggle();
     //    return false;
     //});
-    
+
 </script>
 
 <?php

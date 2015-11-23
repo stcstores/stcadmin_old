@@ -2,24 +2,21 @@
 
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 session_start();
-require_once($CONFIG['login_functions']);
+require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/lib/STCAdmin/STCAdmin.inc.php');
 
 $failedLoggin = false;
 
-if (isLoggedIn()) {
+if (STCAdmin\UserLogin::isLoggedIn()) {
     header('Location:/index.php');
 }
 
-
 if ((isset($_POST['username'])) && (isset($_POST['password']))) {
-    if (login($_POST['username'], $_POST['password'])) {
+    if (STCAdmin\UserLogin::login($_POST['username'], $_POST['password'])) {
         header('Location:/index.php');
     } else {
         $failedLoggin = true;
     }
 }
-
-
 require_once($CONFIG['header']);
 
 ?>

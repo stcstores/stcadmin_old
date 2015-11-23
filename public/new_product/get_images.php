@@ -1,7 +1,7 @@
 <?php
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
-
+STCAdmin\UserLogin::checkLogin();
 function get_image_details($product)
 {
     $data = array();

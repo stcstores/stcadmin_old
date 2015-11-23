@@ -317,7 +317,7 @@ function echo_scripts()
 
 require_once dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php';
 require_once $CONFIG['include'];
-checkLogin();
+STCAdmin\UserLogin::checkLogin();
 require_once($CONFIG['header']);
 
 $api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);

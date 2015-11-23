@@ -19,9 +19,9 @@ require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 		<div id=header>
 			<div id=topper>
 <?php
-if (isLoggedIn()) {
+if (STCAdmin\UserLogin::isLoggedIn()) {
 	echo "\t\t\t\t<div id=logout class='pagebox'>\n";
-	echo "\t\t\t\t\t<p>Logged in as: " . getCurrentUsername()  . "</p>\n";
+	echo "\t\t\t\t\t<p>Logged in as: " . STCAdmin\UserLogin::getCurrentUsername()  . "</p>\n";
 	echo "\t\t\t\t\t<p><a href='/logout.php'>Log out</a></p>\n";
 	echo "\t\t\t\t</div>\n";
 }
@@ -31,7 +31,7 @@ if (isLoggedIn()) {
 				</div>
 			</div>
 <?php
-if (isLoggedIn()) {
+if (STCAdmin\UserLogin::isLoggedIn()) {
 	require_once($CONFIG['navbar']);
 }
 ?>

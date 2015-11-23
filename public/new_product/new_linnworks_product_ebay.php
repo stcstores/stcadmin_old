@@ -1,8 +1,8 @@
 <?php
 
-    require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
-    require_once($CONFIG['include']);
-    checkLogin();
+require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
+require_once($CONFIG['include']);
+STCAdmin\UserLogin::checkLogin();
 
 if (isset($_SESSION['new_product'])) {
     $product = $_SESSION['new_product'];
@@ -13,7 +13,6 @@ if (isset($_SESSION['new_product'])) {
 
 if ( !empty($_POST) ) {
     if (isset($_POST['previous'])) {
-
         if ($product->details['var_type']->value == true) {
             header('Location: new_linnworks_product_var_setup.php');
             exit();

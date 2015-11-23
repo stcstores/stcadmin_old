@@ -2,7 +2,7 @@
 
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
-
+STCAdmin\UserLogin::checkLogin();
 
 $time = time();
 $year = date('Y', $time);

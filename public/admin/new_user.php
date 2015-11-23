@@ -1,7 +1,7 @@
 <?php
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
 require_once($CONFIG['include']);
-checkLogin($admin_required=true);
+STCAdmin\UserLogin::checkLogin();
 require_once($CONFIG['header']);
 
 $password_missmatch = false;
@@ -10,24 +10,24 @@ $username_taken = false;
 if ((isset($_POST['username'])) && (isset($_POST['password'])) && (isset($_POST['password_conf']))) {
     if ($_POST['password'] == $_POST['password_conf']) {
         if (!(userExists($_POST['username']))) {
-                if ($_POST['admin'] == 'on') {
-                    $admin = 'TRUE';
-                } else {
-                    $admin = 'FALSE';
-                }
-                addUser($_POST['username'], $_POST['password'], $admin);
-                header('Location:/admin/index.php');
-                exit();
+            if ($_POST['admin'] == 'on') {
+                $admin = 'TRUE';
+            } else {
+                $admin = 'FALSE';
+            }
+            addUser($_POST['username'], $_POST['password'], $admin);
+            header('Location:/admin/index.php');
+            exit();
         } else {
                 $username_taken = true;
         }
     } else {
         $password_missmatch = true;
     }
-    
+
 }
 ?>
-    
+
 <form method=post id=login_form>
     <table>
         <tr>
