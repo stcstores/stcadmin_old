@@ -10,48 +10,33 @@ if (isset($_GET['weight'])) {
     $weight = '';
 }
 
-?>
-
-<div class=pagebox >
-    <form>
-        <label for=weight >Weight (g)</label>
-        <input name=weight <?php echo $weight; ?>/>
-        <input type=submit value="Get Shipping Prices" />
-    </form>
-    <br />
-    <div id=result>
-        <?php
-        if (isset($weight)) {
-            $intPostagePrices = get_international_shipping($weight);
-            ?>
-            <table class=form_section id=shipping_table >
-                <tr>
-                    <th>France</th>
-                    <th>Germany</th>
-                    <th>Europe</th>
-                    <th>USA</th>
-                    <th>Austraila</th>
-                    <th>Rest of World</th>
-                </tr>
-                <tr>
-                    <td>&pound;<?php echo sprintf("%0.2f", $intPostagePrices['fr']); ?></td>
-                    <td>&pound;<?php echo sprintf("%0.2f", $intPostagePrices['de']); ?></td>
-                    <td>&pound;<?php echo sprintf("%0.2f", $intPostagePrices['eu']); ?></td>
-                    <td>&pound;<?php echo sprintf("%0.2f", $intPostagePrices['usa']); ?></td>
-                    <td>&pound;<?php echo sprintf("%0.2f", $intPostagePrices['aus']); ?></td>
-                    <td>&pound;<?php echo sprintf("%0.2f", $intPostagePrices['row']); ?></td>
-                </tr>
-            </table>
-        <?php
-        }
-        ?>
-    </div>
-</div>
-
-<script>
-
-</script>
-
-<?php
-
+echo "<div class=pagebox >\n";
+echo "\t<form>\n";
+echo "\t\t<label for=weight >Weight (g)</label>\n";
+echo "\t\t<input name=weight " . $weight . " />\n";
+echo "\t\t<input type=submit value='Get Shipping Prices' />\n";
+echo "\t</form>\n";
+echo "\t<br />\n";
+echo "\t<div id=result>\n";
+if (isset($weight)) {
+    $shippingTable = new STCAdmin\CSV\InternationalShippingLookup();
+    $intPostagePrices = $shippingTable->getInternationalShipping($weight);
+    echo "\t<table class=form_section id=shipping_table >\n";
+    echo "\t\t<tr>\n";
+    echo "\t\t\t<th>France</th>\n";
+    echo "\t\t\t<th>Germany</th>\n";
+    echo "\t\t\t<th>Europe</th>\n";
+    echo "\t\t\t<th>USA</th>\n";
+    echo "\t\t\t<th>Austraila</th>\n";
+    echo "\t\t\t<th>Rest of World</th>\n";
+    echo "\t\t</tr>\n";
+    echo "\t\t<tr>\n";
+    foreach (array('fr', 'de', 'eu', 'usa', 'aus', 'row') as $countryCode) {
+        echo "\t\t\t<td>&pound;" . sprintf("%0.2f", $intPostagePrices[$countryCode]) . "</td>\n";
+    }
+    echo "\t\t</tr>\n";
+    echo "\t</table>\n";
+}
+echo "\t</div>\n";
+echo "</div>\n";
 include($CONFIG['footer']);
