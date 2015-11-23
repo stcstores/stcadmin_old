@@ -16,7 +16,7 @@ if ( !empty($_POST) ) {
         header('Location: new_linnworks_product_1_basic_info.php');
         exit();
     }
-    add_extended_properties($product);
+    STCAdmin\FormCatch::addExtendedProperties($product, $_POST);
 
     if (true) { // error check
         $_SESSION['new_product'] = $product;

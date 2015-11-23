@@ -15,7 +15,7 @@ if (isset($_SESSION['new_product'])) {
 
 if (isset($_POST['variation_details'])) {
     $variationDetails = json_decode($_POST['variation_details'], true);
-    add_variation($product, $variationDetails);
+    STCAdmin\FormCatch::addVariation($product, $variationDetails);
 
     if (isset($_POST['next'])) {
         header('Location: imageupload.php');

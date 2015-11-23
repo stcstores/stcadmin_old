@@ -6,37 +6,33 @@ STCAdmin\UserLogin::checkLogin();
 
 $api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
-if ( !empty($_POST) ) {
-    $product = add_basic_info();
+if (isset($_SESSION['new_product'])) {
+    $product = $_SESSION['new_product'];
+} else {
+    $database = new STCAdmin\Database();
+    $product = new STCAdmin\Product\NewProduct($database, $api);
+}
+
+if (!empty($_POST)) {
+    STCAdmin\FormCatch::addBasicInfo($product, $_POST);
     if (isset($_POST['previous'])) {
         header('Location: new_linnworks_product_1_basic_info.php');
         exit();
     }
+    $_SESSION['new_product'] = $product;
 
-    if (true) { // error check
-        $_SESSION['new_product'] = $product;
-
-        if ($product->details['var_type']->value == true) {
-            if (count($product->variations) > 0) {
-                header('Location: new_linnworks_product_var_table.php');
-                exit();
-            } else {
-                header('Location: new_linnworks_product_var_setup.php');
-                exit();
-            }
+    if ($product->details['var_type']->value == true) {
+        if (count($product->variations) > 0) {
+            header('Location: new_linnworks_product_var_table.php');
+            exit();
+        } else {
+            header('Location: new_linnworks_product_var_setup.php');
+            exit();
         }
-
-        header('Location: new_linnworks_product_2_extended_properties.php');
-        exit();
     }
 
-} else {
-    if (isset($_SESSION['new_product'])) {
-        $product = $_SESSION['new_product'];
-    } else {
-        $database = new STCAdmin\Database();
-        $product = new STCAdmin\Product\NewProduct($database, $api);
-    }
+    header('Location: new_linnworks_product_2_extended_properties.php');
+    exit();
 }
 
 require_once($CONFIG['header']);
