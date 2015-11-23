@@ -323,7 +323,6 @@ require_once($CONFIG['header']);
 $api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 echo "<div class=pagebox >\n";
 
-
 if (isset($_POST['sku'])) {
     $sku = trim($_POST['sku'], $api);
     $item = get_item($sku);
@@ -339,6 +338,9 @@ if (!(isset($sku))) {
 echo_search_form($sku);
 
 if (!isset($item)) {
+    echo "<br />\n";
+    echo "<br />\n";
+    require_once($CONFIG['footer']);
     exit();
 }
 
@@ -351,7 +353,7 @@ if ($item -> has_variations == true) {
 }
 echo_images($item, $api);
 echo_description($item, $api);
-echo "</div>";
+echo "</div>\n";
 echo_scripts();
 
-include($CONFIG['footer']);
+require_once($CONFIG['footer']);
