@@ -1,9 +1,7 @@
 <?php
 
 require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
-//require_once($CONFIG['include']);
 session_start();
-require_once($CONFIG['functions']);
 require_once($CONFIG['login_functions']);
 
 $failedLoggin = false;
@@ -26,9 +24,7 @@ require_once($CONFIG['header']);
 
 ?>
 <div id=login_container >
-
     <h2>Welcome to STCAdmin</h2>
-
     <form id=login_form method=post>
         <h3>Please Log In</h3>
         <table>

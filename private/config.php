@@ -6,7 +6,6 @@ $CONFIG = array(
     'axevalley_tools' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/axevalley_tools.php',
     'csv' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/csv.php',
     'new_product_class' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/new_product_class.php',
-    'functions' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/functions.php',
     'catch' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/catch.php',
     'forms' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/forms.php',
     'header' => dirname($_SERVER['DOCUMENT_ROOT']) . '/private/html/header.php',
