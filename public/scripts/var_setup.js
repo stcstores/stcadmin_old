@@ -177,14 +177,12 @@ function addAddVariations(){
         if (varType.used === true){
             var id = 'add_to_' + varType.name;
             var name = varType.title + 's';
-
             $('#add_variations').append('<tr>');
             var newRow = $('#add_variations tr:last');
             newRow.append('<td class="add_to_label"><label for=' + id + '>Add ' + name + ': </label></td>');
             newRow.append('<td class="add_to_input"><input style="width: 100%;" name=' + id + ' id=' + id + ' /></td>');
             newRow.append('<td class="add_variations_to_button"><input type=button value=Add id=add_variations_to_' + field + '_button /></td>');
             newRow.append('<td class=remove_variation_type ><input type=button value=Remove id=remove_variation_type_' + field + ' </td>');
-
             $('#add_variations').append('<tr><td colspan=4 >');
             $('#add_variations tr:last td').append('<table id=list_of_variants_' + field + ' >');
             for (var variant in varType.variations){
@@ -193,11 +191,8 @@ function addAddVariations(){
 
                 variant += 1;
             }
-
             $('#add_variations_to_' + field + '_button').click(addVariationGenerator(field));
-
             $('#add_to_' + field).blur(addVariationGenerator(field));
-
             $('#remove_variation_type_' + field).click(toggle_variation_type_used_generator(varType));
         }
     }
@@ -217,9 +212,7 @@ function addVariationList() {
     }
     header = header + '<th></th>';
     $('#list_of_variations').append($(header));
-
     var new_row;
-
     for (var variation in variations.variations) {
         if (variations.variations[variation].active) {
             new_row = '<tr>';
@@ -233,21 +226,15 @@ function addVariationList() {
                 new_row = new_row + '<td>' + attributes[variationType] + '</td>';
             }
         }
-
         new_row = new_row + '<td>';
-
         $('#list_of_variations').append($(new_row));
-
         var button = $('<input type=button>');
-
         if (variations.variations[variation].active) {
             button.val('Remove');
         } else {
             button.val('Re-Add');
         }
-
         button.click(remove_varient_generator(variations.variations[variation]));
-
         $('#list_of_variations tr:last td:last').append(button);
     }
 }
@@ -300,7 +287,7 @@ function add_instructions(table, text){
 function set_variation_numbers() {
     var varNumber = 0;
     if (variations.variations.length > 0) {
-        for (i=0; i < variations.variations.length; i++) {
+        for (var i=0; i < variations.variations.length; i++) {
             if (variations.variations[i].active === true) {
                 for (var detail in variations.variations[i].details) {
                     variations.variations[i].details[detail].number = varNumber;
@@ -317,7 +304,6 @@ function write() {
     $('#list_of_variables tr').remove();
     $('#list_of_variations tr').remove();
     $('#var_setup tr').remove();
-
     addAddVariationTypes();
     addAddVariations();
     addVariationList();
