@@ -5,133 +5,98 @@ require_once($CONFIG['include']);
 STCAdmin\UserLogin::checkLogin();
 require_once($CONFIG['header']);
 
-
-
-
-echo "<div id=testproduct>";
+echo "\t\t\t<div id=testproduct>\n";
 if (!isset($_SESSION['new_product'])) {
     echo "No Object";
 } else {
-    echo "<input type=button value='Write Product' id=write_product />";
-    echo "<table>";
-    echo "<tr>";
-    echo "<th>Detail</th><th>Text</th><th>Value</th>";
-    echo "</tr>";
+    echo "\t\t\t\t<input type=button value='Write Product' id=write_product />\n";
+    echo "\t\t\t\t\t<table>\n";
+    echo "\t\t\t\t\t\t<tr>\n";
+    echo "\t\t\t\t\t\t\t<th>Detail</th>\n\t\t\t\t\t\t\t<th>Text</th>\n\t\t\t\t\t\t\t<th>Value</th>\n";
+    echo "\t\t\t\t\t\t</tr>\n";
     $product = $_SESSION['new_product'];
-    echo "<br />";
-    var_dump($product->keyFields);
-    echo "<br />";
-    foreach ($product->details as $detail ) {
-
-        echo "<tr><td>" . $detail->name . "</td><td>" . htmlspecialchars($detail->text) . "</td><td>";
+    foreach ($product->details as $detail) {
+        echo "\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>" . $detail->name . "</td>\n\t\t\t\t\t\t\t<td>" . htmlspecialchars($detail->text) . "</td>\n\t\t\t\t\t\t\t<td>";
         if (is_array($detail->value)) {
             echo "Array()";
         } else {
             echo htmlspecialchars($detail->value);
         }
-        echo "</td></tr>";
+        echo "</td>\n\t\t\t\t\t\t</tr>\n";
     }
-    echo "</table>";
-
-    echo "<br />";
-
+    echo "\t\t\t\t\t</table>\n";
+    echo "\t\t\t\t\t<br />\n";
     if (count($product->variations) > 0) {
-        echo "<table id=testvar>";
-        echo "<tr>";
-        echo "<th>Variation Number</th>";
-        foreach ($product->variations[0]->details as $detail=>$value) {
-            echo "<th>{$detail}</th>";
+        echo "\t\t\t\t\t<table id=testvar>\n";
+        echo "\t\t\t\t\t\t<tr>\n";
+        echo "\t\t\t\t\t\t\t<th>Variation Number</th>\n";
+        foreach ($product->variations[0]->details as $detail => $value) {
+            echo "\t\t\t\t\t\t\t<th>{$detail}</th>\n";
         }
-        echo "</tr>";
-        foreach ($product->variations as $key=>$variation) {
-            echo "<tr>";
-            echo "<td>{$key}</td>";
-            foreach ($variation->details as $detail=>$value) {
-                echo "<td>" . htmlspecialchars($value->text) . "</td>";
+        echo "\t\t\t\t\t\t</tr>\n";
+        foreach ($product->variations as $key => $variation) {
+            echo "\t\t\t\t\t\t<tr>\n";
+            echo "\t\t\t\t\t\t\t<td>{$key}</td>\n";
+            foreach ($variation->details as $detail => $value) {
+                echo "\t\t\t\t\t\t\t<td>" . htmlspecialchars($value->text) . "</td>\n";
             }
-            echo "</tr>";
+            echo "\t\t\t\t\t\t</tr>\n";
         }
-        echo "</tr>";
-        echo "</table>";
+        echo "\t\t\t\t\t\t</tr>\n";
+        echo "\t\t\t\t\t</table>\n";
     }
-    echo "</div>";
-
-
-    ?>
-
-    <div>
-        <table>
-            <?php
-            if (count($product->variations) > 0) {
-                foreach ($product->variations as $var) {
-                    ?>
-                    <tr>
-                        <?php
-                            foreach ($var->images->images as $image) {
-                                ?>
-                                    <td><img src='<?php echo $image->thumbPath; ?>' /></td>
-                                <?php
-                            }
-                        ?>
-                    </tR>
-                    <?php
-                }
-            } else {
-                ?>
-                <tr>
-                <?php
-                foreach ($product->images->images as $image) {
-                    ?>
-                        <td><img src='<?php echo $image->thumbPath; ?>' /></td>
-                    <?php
-                }
-                ?>
-                </tr>
-                <?php
+    echo "\t\t\t\t</div>\n";
+    echo "\t\t\t\t<div>\n";
+    echo "\t\t\t\t\t<table>\n";
+    if (count($product->variations) > 0) {
+        foreach ($product->variations as $var) {
+            echo "\t\t\t\t\t\t<tr>\n";
+            foreach ($var->images->images as $image) {
+                echo "\t\t\t\t\t\t\t<td><img src='<?php echo $image->thumbPath; ?>' /></td>\n";
             }
-            ?>
-        </table>
-    </div>
-
-    <table>
-        <tr>
-            <th>Field</th>
-            <th>is Key</th>
-        </tr>
-        <?php foreach($product->keyFields as $field=>$value){?>
-            <tr>
-                <td><?php echo $field; ?></td>
-                <td><?php
-                    if ($value == true) {
-                        echo 'Yes';
-                    } elseif ($value == false) {
-                        echo 'No';
-                    } else {
-                        echo '???';
-                    }
-
-                ?></td>
-            </tr>
-        <?php } ?>
-    </table>
-
- <?php
- print_r($product->images[0]->thumbPath);
-
- ?>
-
-    <script>
-        $('#write_product').click(function() {
-            $.ajax({
-                url: 'writeproduct.php',
-                async: false,
-                dataType: 'json',
-                success: function(data){
-                }
-            });
-        });
-    </script>
-
+            echo "\t\t\t\t\t\t</tr>\n";
+        }
+    } else {
+        echo "\t\t\t\t\t\t<tr>\n";
+        foreach ($product->images as $image) {
+                echo "\t\t\t\t\t\t\t<td><img src='<?php echo $image->thumbPath; ?>' /></td>\n";
+        }
+        echo "\t\t\t\t\t\t</tr>\n";
+    }
+    echo "\t\t\t\t\t</table>\n";
+    echo "\t\t\t\t</div>\n";
+    echo "\t\t\t\t<table>\n";
+    echo "\t\t\t\t\t<tr>\n";
+    echo "\t\t\t\t\t\t<th>Field</th>\n";
+    echo "\t\t\t\t\t\t<th>is Key</th>\n";
+    echo "\t\t\t\t\t</tr>\n";
+    foreach ($product->keyFields as $field => $value) {
+        echo "\t\t\t\t\t<tr>\n";
+        echo "\t\t\t\t\t\t<td>" . $field . "</td>\n";
+        echo "\t\t\t\t\t\t<td>";
+        if ($value == true) {
+            echo 'Yes';
+        } elseif ($value == false) {
+            echo 'No';
+        } else {
+            echo '???';
+        }
+        echo "</td>\n";
+        echo "\t\t\t\t\t</tr>\n";
+    }
+    echo "\t\t\t\t</table>\n";
+        ?>
+                <script>
+                    $('#write_product').click(function() {
+                        $.ajax({
+                            url: 'writeproduct.php',
+                            async: false,
+                            dataType: 'json',
+                            success: function(data){
+                            }
+                        });
+                    });
+                </script>
     <?php
 }
 
