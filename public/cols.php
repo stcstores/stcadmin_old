@@ -1,11 +1,11 @@
 <?php
-require_once('../private/include.php');
-include('../private/header.php');
-include('css/colour_scheme.php');
+require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
+require_once($CONFIG['include']);
+require_once($CONFIG['header']);
 
 $colours = new ColourScheme('css/colours.txt');
 
 $colours -> showScheme();
 
+require_once($CONFIG['footer']);
 ?>
-    

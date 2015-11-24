@@ -1,7 +1,8 @@
 <?php
 
 class ColourScheme {
-    function __construct($colourFile) {
+    public function __construct($colourFile)
+    {
         $this -> colours = array();
         $colour = 1;
         $shade = 1;
@@ -20,47 +21,56 @@ class ColourScheme {
                     $shadeNumber ++;
                 }
             }
-        
+
             fclose($handle);
         } else {
             echo "file not found";
-        } 
+        }
     }
-    
-    function echoColour($colour, $shade) {
+
+    public function echoColour($colour, $shade)
+    {
         echo $this->colours[(string)$colour] -> shades[(string)$shade];
     }
-    
-    function showScheme() {
+
+    public function showScheme()
+    {
         $height = 50;
         $width = 100;
         echo "<div id=ColourScheme>";
-        foreach ($this->colours as $colNum => $col) {
-            echo "<div id=colour_{$colNum} style='margin:10px;border:solid 3px black;background:white;padding:5px;'>";
-            echo "{$colNum} <br />";
-            foreach ($col->shades as $shadeNum => $shade){
-                echo "<div style='display:inline-block; overflow:hidden;'>";
-                echo "{$shadeNum}: {$shade}<br />";
-                echo "<div id=colour_{$colNum}_shade{$shadeNum} style='width:{$width}px;height:{$height}px;background:{$shade};display:inline-block;margin-right:5px;'>";
-                echo "</div>";
-                echo "</div>";
+        foreach ($this->colours as $colourNumber => $colour) {
+            echo "\t<div id=colour_";
+            echo $colourNumber;
+            echo " style='margin:10px;border:solid 3px black;background:white;padding:5px;'>";
+            echo "{$colourNumber} <br />";
+            foreach ($colour->shades as $shadeNumber => $shade) {
+                echo "\t\t<div style='display:inline-block; overflow:hidden;'>";
+                echo "{$shadeNumber}: {$shade}<br />";
+                echo "\t\t\t<div id=colour_";
+                echo $colourNumber . "_shade" . $shadeNumber;
+                echo " style='width:" . $width . "px;";
+                echo " height:" . $height . "px;";
+                echo "background: " . $shade . "; ";
+                echo "display:inline-block;margin-right:5px;'>";
+                echo "\t\t\t</div>";
+                echo "\t\t</div>";
             }
-            echo "</div>";
+            echo "\t</div>";
         }
-        
         echo "</div>";
     }
 }
 
 class Colour {
-    function construct(){
+    public function construct()
+    {
         $this->shades = array();
     }
-    
-    function addShade($shade, $number) {
+
+    public function addShade($shade, $number)
+    {
         $this->shades[$number] = $shade;
     }
 }
-
 
 ?>
