@@ -1,4 +1,5 @@
 <?php
+namespace Colours;
 
 class ColourScheme {
     public function __construct($colourFile)
@@ -6,7 +7,7 @@ class ColourScheme {
         $this -> colours = array();
         $colour = 1;
         $shade = 1;
-        $handle = fopen($colourFile, "r");
+        $handle = fopen(dirname(__FILE__) . '/schemes/' . $colourFile . '.col', "r");
         if ($handle) {
             $colourNumber = 1;
             $shadeNumber = 1;
@@ -60,17 +61,3 @@ class ColourScheme {
         echo "</div>";
     }
 }
-
-class Colour {
-    public function construct()
-    {
-        $this->shades = array();
-    }
-
-    public function addShade($shade, $number)
-    {
-        $this->shades[$number] = $shade;
-    }
-}
-
-?>

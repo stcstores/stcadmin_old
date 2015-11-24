@@ -1,9 +1,9 @@
 <?php header("Content-type: text/css; charset: UTF-8"); ?>
 
 <?php
-include('colour_scheme.php');
+require_once(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/lib/Colours/Colours.inc.php');
 
-$colours = new ColourScheme('colours.txt');
+$colours = new Colours\ColourScheme('stcadmin');
 ?>
 
 @font-face {
