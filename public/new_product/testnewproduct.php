@@ -16,7 +16,11 @@ if (!isset($_SESSION['new_product'])) {
     echo "\t\t\t\t\t\t</tr>\n";
     $product = $_SESSION['new_product'];
     foreach ($product->details as $detail) {
-        echo "\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>" . $detail->name . "</td>\n\t\t\t\t\t\t\t<td>" . htmlspecialchars($detail->text) . "</td>\n\t\t\t\t\t\t\t<td>";
+        echo "\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td>";
+        echo $detail->name;
+        echo "</td>\n\t\t\t\t\t\t\t<td>";
+        echo htmlspecialchars($detail->text);
+        echo "</td>\n\t\t\t\t\t\t\t<td>";
         if (is_array($detail->value)) {
             echo "Array()";
         } else {
