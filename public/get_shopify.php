@@ -52,7 +52,7 @@ function var_sort($variations) {
 
     if (isset($sku)) {
         $api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
-
+        $database = new STCAdmin\Database();
         $guid = $api -> get_inventory_item_id_by_SKU($sku);
 
         if ($guid == null) {
@@ -114,7 +114,11 @@ function var_sort($variations) {
             <h2>Variations</h2>
             <table class='item_details'>
                 <?php
-                $ex_props = array('var_size', 'var_colour', 'var_design', 'var_age', 'var_shape', 'var_style', 'var_material', 'var_texture');
+                $keyFields = $database->getKeyFields();
+                $ex_props = array();
+                foreach ($keyFields as $number => $field) {
+                    $ex_props[] = 'var_' . $field['field_name'];
+                }
                 $variation_types = array();
                 foreach ($ex_props as $prop) {
                     if (extended_property_value($variations[0], $prop) != '') {
