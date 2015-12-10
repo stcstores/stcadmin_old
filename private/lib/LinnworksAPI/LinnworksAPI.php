@@ -684,4 +684,197 @@ class LinnworksAPI
         }
         return $variation_children;
     }
+
+    public function make_inventory_search_filter($value, $filter_name, $condition)
+    {
+        $filter = array();
+        $filter['Value'] = $value;
+        $filter['Field'] = 'String';
+        $filter['FilterName'] = $filter_name;
+        $filter['FilterNameExact'] = '';
+        $filter['Condition'] = $condition;
+        return $filter;
+    }
+
+    public function get_inventory_search_columns()
+    {
+        $columns = array(
+            array("ColumnName" => "SKU",
+                "DisplayName" => "SKU",
+                "Group" => "General",
+                "Field" => "String",
+                "SortDirection" => "None",
+                "Width" => 150,
+                "IsEditable" => false),
+            array("ColumnName" => "Title",
+                "DisplayName" => "Title",
+                "Group" => "General",
+                "Field" => "String",
+                "SortDirection" => "None",
+                "Width" => 250,
+                "IsEditable" => true)
+            );
+        return $columns;
+    }
+
+    public function search_variation_group_title($title, $max_count = 0)
+    {
+        if ($max_count == 0) {
+            $max_count = $this->get_item_count();
+        }
+        $url = $this->server . '/api/Stock/SearchVariationGroups';
+        $data = array(
+            'searchType' => 'VariationName',
+            'searchText' => $title,
+            'pageNumber' => 1,
+            'entriesPerPage' => $max_count
+        );
+        $response = $this->request($url, $data);
+        $variation_groups = array();
+        foreach ($respons['Data'] as $group) {
+            $new_group = array();
+            $new_group['guid'] = $group['pkVariationItemId'];
+            $new_group['sku'] = $group['VariationSKU'];
+            $new_group['title'] = $group['VariationGroupName'];
+            $new_group['variation_group'] = true;
+            $variation_groups[] = $new_group;
+        }
+        return $variation_groups;
+    }
+
+    public function search_single_inventory_item_title($title, $max_count = 0)
+    {
+        if ($max_count == 0) {
+            $max_count = $this->get_item_count();
+        }
+        $view = $this->get_new_inventory_view();
+        $view['Columns'] = $this->get_inventory_search_columns();
+        $view_filter = $this->make_inventory_search_filter(
+            $title,
+            'Title',
+            'Contains'
+        );
+        $view['Filters'] = array($view_filter);
+        $response = $this->get_inventory_items($view = $view, $count = $max_count);
+        $items = array();
+        foreach ($response['Items'] as $item) {
+            $new_item = array();
+            $new_item['guid'] = $item['Id'];
+            $new_item['sku'] = $item['SKU'];
+            $new_item['title'] = $item['Title'];
+            $new_item['variation_group'] = false;
+            $items[] = $new_item;
+        }
+        return $items;
+    }
+
+    public function search_inventory_item_title($title, $max_count = 0)
+    {
+        $single_items = $this->search_single_inventory_item_title(
+            $title,
+            $max_count
+        );
+        $variation_groups = $this->search_variation_group_title($title, $max_count);
+        return $single_items + $variation_groups;
+    }
+
+    public function get_open_order_GUID_by_number($order_number)
+    {
+        $url = $this->server . '/api/Orders/GetOpenOrderIdByOrderOrReferenceId';
+        $data = array('orderOrReferenceId' => $order_number, 'filters' => json_encode((object) null));
+        $response = $this->request($url, $data);
+        if ($response == 'null') {
+            return null;
+        }
+        return $response;
+    }
+
+    public function process_order_by_GUID($guid)
+    {
+        $url = $this->server . '/api/Orders/ProcessOrder';
+        $data = array('orderId' => $guid, 'scanPerformed' => true);
+        $response = $this->request($url, $data);
+        return $response;
+    }
+
+    public function process_order_by_order_number($order_number)
+    {
+        $guid = $this->get_open_order_GUID_by_number($order_number);
+        return $this->process_order_by_GUID($guid);
+    }
+
+    public function get_order_data($order_id, $load_items = false, $load_additional_info = false)
+    {
+        if ($this->is_guid($order_id)) {
+            $order_guid = $order_id;
+        } else {
+            $order_guid = $this->get_open_order_GUID_by_number($order_id);
+        }
+        $url = $this->server . '/api/Orders/GetOrder';
+        $data = array();
+        $data['orderId'] = $order_guid;
+        $data['fulfilmentLocationId'] = $this->get_location_ids()[0];
+        $data['loadItems'] = json_encode($load_items);
+        $data['loadAdditionalInfo'] = json_encode($load_additional_info);
+        echo $url . "<br />";
+        print_r(json_encode($data));
+        $response = $this->request($url, $data);
+        return $response;
+    }
+
+    public function order_is_printed($guid = null, $order_number = null)
+    {
+        if ($guid != null) {
+            $order_id = $guid;
+        } elseif ($order_number != null) {
+            $order_id = $this->get_open_order_GUID_by_number($order_number);
+            if ($order_id == null) {
+                throw new Exception('order_number not in found.');
+            }
+        } elseif (($guid == null) && ($order_number == null)) {
+            throw new Exception('Neither guid or order_number was supplied.');
+        }
+        $order_info = $this->get_order_data($guid = $order_id);
+        return $order_info['GeneralInfo']['InvoicePrinted'];
+    }
+
+    public function is_guid($guid)
+    {
+        if (preg_match('/([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/', $guid)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function get_open_order_ids()
+    {
+        $url = $this->server . '/api/Orders/GetAllOpenOrders';
+        $data = array();
+        $data['filters'] = array();
+        $data['fulfilmentCenter'] = $this->get_location_ids()[0];
+        $data['additionalFilter'] = '';
+        $response = $this->request($url, $data);
+        return $response;
+    }
+
+    public function count_open_orders()
+    {
+        $order_ids = $this->get_open_order_ids();
+        return count($order_ids);
+    }
+
+    public function get_open_orders()
+    {
+        $order_count = $this->count_open_orders();
+        $url = $this->server . '/api/Orders/GetOpenOrders';
+        $data = array();
+        $data['entriesPerPage'] = $order_count;
+        $data['pageNumber'] = '1';
+        $data['filters'] = array();
+        $data['fulfilmentCenter'] = $this->get_location_ids()[0];
+        $data['additionalFilter'] = '';
+        $response = $this->request($url, $data);
+        return $response['Data'];
+    }
 }
