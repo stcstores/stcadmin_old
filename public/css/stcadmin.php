@@ -389,6 +389,23 @@ a.questionmark_link {
     padding-left: 1em;
 }
 
+.order_table {
+    background: white;
+    color: #222222;
+    font-size: medium;
+    font-weight: normal;
+    padding: 1em;
+}
+
+.order_table td {
+    padding-left: 1em;
+    border: #888888 1px solid;
+}
+
+.item_table td {
+    border: none;
+}
+
 .align_right {
     text-align: right;
 }

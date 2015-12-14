@@ -7,7 +7,7 @@ class OrderItem
     {
         $this->guid = $item_data['ItemId'];
         $this->sku = $item_data['SKU'];
-        $this->title = $item_data['Title'];
+        $this->item_title = $item_data['Title'];
         $this->department = $item_data['CategoryName'];
     }
 }

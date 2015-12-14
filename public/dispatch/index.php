@@ -7,31 +7,44 @@ require_once($CONFIG['header']);
 $api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
 $order_data = $api->get_open_orders();
-
 $orders = array();
-foreach ($order_data as $order_datas) {
-    $orders[] = new STCAdmin\Dispatch\OpenOrder($order_datas);
+foreach ($order_data as $order) {
+    $orders[] = new STCAdmin\Dispatch\OpenOrder($order);
 }
-echo "<table>";
-echo "<tr>";
-echo "<td>" . 'Id' . "</td>";
-echo "<td>" . 'GUID' . "</td>";
-echo "<td>" . 'Custmer' . "</td>";
-echo "<td>" . 'Is Printed' . "</td>";
-echo "<td>" . 'Postage Service' . "</td>";
-echo "<td>" . 'Department' . "</td>";
-echo "<td>" . 'Item Count' . "</td>";
-echo "</tr>";
+$printedOrders = array();
 foreach ($orders as $order) {
-    echo "<tr>";
-    echo "<td>" . $order->order_number . "</td>";
-    echo "<td>" . $order->guid . "</td>";
-    echo "<td>" . $order->customer_name . "</td>";
-    echo "<td>" . $order->printed . "</td>";
-    echo "<td>" . $order->postage_service . "</td>";
-    echo "<td>" . $order->department . "</td>";
-    echo "<td>" . count($order->items) . "</td>";
-    echo "</tr>";
+    if ($order->printed) {
+        $printedOrders[] = $order;
+    }
 }
 
+$departments = array('');
+foreach ($orders as $order) {
+    if (!(in_array($order->department, $departments))) {
+        $departments[] = $order->department;
+    }
+}
+
+echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
+?>
+<button id="reload">Refresh</button>
+<label for="department_select">Department</label>
+<select id="department_select" name="department_select">
+<?php
+foreach ($departments as $department) {
+    echo "\t<option value='" . $department . "' >" . $department . "</option>" . $department . "\n";
+}
+?>
+</select>
+<table id="order_table" class="order_table" cellspacing="0">
+    <tr>
+        <th>Process</th>
+        <th></th>
+        <th>Order Number</th>
+        <th>Customer Name</th>
+        <th>Items</th>
+    </tr>
+</table>
+<script src="/scripts/dispatch.js"></script>
+<?php
 include($CONFIG['footer']);
