@@ -28,6 +28,7 @@ foreach ($orders as $order) {
 echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
 ?>
 <button id="reload">Refresh</button>
+<br />
 <label for="department_select">Department</label>
 <select id="department_select" name="department_select">
 <?php
@@ -36,6 +37,14 @@ foreach ($departments as $department) {
 }
 ?>
 </select>
+<label for="filter_order_number">Filter: Order Number</label>
+<input type="text" name="filter_order_number" id="filter_order_number" class="filter_input"/>
+<label for="filter_customer_name">Filter: Customer Name</label>
+<input type="text" name="filter_customer_name" id="filter_customer_name" class="filter_input"/>
+<button id="clear_filters">Clear</button>
+<br />
+<button id="process_selected">Process Selected</button>
+<br />
 <table id="order_table" class="order_table" cellspacing="0">
     <tr>
         <th>Process</th>
