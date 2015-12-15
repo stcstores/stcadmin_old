@@ -51,12 +51,15 @@ $('#process_selected').click(function() {
         }
     });
     console.log(ordersToProcess);
+    for (var i=0; i < ordersToProcess.length; i++) {
+        processOrder(ordersToProcess[i]);
+    }
 });
 
 function writeOrders(department) {
-    $("#order_table tr").find("tr:gt(0)").remove(); //Clear table
+    $("#order_table").find("tr:gt(0)").remove(); //Clear table
     for (var i=0; i < openOrders.length; i++) {
-        if (openOrders[i].department == department) {
+        if (openOrders[i].department === department) {
             writeOrderRow(openOrders[i]);
         }
     }
@@ -65,21 +68,42 @@ function writeOrders(department) {
 function writeOrderRow(order) {
     var new_row = $(getOrderRow(order));
     $('#order_table').append(new_row);
-    new_row.find('.process_button').click(processButtonGenerator(order.guid));
+    new_row.find('.process_button').click(processButtonGenerator(order.order_number));
     new_row.find('.select_checkbox').change(selectCheckboxGenerator());
 }
 
-function processButtonGenerator(guid) {
+function processButtonGenerator(orderNumber) {
     return function(event) {
-        console.log(guid);
-        var row = $($(this).closest("tr"));
-        row.css('background-color', '#4F814F');
-        row.css('color', '#444444');
-        var checkbox = row.find('.select_checkbox');
-        checkbox.toggle();
-        checkbox.attr('disabled', true);
+        console.log(orderNumber);
+        processOrder(orderNumber);
         $(this).attr('disabled', true);
     };
+}
+
+function markProcessed(orderNumber) {
+    $("#order_table > tbody > tr").not(":first").each(function() {
+        if ($(this).find('.order_number_cell').html() == orderNumber) {
+            var row = $(this);
+            row.css('background-color', '#4F814F');
+            row.css('color', '#444444');
+            var checkbox = row.find('.select_checkbox');
+            checkbox.attr('checked', false);
+            checkbox.attr('disabled', true);
+        }
+    });
+}
+
+function markProcessedFailed(orderNumber) {
+    $("#order_table > tbody > tr").not(":first").each(function() {
+        if ($(this).find('.order_number_cell').html() == orderNumber) {
+            var row = $(this);
+            row.css('background-color', 'red');
+            row.css('color', '#444444');
+            var checkbox = row.find('.select_checkbox');
+            checkbox.attr('checked', false);
+            checkbox.attr('disabled', true);
+        }
+    });
 }
 
 function selectCheckboxGenerator() {
@@ -99,6 +123,7 @@ function getOrderRow(order) {
     rowString += '<td class="process_button_cell"><button class="process_button">Process</button></td>';
     rowString += '<td class="select_checkbox_cell"><input class="select_checkbox" type="checkbox" checked /></td>';
     rowString += '<td class="order_number_cell">' + order.order_number + '</td>';
+    rowString += '<td class="order_date_cell">' + order.date_recieved + '</td>';
     rowString += '<td class="customer_name_cell">' + order.customer_name + '</td>';
     rowString += '<td class="item_table_cell"><table class="item_table">';
     for (var i=0; i < order.items.length; i++) {
@@ -108,4 +133,20 @@ function getOrderRow(order) {
     }
     rowString += '</table></td></tr>';
     return rowString;
+}
+
+function processOrder(orderNumber) {
+    $.post('process_order.php', {'order_number': orderNumber}, function(result) {
+        orderProcessedCheck(orderNumber);
+    });
+}
+
+function orderProcessedCheck(orderNumber) {
+    $.post('order_is_processed.php', {'order_number': orderNumber}, function(result) {
+        if (result === 'success') {
+            markProcessed(orderNumber);
+        } else {
+            markProcessedFailed(orderNumber);
+        }
+    });
 }

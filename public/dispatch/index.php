@@ -63,6 +63,7 @@ echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
             <th>Process</th>
             <th></th>
             <th>Order Number</th>
+            <th>Date</th>
             <th>Customer Name</th>
             <th>Items</th>
         </tr>
