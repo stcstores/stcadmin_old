@@ -27,33 +27,47 @@ foreach ($orders as $order) {
 
 echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
 ?>
-<button id="reload">Refresh</button>
-<br />
-<label for="department_select">Department</label>
-<select id="department_select" name="department_select">
-<?php
-foreach ($departments as $department) {
-    echo "\t<option value='" . $department . "' >" . $department . "</option>" . $department . "\n";
-}
-?>
-</select>
-<label for="filter_order_number">Filter: Order Number</label>
-<input type="text" name="filter_order_number" id="filter_order_number" class="filter_input"/>
-<label for="filter_customer_name">Filter: Customer Name</label>
-<input type="text" name="filter_customer_name" id="filter_customer_name" class="filter_input"/>
-<button id="clear_filters">Clear</button>
-<br />
-<button id="process_selected">Process Selected</button>
-<br />
-<table id="order_table" class="order_table" cellspacing="0">
-    <tr>
-        <th>Process</th>
-        <th></th>
-        <th>Order Number</th>
-        <th>Customer Name</th>
-        <th>Items</th>
-    </tr>
-</table>
+<div class="dispatcher">
+    <table class="dispatcher_controls">
+        <tr>
+            <td><label for="department_select">Department</label></td>
+            <td>
+                <select id="department_select" name="department_select">
+                <?php
+                foreach ($departments as $department) {
+                    echo "\t<option value='" . $department . "' >" . $department . "</option>" . $department . "\n";
+                }
+                ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="filter_order_number">Filter: Order Number</label></td>
+            <td><input type="text" name="filter_order_number" id="filter_order_number" class="filter_input"/></td>
+        </tr>
+        <tr>
+            <td><label for="filter_customer_name">Filter: Customer Name</label></td>
+            <td><input type="text" name="filter_customer_name" id="filter_customer_name" class="filter_input"/></td>
+        </tr>
+        <tr>
+            <td><button id="clear_filters">Clear Filters</button></td>
+            <td><button id="reload">Refresh</button></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button id="process_selected">Process Selected</button></td>
+        </tr>
+    </table>
+    <br />
+    <table id="order_table" class="order_table" cellspacing="0">
+        <tr>
+            <th>Process</th>
+            <th></th>
+            <th>Order Number</th>
+            <th>Customer Name</th>
+            <th>Items</th>
+        </tr>
+    </table>
+</div>
 <script src="/scripts/dispatch.js"></script>
 <?php
 include($CONFIG['footer']);

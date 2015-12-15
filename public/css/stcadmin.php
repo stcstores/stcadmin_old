@@ -395,6 +395,7 @@ a.questionmark_link {
     font-size: medium;
     font-weight: normal;
     padding: 1em;
+    display: inline-block;
 }
 
 .order_table td {
@@ -436,7 +437,6 @@ input[type="button"]:disabled {
     width:150px;
     left:0;
     top:auto;
-    border-right: 0px none black;
     border-top-width:3px; /*only relevant for first row*/
     margin-top:-3px; /*compensate for top border*/
     background: <?php $colours->echoColour(3, 2); ?>;
@@ -454,4 +454,17 @@ input[type="button"]:disabled {
 #international_shipping_table td {
     text-align: right;
     padding-left: 1em;
+}
+
+.dispatcher {
+    text-align: center;
+}
+
+.dispatcher label, .dispatcher button {
+    margin-left: 2em;
+    margin-top: 1em;
+}
+
+.dispatcher_controls {
+    display: inline-block;
 }
