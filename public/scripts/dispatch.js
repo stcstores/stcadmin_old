@@ -23,28 +23,6 @@ $('.filter_input').keyup(function() {
     }
 });
 
-function filterOrderTable(filterBox) {
-    var filterString = $(filterBox).val().toLowerCase();
-    var filterCell = $(filterBox).attr('id').substring(7);
-    $("#order_table > tbody > tr").each(function() {
-        $(this).attr('hidden', false);
-        var orderNumber = $(this).find('.' + filterCell + '_cell').html().toLowerCase();
-        if (orderNumber.indexOf(filterString) == -1 ) {
-            $(this).attr('hidden', true);
-        }
-    });
-}
-
-function filtersClear() {
-    var clear = true;
-    $('.filter_input').each(function() {
-        if ($(this).val().length !== 0) {
-            clear = false;
-        }
-    });
-    return clear;
-}
-
 $('#process_selected').click(function() {
     var ordersToProcess = [];
     $("#order_table tr").each(function() {
@@ -75,6 +53,28 @@ $('#toggle_button').click(function() {
          }
     });
 });
+
+function filterOrderTable(filterBox) {
+    var filterString = $(filterBox).val().toLowerCase();
+    var filterCell = $(filterBox).attr('id').substring(7);
+    $("#order_table > tbody > tr").each(function() {
+        $(this).attr('hidden', false);
+        var orderNumber = $(this).find('.' + filterCell + '_cell').html().toLowerCase();
+        if (orderNumber.indexOf(filterString) == -1 ) {
+            $(this).attr('hidden', true);
+        }
+    });
+}
+
+function filtersClear() {
+    var clear = true;
+    $('.filter_input').each(function() {
+        if ($(this).val().length !== 0) {
+            clear = false;
+        }
+    });
+    return clear;
+}
 
 function writeOrders(department) {
     $("#order_table").find("tr:gt(0)").remove(); //Clear table
