@@ -468,3 +468,24 @@ input[type="button"]:disabled {
 .dispatcher_controls {
     display: inline-block;
 }
+
+#order_table th.header {
+    background-image: url(/images/bg.gif); 
+    cursor: pointer;
+    font-weight: bold;
+    background-repeat: no-repeat;
+    background-position: center left;
+    padding-left: 20px;
+    border-right: 1px solid #dad9c7;
+    margin-left: -1px;
+}
+
+#order_table th.headerSortDown {
+    background-image: url(/images/desc.gif);
+    background-color: #3399FF;
+}
+
+#order_table th.headerSortUp {
+    background-image: url(/images/asc.gif);
+    background-color: #3399FF;
+}

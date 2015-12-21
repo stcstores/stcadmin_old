@@ -4,6 +4,8 @@ require_once($CONFIG['include']);
 STCAdmin\UserLogin::checkLogin();
 require_once($CONFIG['header']);
 
+echo '<script src="/scripts/jquery.tablesorter.js" ></script>' . "\n";
+
 $api = new LinnworksAPI\LinnworksAPI($_SESSION['username'], $_SESSION['password']);
 
 $order_data = $api->get_open_orders();
@@ -60,14 +62,16 @@ echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
     <p><span id="selected_count">0</span> of <span id="order_count">0</span> selected</p>
     <br />
     <table id="order_table" class="order_table" cellspacing="0">
-        <tr>
-            <th>Process</th>
-            <th><button id="toggle_button">Toggle All</button></th>
-            <th>Order Number</th>
-            <th>Date</th>
-            <th>Customer Name</th>
-            <th>Items</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>Process</th>
+                <th><button id="toggle_button">Toggle All</button></th>
+                <th>Order Number</th>
+                <th>Date</th>
+                <th>Customer Name</th>
+                <th>Items</th>
+            </tr>
+        </thead>
     </table>
 </div>
 <script src="/scripts/dispatch.js"></script>

@@ -10,6 +10,7 @@ $('#department_select').change(function() {
 $('#clear_filters').click(function() {
     $('.filter_input').val('');
     $("#order_table > tbody > tr").attr('hidden', false);
+    $('#process_selected').removeAttr('disabled');
 });
 
 $('.filter_input').keyup(function() {
@@ -25,7 +26,7 @@ $('.filter_input').keyup(function() {
 function filterOrderTable(filterBox) {
     var filterString = $(filterBox).val().toLowerCase();
     var filterCell = $(filterBox).attr('id').substring(7);
-    $("#order_table > tbody > tr").not(":first").each(function() {
+    $("#order_table > tbody > tr").each(function() {
         $(this).attr('hidden', false);
         var orderNumber = $(this).find('.' + filterCell + '_cell').html().toLowerCase();
         if (orderNumber.indexOf(filterString) == -1 ) {
@@ -64,11 +65,13 @@ $('#toggle_button').click(function() {
     var checked = $('#order_table tr:nth-child(2)').find('.select_checkbox').prop("checked");
     var checkbox;
     $("#order_table tr").each(function() {
-         checkbox = $(this).find('.select_checkbox');
-         if (checked) {
-             checkbox.click();
-         } else {
-             checkbox.click();
+        if ($(this).is(":visible")) {
+             checkbox = $(this).find('.select_checkbox');
+             if (checked) {
+                 checkbox.click();
+             } else {
+                 checkbox.click();
+             }
          }
     });
 });
@@ -80,6 +83,12 @@ function writeOrders(department) {
             writeOrderRow(openOrders[i]);
         }
     }
+    $('#order_table').tablesorter({
+        headers: {
+            1: {sorter: false}
+        },
+        sortList: [[3,1]]
+    });
 }
 
 function countOrders() {
@@ -167,7 +176,7 @@ function getOrderRow(order) {
     rowString += '<td class="process_button_cell"><button class="process_button">Process</button></td>';
     rowString += '<td class="select_checkbox_cell"><input class="select_checkbox" type="checkbox" checked /></td>';
     rowString += '<td class="order_number_cell">' + order.order_number + '</td>';
-    rowString += '<td class="order_date_cell">' + order.date_recieved + '</td>';
+    rowString += '<td class="order_date_cell">' + order.date_recieved + ' ' + order.time_recieved.substr(0, 5) + '</td>';
     rowString += '<td class="customer_name_cell">' + order.customer_name + '</td>';
     rowString += '<td class="item_table_cell"><table class="item_table">';
     for (var i=0; i < order.items.length; i++) {
