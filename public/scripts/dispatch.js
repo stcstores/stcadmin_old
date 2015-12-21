@@ -4,6 +4,7 @@ $('#reload').click(function() {
 
 $('#department_select').change(function() {
     writeOrders($('#department_select').val());
+    updateOrderCounts();
 });
 
 $('#clear_filters').click(function() {
@@ -54,6 +55,7 @@ $('#process_selected').click(function() {
     for (var i=0; i < ordersToProcess.length; i++) {
         processOrder(ordersToProcess[i]);
     }
+    updateOrderCounts();
 });
 
 function writeOrders(department) {
@@ -63,6 +65,32 @@ function writeOrders(department) {
             writeOrderRow(openOrders[i]);
         }
     }
+}
+
+function countOrders() {
+    var orderCount = 0;
+    var department = $("#department_select").val();
+    for (var i=0; i<openOrders.length; i++) {
+        if (openOrders[i].department == department) {
+            orderCount ++;
+        }
+    }
+    return orderCount;
+}
+
+function countSelectedOrders() {
+    var selectedOrdersCount = 0;
+    $("#order_table tr").each(function() {
+        if ($(this).find('.select_checkbox').prop("checked") === true) {
+            selectedOrdersCount ++;
+        }
+    });
+    return selectedOrdersCount;
+}
+
+function updateOrderCounts() {
+    $('#selected_count').html(countSelectedOrders());
+    $('#order_count').html(countOrders());
 }
 
 function writeOrderRow(order) {
@@ -115,6 +143,7 @@ function selectCheckboxGenerator() {
         } else {
             row.removeAttr( 'style' );
         }
+        updateOrderCounts();
     };
 }
 

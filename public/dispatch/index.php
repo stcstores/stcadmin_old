@@ -57,6 +57,7 @@ echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
             <td colspan="2"><button id="process_selected">Process Selected</button></td>
         </tr>
     </table>
+    <p><span id="selected_count">0</span> of <span id="order_count">0</span> selected</p>
     <br />
     <table id="order_table" class="order_table" cellspacing="0">
         <tr>
