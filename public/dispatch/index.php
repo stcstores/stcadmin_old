@@ -32,8 +32,8 @@ echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
 <div class="dispatcher">
     <table class="dispatcher_controls">
         <tr>
-            <td><label for="department_select">Department</label></td>
-            <td>
+            <td class="label"><label for="department_select">Department</label></td>
+            <td class="input">
                 <select id="department_select" name="department_select">
                 <?php
                 foreach ($departments as $department) {
@@ -44,24 +44,24 @@ echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
             </td>
         </tr>
         <tr>
-            <td><label for="filter_order_number">Filter: Order Number</label></td>
-            <td><input type="text" name="filter_order_number" id="filter_order_number" class="filter_input"/></td>
+            <td class="label"><label for="filter_order_number">Filter: Order Number</label></td>
+            <td class="input"><input type="text" name="filter_order_number" id="filter_order_number" class="filter_input"/></td>
         </tr>
         <tr>
-            <td><label for="filter_customer_name">Filter: Customer Name</label></td>
-            <td><input type="text" name="filter_customer_name" id="filter_customer_name" class="filter_input"/></td>
+            <td class="label"><label for="filter_customer_name">Filter: Customer Name</label></td>
+            <td class="input"><input type="text" name="filter_customer_name" id="filter_customer_name" class="filter_input"/></td>
         </tr>
         <tr>
-            <td><button id="clear_filters">Clear Filters</button></td>
             <td><button id="reload">Refresh</button></td>
+            <td><button id="clear_filters">Clear Filters</button></td>
         </tr>
         <tr>
-            <td colspan="2"><button id="process_selected">Process Selected</button></td>
+            <td><span id="selected_count">0</span> of <span id="order_count">0</span> Selected</td>
+            <td><button id="process_selected">Process Selected</button></td>
         </tr>
     </table>
-    <p><span id="selected_count">0</span> of <span id="order_count">0</span> selected</p>
     <br />
-    <table id="order_table" class="order_table" cellspacing="0">
+    <table id="order_table" class="order_table" cellspacing="0" style="visibility:hidden">
         <thead>
             <tr>
                 <th>Process</th>

@@ -134,7 +134,7 @@ h4 {
     padding: 1em;
 }
 
-.form_section, #testproduct, #get_sku, .form_nav, .pagebox, #login_form {
+.form_section, #testproduct, #get_sku, .form_nav, .pagebox, #login_form, .dispatcher_controls {
     background-color: <?php $colours->echoColour(3, 2); ?>;
     border: solid 5px <?php $colours->echoColour(3, 4); ?>;
     color: <?php $colours->echoColour(2, 4); ?>;
@@ -455,6 +455,19 @@ input[type="button"]:disabled {
 
 .dispatcher_controls {
     display: inline-block;
+    margin: 1em;
+}
+
+.dispatcher_controls .label {
+    text-align: right;
+}
+
+.dispatcher_controls .input {
+    text-align: left;
+}
+
+.dispatcher_controls td {
+    padding: 0.5em;
 }
 
 .order_table td {

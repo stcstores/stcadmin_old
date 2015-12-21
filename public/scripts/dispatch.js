@@ -90,6 +90,7 @@ function writeOrders(department) {
         },
         sortList: [[3,1]]
     });
+    $('#order_table').removeAttr('style');
 }
 
 function countOrders() {
@@ -134,7 +135,7 @@ function processButtonGenerator(orderNumber) {
 }
 
 function markProcessed(orderNumber) {
-    $("#order_table > tbody > tr").not(":first").each(function() {
+    $("#order_table > tbody > tr").each(function() {
         if ($(this).find('.order_number_cell').html() == orderNumber) {
             var row = $(this);
             row.css('background-color', '#4F814F');
@@ -147,7 +148,7 @@ function markProcessed(orderNumber) {
 }
 
 function markProcessedFailed(orderNumber) {
-    $("#order_table > tbody > tr").not(":first").each(function() {
+    $("#order_table > tbody > tr").each(function() {
         if ($(this).find('.order_number_cell').html() == orderNumber) {
             var row = $(this);
             row.css('background-color', 'red');
