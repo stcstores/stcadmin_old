@@ -10,8 +10,8 @@ class OpenOrder
         $this->customer_name = $order_data['CustomerInfo']['Address']['FullName'];
         $this->printed = $order_data['GeneralInfo']['InvoicePrinted'];
         $this->postage_service = $order_data['ShippingInfo']['PostalServiceName'];
-        $this->date_recieved = substr($order_data['GeneralInfo']['ReceivedDate'], 0, 10);
-        $this->time_recieved = substr($order_data['GeneralInfo']['ReceivedDate'], 11);
+        $this->date_recieved = trim(substr($order_data['GeneralInfo']['ReceivedDate'], 0, 10));
+        $this->time_recieved = trim(substr($order_data['GeneralInfo']['ReceivedDate'], 11));
         $this->items = array();
         foreach ($order_data['Items'] as $item_data) {
             $this->items[] = new OrderItem($item_data);

@@ -198,12 +198,6 @@ input[type="text"], input[type="password"], textarea, select, checkbox {
     text-align: center;
 }
 
-/*.small_button input {
-    font-size: 1.5em;
-    padding: 0;
-    margin: 0;
-}*/
-
 #get_sku #new_sku_text, #new_sku_button {
     font-size: 1.5em;
     margin: 1em;
@@ -399,7 +393,6 @@ a.questionmark_link {
 }
 
 .order_table td {
-    padding-left: 1em;
     border: #888888 1px solid;
 }
 
@@ -460,17 +453,17 @@ input[type="button"]:disabled {
     text-align: center;
 }
 
-.dispatcher label, .dispatcher button {
-    margin-left: 2em;
-    margin-top: 1em;
-}
-
 .dispatcher_controls {
     display: inline-block;
 }
 
-#order_table th.header {
-    background-image: url(/images/bg.gif); 
+.order_table td {
+    text-align: center;
+}
+
+.order_table th.header {
+    background-color: <?php $colours->echoColour(2, 2); ?>;
+    background-image: url(/images/bg.gif);
     cursor: pointer;
     font-weight: bold;
     background-repeat: no-repeat;
@@ -478,14 +471,15 @@ input[type="button"]:disabled {
     padding-left: 20px;
     border-right: 1px solid #dad9c7;
     margin-left: -1px;
+    text-align: center;
 }
 
-#order_table th.headerSortDown {
+.order_table th.headerSortDown {
     background-image: url(/images/desc.gif);
-    background-color: #3399FF;
+    background-color: <?php $colours->echoColour(2, 3); ?>;
 }
 
-#order_table th.headerSortUp {
+.order_table th.headerSortUp {
     background-image: url(/images/asc.gif);
-    background-color: #3399FF;
+    background-color: <?php $colours->echoColour(2, 3); ?>;
 }
