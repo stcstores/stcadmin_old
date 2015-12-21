@@ -85,6 +85,7 @@ function writeOrders(department) {
     }
     $('#order_table').tablesorter({
         headers: {
+            0: {sorter: false},
             1: {sorter: false}
         },
         sortList: [[3,1]]
