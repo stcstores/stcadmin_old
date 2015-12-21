@@ -51,11 +51,26 @@ $('#process_selected').click(function() {
             ordersToProcess.push($(this).find('.order_number_cell').html());
         }
     });
-    console.log(ordersToProcess);
-    for (var i=0; i < ordersToProcess.length; i++) {
-        processOrder(ordersToProcess[i]);
+    if (confirm("Are you sure you want to process " + ordersToProcess.length + " orders?")) {
+        console.log(ordersToProcess);
+        for (var i=0; i < ordersToProcess.length; i++) {
+            processOrder(ordersToProcess[i]);
+        }
+        updateOrderCounts();
     }
-    updateOrderCounts();
+});
+
+$('#toggle_button').click(function() {
+    var checked = $('#order_table tr:nth-child(2)').find('.select_checkbox').prop("checked");
+    var checkbox;
+    $("#order_table tr").each(function() {
+         checkbox = $(this).find('.select_checkbox');
+         if (checked) {
+             checkbox.click();
+         } else {
+             checkbox.click();
+         }
+    });
 });
 
 function writeOrders(department) {

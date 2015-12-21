@@ -62,7 +62,7 @@ echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
     <table id="order_table" class="order_table" cellspacing="0">
         <tr>
             <th>Process</th>
-            <th></th>
+            <th><button id="toggle_button">Toggle All</button></th>
             <th>Order Number</th>
             <th>Date</th>
             <th>Customer Name</th>
