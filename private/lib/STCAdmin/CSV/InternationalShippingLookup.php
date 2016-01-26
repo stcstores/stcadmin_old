@@ -1,7 +1,7 @@
 <?php
 namespace STCAdmin\CSV;
 
-class InternationalShippingLookup extends CsvFile {
+class InternationalShippingLookup extends CSVFile {
     public function __construct()
     {
         $this->path = dirname(__FILE__) . '/';
