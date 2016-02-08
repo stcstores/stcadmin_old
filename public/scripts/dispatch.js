@@ -76,8 +76,13 @@ function filtersClear() {
     return clear;
 }
 
+function emptyOrderTable() {
+    $('#order_table').remove();
+    $('#dispatcher').append('<table id="order_table" class="order_table" cellspacing="0" style="visibility:hidden"><thead><tr><th>Process</th><th><button id="toggle_button">Toggle All</button></th><th>Order Number</th><th>Date</th><th>Customer Name</th><th>Items</th></tr></thead></table>');
+}
+
 function writeOrders(department) {
-    $("#order_table").find("tr:gt(0)").remove(); //Clear table
+    emptyOrderTable();
     for (var i=0; i < openOrders.length; i++) {
         if (openOrders[i].department === department) {
             writeOrderRow(openOrders[i]);
@@ -107,7 +112,7 @@ function countOrders() {
 function countSelectedOrders() {
     var selectedOrdersCount = 0;
     $("#order_table tr").each(function() {
-        if ($(this).find('.select_checkbox').prop("checked") === true) {
+        if (($(this).is(":visible")) && ($(this).find('.select_checkbox').prop("checked") === true)) {
             selectedOrdersCount ++;
         }
     });

@@ -29,7 +29,7 @@ foreach ($orders as $order) {
 
 echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
 ?>
-<div class="dispatcher">
+<div class="dispatcher" id="dispatcher">
     <table class="dispatcher_controls">
         <tr>
             <td class="label"><label for="department_select">Department</label></td>
@@ -61,17 +61,6 @@ echo "<script>openOrders = " . json_encode($printedOrders) . ";</script>\n";
         </tr>
     </table>
     <br />
-    <table id="order_table" class="order_table" cellspacing="0" style="visibility:hidden">
-        <thead>
-            <tr>
-                <th>Process</th>
-                <th><button id="toggle_button">Toggle All</button></th>
-                <th>Order Number</th>
-                <th>Date</th>
-                <th>Customer Name</th>
-                <th>Items</th>
-            </tr>
-        </thead>
     </table>
 </div>
 <script src="/scripts/dispatch.js"></script>
