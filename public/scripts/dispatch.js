@@ -39,19 +39,25 @@ $('#process_selected').click(function() {
     }
 });
 
-$('#toggle_button').click(function() {
-    var checked = $('#order_table tr:nth-child(2)').find('.select_checkbox').prop("checked");
-    var checkbox;
-    $("#order_table tr").each(function() {
-        if ($(this).is(":visible")) {
-             checkbox = $(this).find('.select_checkbox');
-             if (checked) {
-                 checkbox.click();
-             } else {
-                 checkbox.click();
+function setToggleButton() {
+    $('#toggle_button').click(function() {
+        var checked = $('#order_table tr:nth-child(2)').find('.select_checkbox').prop("checked");
+        var checkbox;
+        $("#order_table tr").each(function() {
+            if ($(this).is(":visible")) {
+                 checkbox = $(this).find('.select_checkbox');
+                 if (checked) {
+                     checkbox.click();
+                 } else {
+                     checkbox.click();
+                 }
              }
-         }
+        });
     });
+}
+
+$('#order_table').find('.select_checkbox').click(function() {
+    updateOrderCounts();
 });
 
 function filterOrderTable(filterBox) {
@@ -96,6 +102,7 @@ function writeOrders(department) {
         sortList: [[3,1]]
     });
     $('#order_table').removeAttr('style');
+    setToggleButton();
 }
 
 function countOrders() {
