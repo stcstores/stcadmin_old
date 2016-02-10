@@ -119,7 +119,7 @@ function countOrders() {
 function countSelectedOrders() {
     var selectedOrdersCount = 0;
     $("#order_table tr").each(function() {
-        if (($(this).is(":visible")) && ($(this).find('.select_checkbox').prop("checked") === true)) {
+        if ($(this).find('.select_checkbox').prop("checked") === true) {
             selectedOrdersCount ++;
         }
     });
