@@ -1,7 +1,7 @@
 <?php
 namespace STCAdmin\CSV;
 
-class BasicInfoFile extends CsvFile {
+class BasicInfoFile extends CSVFile {
     public function __construct()
     {
         include(dirname($_SERVER['DOCUMENT_ROOT']) . '/private/config.php');
