@@ -280,7 +280,7 @@ class LinnworksAPI
         return $response;
     }
 
-    public function get_inventory_items($start = 0, $count = 1, $view = null)
+    public function get_inventory_items($start, $count, $view)
     {
         if ($view == null) {
             $view = $this -> get_new_inventory_view();
@@ -294,16 +294,13 @@ class LinnworksAPI
         $data['stockLocationIds'] = $locations;
         $data['startIndex'] = $start;
         $data['itemsCount'] = $count;
-        //echo "<br /><br />";
-        //print_r($data);
-        echo "<br /><br />";
         $response = $this -> request($url, $data);
         return $response;
     }
 
     public function get_item_count()
     {
-        $request = $this -> get_inventory_items($start = 0, $count = 1, $view = null);
+        $request = $this -> get_inventory_items(0, 1, NULL);
         $item_count = $request['TotalItems'];
         return $item_count;
     }
@@ -409,14 +406,6 @@ class LinnworksAPI
         $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $header = substr($response, 0, $header_size);
         $body = substr($response, $header_size);
-        //print_r($header);
-        //echo "<br />";
-        //echo "<br />";
-        //print_r($body);
-        //echo "<br />";
-        //echo "<br />";
-        //echo "<br />";
-        //echo "<br />";
         $responseJson = json_decode($body, true);
         return $responseJson;
     }
@@ -427,9 +416,6 @@ class LinnworksAPI
         $data = array();
         $data['inventoryItemId'] = $productGuid;
         $data['imageIds'] = json_encode($imageGuidArray);
-        echo "<br />";
-        //print_r($data);
-        echo "<br />";
         $response = $this->request($url, $data);
         return $response;
     }
@@ -467,7 +453,6 @@ class LinnworksAPI
         $data['entriesPerPage'] = '100';
         $data['pageNumber'] = 1;
         $response = $this -> request($url, $data);
-        //print_r($response);
         if (isset($response['Data'][0])) {
             return $response['Data'][0]['pkVariationItemId'];
         } else {
@@ -485,7 +470,6 @@ class LinnworksAPI
     public function get_inventory_item_id_by_SKU($sku)
     {
         $view = $this -> get_new_inventory_view();
-        //print_r($view);
         $view['Columns'] = array();
         $filter = array();
         $filter['Value'] = $sku;
@@ -494,10 +478,7 @@ class LinnworksAPI
         $filter['FilterNameExact'] = '';
         $filter['Condition'] = 'Equals';
         $view['Filters'] = [$filter];
-        echo "<br /><br />";
-        //print_r($view);
-        $response = $this -> get_inventory_items(0, 1, $view = $view);
-        //print_r($response);
+        $response = $this -> get_inventory_items(0, 1, $view);
         if (array_key_exists(0, $response['Items'])) {
             $stock_id = $response['Items'][0]['Id'];
             return $stock_id;
@@ -731,7 +712,7 @@ class LinnworksAPI
         );
         $response = $this->request($url, $data);
         $variation_groups = array();
-        foreach ($respons['Data'] as $group) {
+        foreach ($response['Data'] as $group) {
             $new_group = array();
             $new_group['guid'] = $group['pkVariationItemId'];
             $new_group['sku'] = $group['VariationSKU'];
@@ -755,7 +736,7 @@ class LinnworksAPI
             'Contains'
         );
         $view['Filters'] = array($view_filter);
-        $response = $this->get_inventory_items($view = $view, $count = $max_count);
+        $response = $this->get_inventory_items(0, $max_count, $view);
         $items = array();
         foreach ($response['Items'] as $item) {
             $new_item = array();
@@ -816,8 +797,6 @@ class LinnworksAPI
         $data['fulfilmentLocationId'] = $this->get_location_ids()[0];
         $data['loadItems'] = json_encode($load_items);
         $data['loadAdditionalInfo'] = json_encode($load_additional_info);
-        echo $url . "<br />";
-        print_r(json_encode($data));
         $response = $this->request($url, $data);
         return $response;
     }
