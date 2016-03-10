@@ -130,6 +130,16 @@ class LinnworksAPI
         return $cateogryIDs;
     }
 
+    public function get_category_id($categoryName)
+    {
+        $categoryInfo = $this->get_category_info();
+        foreach ($categoryInfo as $category) {
+            if ($category['name'] == $categoryName) {
+                return $category['id'];
+            }
+        }
+    }
+
     public function get_packaging_group_info()
     {
         $url = $this -> server . '/api/Inventory/GetPackageGroups';
@@ -282,10 +292,9 @@ class LinnworksAPI
 
     public function get_inventory_items($start, $count, $view)
     {
-        if ($view == null) {
-            $view = $this -> get_new_inventory_view();
+        if ($count == 0) {
+            $count = $this->get_item_count();
         }
-
         $url = $this -> server . '/api/Inventory/GetInventoryItems';
         $view_json = json_encode($view);
         $locations = json_encode($this -> get_location_ids());
@@ -300,18 +309,19 @@ class LinnworksAPI
 
     public function get_item_count()
     {
-        $request = $this -> get_inventory_items(0, 1, NULL);
+        $view = $this->get_new_inventory_view();
+        $request = $this -> get_inventory_items(0, 1, $view);
         $item_count = $request['TotalItems'];
         return $item_count;
     }
 
-    public function get_inventory_item_by_id($stock_id, $inventory_item = true)
+    public function get_inventory_item_by_id($stock_id, $inventory_item)
     {
         $url = $this -> server . '/api/Inventory/GetInventoryItemById';
         $data = array();
         $data['id'] = $stock_id;
         $response = $this -> request($url, $data);
-        if ($inventory_item != true) {
+        if ($inventory_item == false) {
             return $response;
         } else {
             $item = new InventoryItem($this, $stock_id);
@@ -487,10 +497,10 @@ class LinnworksAPI
         }
     }
 
-    public function get_inventory_item_by_SKU($sku)
+    public function get_inventory_item_by_SKU($sku, $asInventoryItem)
     {
         $guid = $this -> get_inventory_item_id_by_SKU($sku);
-        $item = $this -> get_inventory_item_by_id($guid);
+        $item = $this -> get_inventory_item_by_id($guid, $asInventoryItem);
         return $item;
     }
 
@@ -698,7 +708,7 @@ class LinnworksAPI
         return $columns;
     }
 
-    public function search_variation_group_title($title, $max_count = 0)
+    public function search_variation_group_title($title, $max_count)
     {
         if ($max_count == 0) {
             $max_count = $this->get_item_count();
@@ -723,7 +733,7 @@ class LinnworksAPI
         return $variation_groups;
     }
 
-    public function search_single_inventory_item_title($title, $max_count = 0)
+    public function search_single_inventory_item_title($title, $max_count)
     {
         if ($max_count == 0) {
             $max_count = $this->get_item_count();
@@ -749,8 +759,11 @@ class LinnworksAPI
         return $items;
     }
 
-    public function search_inventory_item_title($title, $max_count = 0)
+    public function search_inventory_item_title($title, $max_count)
     {
+        if ($max_count == 0) {
+            $max_count = $this->get_item_count();
+        }
         $single_items = $this->search_single_inventory_item_title(
             $title,
             $max_count
@@ -855,5 +868,47 @@ class LinnworksAPI
         $data['additionalFilter'] = '';
         $response = $this->request($url, $data);
         return $response['Data'];
+    }
+
+    public function update_bin_rack($item, $value, $location)
+    {
+        $url = $this->server . '/api/Inventory/UpdateInventoryItemLocationField';
+        if ($this->is_guid($item)) {
+            $guid = $item;
+        } else {
+            $guid = $this->get_inventory_item_id_by_SKU($item);
+        }
+        if (is_null($location)) {
+            $location = $this->get_location_ids()[0];
+        }
+        $data = array(
+            'fieldName' => 'BinRack',
+            'fieldValue' => $value,
+            'inventoryItemId' => $guid,
+            'locationId' => $location
+        );
+        return $this->request($url, $data);
+    }
+
+
+    public function update_category($item, $category)
+    {
+        $url = $this->server + '/api/Inventory/UpdateInventoryItemField';
+        if ($this->is_guid($item)) {
+            $guid = $item;
+        } else {
+            $guid = $this->get_inventory_item_id_by_SKU($item);
+        }
+        if ($this->is_guid($category)) {
+            $category_id = $category;
+        } else {
+            $category_id = $this->get_category_id($category);
+        }
+        $data = array(
+            'fieldName' => 'Category',
+            'fieldValue' => $category_id,
+            'inventoryItemId' => $guid,
+        );
+        return $this->request(url, data);
     }
 }
