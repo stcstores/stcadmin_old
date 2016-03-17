@@ -20,6 +20,7 @@ $result = $database -> selectQuery($query);
         <li><a href=getsku.php >Get an unused product SKU</a></li>
         <li><a href='get_international_shipping.php' >Find international shipping rates for products</a></li>
         <li><a href='get_amazon.php' >Get details of a product for listing on Amazon</a></li>
+        <li><a href='relocation' >Move stock to Sureware</a></li>
     </ul>
 </div>
 <br />

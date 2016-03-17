@@ -893,7 +893,7 @@ class LinnworksAPI
 
     public function update_category($item, $category)
     {
-        $url = $this->server + '/api/Inventory/UpdateInventoryItemField';
+        $url = $this->server . '/api/Inventory/UpdateInventoryItemField';
         if ($this->is_guid($item)) {
             $guid = $item;
         } else {
@@ -909,6 +909,19 @@ class LinnworksAPI
             'fieldValue' => $category_id,
             'inventoryItemId' => $guid,
         );
-        return $this->request(url, data);
+        return $this->request($url, $data);
+    }
+
+    public function updateTitle($item, $value)
+    {
+        $url = $this->server . '/api/Inventory/UpdateInventoryItemField';
+        $data = array(
+            'fieldName' => 'Title',
+            'fieldValue' => $value,
+            'inventoryItemId' => $item,
+        );
+        echo "<pre>";
+        print_r($data);
+        return $this->request($url, $data);
     }
 }
