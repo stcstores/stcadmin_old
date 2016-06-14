@@ -106,3 +106,5 @@ echo "<div id='image_preview'><div class='image_preview_img'></div></div>";
         }
     }
 </script>
+<?php
+require_once($CONFIG['footer']);
