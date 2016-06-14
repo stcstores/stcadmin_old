@@ -3,3 +3,8 @@ favicon.ico
 **.komodoproject
 **.~lock.**
 public/shipping_audit
+public/photos/*.jpg
+public/photos/*.JPG
+public/photos/*.PNG
+public/photos/*.jpeg
+public/photos/*.JPEG
