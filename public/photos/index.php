@@ -56,7 +56,8 @@ echo "<label for='department_select'>Department: </label>";
 echo "<select id='department_select' name='department_select'>";
 echo "<option></option>";
 foreach ($departments as $department) {
-    echo "<option>{$department}</option>";
+    $department_name = ucwords(str_replace('_', ' ', $department));
+    echo "<option value='{$department}'>{$department_name}</option>";
 }
 echo "</select>";
 
